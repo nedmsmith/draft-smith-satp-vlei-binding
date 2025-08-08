@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: "Applications and Real-Time"
+workgroup: "Secure Asset Transfer Protocol"
 keyword:
  - next generation
  - unicorn
  - sparkling distributed ledger
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Secure Asset Transfer Protocol"
+  type: "Working Group"
+  mail: "sat@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/sat/"
+  github: "nedmsmith/draft-smith-satp-vlei-binding"
+  latest: "https://nedmsmith.github.io/draft-smith-satp-vlei-binding/draft-smith-satp-vlei-binding.html"
 
 author:
  -
