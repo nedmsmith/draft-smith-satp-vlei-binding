@@ -1,6 +1,6 @@
 ---
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "A SATP Core Binding for vLEI Identities"
+abbrev: "SATP-vLEI"
 category: info
 
 docname: draft-smith-satp-vlei-binding-latest
