@@ -1,7 +1,7 @@
 ---
 title: "A SATP Core Binding for vLEI Identities"
 abbrev: "SATP-vLEI"
-category: info
+category: std
 
 docname: draft-smith-satp-vlei-binding-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
