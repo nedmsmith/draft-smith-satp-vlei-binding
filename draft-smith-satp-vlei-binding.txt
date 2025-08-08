@@ -3,7 +3,7 @@
 
 
 Secure Asset Transfer Protocol                                  N. Smith
-Internet-Draft                                    Your Organization Here
+Internet-Draft                                               Independent
 Intended status: Standards Track                           8 August 2025
 Expires: 9 February 2026
 
@@ -112,5 +112,5 @@ Acknowledgments
 Author's Address
 
    Ned Smith
-   Your Organization Here
-   Email: nedsmithonline@outlook.com
+   Independent
+   Email: ned.smith.ietf@outlook.com
