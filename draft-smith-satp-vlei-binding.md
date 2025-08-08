@@ -26,8 +26,8 @@ venue:
 author:
  -
     fullname: "Ned Smith"
-    organization: Your Organization Here
-    email: "nedsmithonline@outlook.com"
+    organization: Independent
+    email: "ned.smith.ietf@outlook.com"
 
 normative:
 
