@@ -4,8 +4,8 @@
 
 Secure Asset Transfer Protocol                                  N. Smith
 Internet-Draft                                               Independent
-Intended status: Standards Track                           8 August 2025
-Expires: 9 February 2026
+Intended status: Standards Track                          13 August 2025
+Expires: 14 February 2026
 
 
                 A SATP Core Binding for vLEI Identities
@@ -13,7 +13,21 @@ Expires: 9 February 2026
 
 Abstract
 
-   TODO Abstract
+   The verifiable Legal Entity Identifier (vLEI) is a cryptographically
+   verifiable extension of the LEI standard, designed to automate trust
+   in organizational identity.  Governed by the Global Legal Entity
+   Identifier Foundation (GLEIF), the vLEI system uses W3C Verifiable
+   Credentials, Decentralized Identifiers (DIDs), and Key Event Receipt
+   Infrastructure (KERI) to issue and verify credentials for legal
+   entities and their authorized representatives.  It enables secure,
+   machine-readable identity assertions across financial, regulatory,
+   and supply chain ecosystems, supporting role-based delegation and
+   interoperability with decentralized trust frameworks.
+
+   This specification defines vLEI for verifiable gateway operator
+   identities and cryptographically links the gateway operator identity
+   to the gateway identity.  Thus SATP core lock assertions are
+   cryptographically linked to gateway operator identities.
 
 About This Document
 
@@ -48,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 February 2026.
+   This Internet-Draft will expire on 14 February 2026.
 
 Copyright Notice
 
@@ -68,9 +82,15 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Security Considerations
-   4.  IANA Considerations
-   5.  Normative References
+   3.  Architecture
+   4.  Identities
+   5.  Identity Binding
+   6.  Binding Verification
+   7.  Security Considerations
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -86,15 +106,45 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Security Considerations
+3.  Architecture
+
+4.  Identities
+
+5.  Identity Binding
+
+6.  Binding Verification
+
+7.  Security Considerations
 
    TODO Security
 
-4.  IANA Considerations
+8.  IANA Considerations
 
    This document has no IANA actions.
 
-5.  Normative References
+9.  References
+
+9.1.  Normative References
+
+   [I-D.ietf-satp-core]
+              Hargreaves, M., Hardjono, T., Belchior, R., Ramakrishna,
+              V., and A. Chiriac, "Secure Asset Transfer Protocol (SATP)
+              Core", Work in Progress, Internet-Draft, draft-ietf-satp-
+              core-11, 7 August 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
+              core-11>.
+
+   [ISO17442-3]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 3:
+              Verifiable LEIs (vLEIs)", ISO 17442-3:2024, 2024,
+              <https://www.iso.org/standard/85628.html>.
+
+   [REQ-LEVEL]
+              Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -104,6 +154,62 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+9.2.  Informative References
+
+   [ACDC-Spec]
+              Trust Over IP Foundation, "Authentic Chained Data
+              Containers (ACDC) Specification", TOIP TSWG-ACDC-2023,
+              2023,
+              <https://github.com/trustoverip/tswg-acdc-specification>.
+
+   [CESR-Spec]
+              Trust Over IP Foundation, "Composable Event Streaming
+              Representation (CESR) Proof Format Specification", TOIP 
+              TSWG-CESR-2023, 2023, <https://github.com/trustoverip/
+              tswg-cesr-proof-specification>.
+
+   [GLEIF-vLEI-EGF]
+              Global Legal Entity Identifier Foundation, "Verifiable LEI
+              (vLEI) Ecosystem Governance Framework: Primary and
+              Controlled Documents", GLEIF vLEI-EGF-v3.0, 16 April 2025,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [GLEIF-vLEI-TechReq-Part1]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 1: KERI Infrastructure", GLEIF vLEI-EGF-
+              TechReq-Part1-v1.3, 16 April 2025, <https://www.gleif.org/
+              organizational-identity/introducing-the-verifiable-lei-
+              vlei/introducing-the-vlei-ecosystem-governance-
+              framework/2025-04-16_vlei-egf-v3.0-technical-requirements-
+              part-1-keri-infrastructure-2024_v1.3_final.pdf>.
+
+   [GLEIF-vLEI-TechReq-Part2]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 2: vLEI Credentials", GLEIF vLEI-EGF-
+              TechReq-Part2-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [GLEIF-vLEI-TechReq-Part3]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 3: vLEI Credential Schema Registry",
+              GLEIF vLEI-EGF-TechReq-Part3-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [ISO17442-1]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 1:
+              Assignment", ISO 17442-1:2020, 2020,
+              <https://www.iso.org/standard/59771.html>.
+
+   [KERI-Spec]
+              Trust Over IP Foundation, "Key Event Receipt
+              Infrastructure (KERI) Specification", TOIP TSWG-KERI-2023,
+              2023,
+              <https://github.com/trustoverip/tswg-keri-specification>.
 
 Acknowledgments
 
