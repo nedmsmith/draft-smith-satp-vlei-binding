@@ -174,42 +174,7 @@ The following CDDL defines the wrapper and application to SATP fields.
 The following JSON document complies with the SATP CDDL schema using synthetic CESR payloads:
 
 ~~~ json
-{
-  "verifiedOriginatorEntityId": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedRecipientEntityId": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "U0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
-  },
-  "verifiedIntermediaryEntityIds": [
-    {
-      "0": "application/cesr+json;profile=vlei;base64=true",
-      "1": "QUNEQzFBQUMwRkIuLi5JTkRFUk1FRElBUlkuLi5TQUlEMEFBQS4uLg=="
-    }
-  ],
-  "verifiedTransactionId": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "VFJBTlNBQ1RJT04uLi5TQUlEMUZCLi4uU0FURDAxQUNEMUZCLi4u"
-  },
-  "verifiedCredential": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "VkxFSUNSRURFTlRJQUwuLi5BQ0RDMUFBRi4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedPresentation": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "UFJFU0VOVEFUSU9OLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
-  },
-  "verifiedEvidence": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "RVZJREVOR0UuLi5BQ0RDMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
-  },
-  "verifiedSignature": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "U0lHTkFUVVJFLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
-  }
-}
+{::include json/examples/cesr+json-vlei.json}
 ~~~
 
 
