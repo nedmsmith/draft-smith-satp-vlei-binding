@@ -174,7 +174,67 @@ TODO Security
 
 # IANA Considerations {#sec-iana}
 
-This document has no IANA actions.
+## Media Type Registration: application/cesr+json
+
+Type name:
+: application
+
+Subtype name:
+: cesr+json
+
+Required parameters:
+: None
+
+Optional parameters:
+: `profile` — Indicates the credential conforms to a specific schema registry (e.g., "vlei")
+: `base64` — Indicates the CESR stream is base64-encoded for transport in JSON wrappers
+: `charset` — Optional; default is UTF-8
+
+Encoding considerations:
+: 8bit; CESR text encoding is UTF-8 compatible and self-framing.
+: When `base64=true`, the CESR stream is base64-encoded for safe embedding in JSON.
+
+Security considerations:
+: CESR payloads are cryptographically signed and self-framing.
+: Signature verification is required to ensure authenticity and integrity.
+: Schema SAIDs must be validated against the [GLEIF vLEI Credential Schema Registry](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf).
+: Credential provenance must be anchored to the GLEIF Root AID via ACDC edges.
+
+Interoperability considerations:
+: CESR supports dual text-binary encoding; this media type assumes CESR text encoding.
+: When `base64=true`, payloads are safely embeddable in JSON-based SATP wrappers.
+: Compatible with SATP, ACDC, and KERI protocols.
+
+Published specification:
+: Composable Event Streaming Representation (CESR) — [draft-ssmith-cesr-03](https://www.ietf.org/archive/id/draft-ssmith-cesr-03.html)
+: GLEIF vLEI Credential Schema Registry — [GLEIF Registry PDF](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf)
+
+Applications that use this media type:
+: GLEIF vLEI issuance and verification systems
+: SATP-compliant credential exchange platforms
+: Forensic credential chaining and audit systems
+
+Fragment identifier considerations:
+: None
+
+Additional information:
+: Magic number(s): None
+: File extension(s): `.cesrj`
+: Macintosh file type code(s): None
+
+Person & email address to contact for further information:
+: N. Smith <spec-author@example.org>
+: GLEIF IT Team <vlei-support@gleif.org>
+
+Intended usage:
+: COMMON
+
+Author:
+: TBD, GLEIF IT Team
+
+Change controller:
+: IETF / GLEIF
+
 
 
 --- back
