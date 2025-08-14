@@ -1,0 +1,17 @@
+; Reusable wrapper type
+msg-wrapper = {
+  &(MTorCF) 0 => media-type-or-content-format,
+  &(payload) 1 => bstr / tstr
+}
+
+media-type-or-content-format = tstr / int
+
+; SATP credential-related fields
+verifiedOriginatorEntityId     = msg-wrapper / bstr / tstr
+verifiedRecipientEntityId      = msg-wrapper / bstr / tstr
+verifiedIntermediaryEntityIds  = [ + (msg-wrapper / bstr / tstr) ]
+verifiedTransactionId          = msg-wrapper / bstr / tstr
+verifiedCredential             = msg-wrapper / bstr / tstr
+verifiedPresentation           = msg-wrapper / bstr / tstr
+verifiedEvidence               = msg-wrapper / bstr / tstr
+verifiedSignature              = msg-wrapper / bstr / tstr
