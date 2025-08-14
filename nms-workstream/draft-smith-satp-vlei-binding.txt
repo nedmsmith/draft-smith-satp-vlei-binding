@@ -83,6 +83,7 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  Architecture
+     3.1.  Example SATP Credential Payload
    4.  Identities
    5.  Identity Binding
    6.  Binding Verification
@@ -108,6 +109,72 @@ Table of Contents
    capitals, as shown here.
 
 3.  Architecture
+
+   The SATP core protocol [I-D.ietf-satp-core] defines several
+   extensible protocol fields that may contain payload values not
+   defined by SATP core.  To facilitate interoperability these fields
+   SHOULD contain a media-type or content-format wrapper.  The following
+   CDDL defines the wrapper and application to SATP fields.
+
+   ; Reusable wrapper type
+   msg-wrapper = {
+     &(MTorCF) 0 => media-type-or-content-format,
+     &(payload) 1 => bstr / tstr
+   }
+
+   media-type-or-content-format = tstr / int
+
+   ; SATP credential-related fields
+   verifiedOriginatorEntityId     = msg-wrapper / bstr / tstr
+   verifiedRecipientEntityId      = msg-wrapper / bstr / tstr
+   verifiedIntermediaryEntityIds  = [ + (msg-wrapper / bstr / tstr) ]
+   verifiedTransactionId          = msg-wrapper / bstr / tstr
+   verifiedCredential             = msg-wrapper / bstr / tstr
+   verifiedPresentation           = msg-wrapper / bstr / tstr
+   verifiedEvidence               = msg-wrapper / bstr / tstr
+   verifiedSignature              = msg-wrapper / bstr / tstr
+
+3.1.  Example SATP Credential Payload
+
+   The following JSON document complies with the SATP CDDL schema using
+   synthetic CESR payloads:
+
+   {
+     "verifiedOriginatorEntityId": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
+     },
+     "verifiedRecipientEntityId": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "U0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
+     },
+     "verifiedIntermediaryEntityIds": [
+       {
+         "0": "application/cesr+json;profile=vlei;base64=true",
+         "1": "QUNEQzFBQUMwRkIuLi5JTkRFUk1FRElBUlkuLi5TQUlEMEFBQS4uLg=="
+       }
+     ],
+     "verifiedTransactionId": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "VFJBTlNBQ1RJT04uLi5TQUlEMUZCLi4uU0FURDAxQUNEMUZCLi4u"
+     },
+     "verifiedCredential": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "VkxFSUNSRURFTlRJQUwuLi5BQ0RDMUFBRi4uLlNBSUQwQUFBLi4u"
+     },
+     "verifiedPresentation": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "UFJFU0VOVEFUSU9OLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
+     },
+     "verifiedEvidence": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "RVZJREVOR0UuLi5BQ0RDMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
+     },
+     "verifiedSignature": {
+       "0": "application/cesr+json;profile=vlei;base64=true",
+       "1": "U0lHTkFUVVJFLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
+     }
+   }
 
 4.  Identities
 
