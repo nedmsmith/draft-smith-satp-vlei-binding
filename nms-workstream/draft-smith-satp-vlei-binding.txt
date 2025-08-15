@@ -177,7 +177,7 @@ Table of Contents
    |commitAuthorizingCredential                                     |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
    |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
    +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |originatorPubkey, beneficiaryPubkey,                            |                                              |application/cose; cose-type="cose-key", application/jwk+json               |
+   |originatorPubkey, beneficiaryPubkey,                            |N/A                                           |application/cose; cose-type="cose-key", application/jwk+json               |
    |senderGatewaySignaturePublicKey,                                |                                              |                                                                           |
    |receiverGatewaySignaturePublicKey,                              |                                              |                                                                           |
    |senderGatewayDeviceIdentityPubkey,                              |                                              |                                                                           |
