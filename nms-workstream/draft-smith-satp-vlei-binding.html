@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Smith</td>
-<td class="center">Expires 15 February 2026</td>
+<td class="center">Expires 16 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-smith-satp-vlei-binding-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-14" class="published">14 August 2025</time>
+<time datetime="2025-08-15" class="published">15 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-15">15 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-16">16 February 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1234,8 +1234,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
 <p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines several extensible protocol fields that may contain payload values not defined by SATP core.
-To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media-type or content-format wrapper.
-The following CDDL defines the wrapper and application to SATP fields.<a href="#section-3-1" class="pilcrow">¶</a></p>
+To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media-type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> or content-format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> wrapper.
+The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3-2">
 <pre>
 ; Reusable wrapper type
@@ -1529,9 +1529,21 @@ verifiedSignature              = msg-wrapper / bstr / tstr
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7252">[RFC7252]</dt>
+        <dd>
+<span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8610">[RFC8610]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD91">[STD91]</dt>
+      <dd>
+<span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
