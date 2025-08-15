@@ -177,13 +177,6 @@ The SATP core protocol {{-satp-core}} defines several extensible protocol fields
 To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-toip-cesr}} objects in JSON format. See {{sec-iana}}.
 
-## SATP Message Wrapper Schema
-The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
-
-~~~ cddl
-{::include cddl/msg-wrapper.cddl}
-~~~
-
 ## SATP Messages Containing vLEI Objects
 
 The following SATP messages are extended with vLEI contents:
@@ -202,6 +195,13 @@ The following SATP messages are extended with vLEI contents:
 | `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
 | `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`,`lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | | application/cose; cose-type="cose-key", application/jwk+json |
 {: #tbl-satp-msgs title="SATP Messages Containing vLEI Objects"}
+
+## SATP Message Wrapper Schema
+The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
+
+~~~ cddl
+{::include cddl/msg-wrapper.cddl}
+~~~
 
 ## Example SATP Credential Payload
 
