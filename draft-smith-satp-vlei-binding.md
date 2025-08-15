@@ -32,6 +32,11 @@ author:
 normative:
   REQ-LEVEL: RFC2119
   I-D.ietf-satp-core: satp-core
+  STD91:
+    -: media-type
+    =: RFC6838
+  RFC7252: content-format
+  RFC8610: cddl
   ISO17442-3:
     -: iso-vlei
     title: >
@@ -162,8 +167,8 @@ TODO Introduction
 # Architecture {#sec-arch}
 
 The SATP core protocol {{-satp-core}} defines several extensible protocol fields that may contain payload values not defined by SATP core.
-To facilitate interoperability these fields SHOULD contain a media-type or content-format wrapper.
-The following CDDL defines the wrapper and application to SATP fields.
+To facilitate interoperability these fields SHOULD contain a media-type {{-media-type}} or content-format {{-content-format}} wrapper.
+The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 
 ~~~ cddl
 {::include cddl/msg-wrapper.cddl}
