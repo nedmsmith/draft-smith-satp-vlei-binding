@@ -193,7 +193,7 @@ The following SATP messages are extended with vLEI contents:
 | `commitAuthorizingCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
 | `commitAuthorizingCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
 | `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`,`lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | | application/cose; cose-type="cose-key", application/jwk+json |
+| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`,`lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | N/A | application/cose; cose-type="cose-key", application/jwk+json |
 {: #tbl-satp-msgs title="SATP Messages Containing vLEI Objects"}
 
 ## SATP Message Wrapper Schema
