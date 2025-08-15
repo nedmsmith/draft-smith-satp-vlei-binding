@@ -14,7 +14,8 @@ workgroup: "Secure Asset Transfer Protocol"
 keyword:
  - verifiable identities
  - internet draft
-
+pi:
+  css: css/overrides.css
 venue:
   group: "Secure Asset Transfer Protocol"
   type: "Working Group"
@@ -50,6 +51,7 @@ normative:
     target: https://www.iso.org/standard/85628.html
 
 informative:
+  I-D.ietf-satp-architecture: satp-arch
   ISO17442-1:
     -: iso-lei
     title: >
@@ -65,35 +67,35 @@ informative:
   KERI-Spec:
     -: toip-keri
     title: >
-      Key Event Receipt Infrastructure (KERI) Specification
+      Key Event Receipt Infrastructure (KERI) Specification, v0.9, Draft
     author:
       org: Trust Over IP Foundation
     date: 2023
     seriesinfo:
       TOIP: TSWG-KERI-2023
-    target: https://github.com/trustoverip/tswg-keri-specification
+    target: https://trustoverip.github.io/tswg-keri-specification/
 
   ACDC-Spec:
     -: toip-acdc
     title: >
-      Authentic Chained Data Containers (ACDC) Specification
+      Authentic Chained Data Containers (ACDC) Specification, v0.9, Draft
     author:
       org: Trust Over IP Foundation
     date: 2023
     seriesinfo:
       TOIP: TSWG-ACDC-2023
-    target: https://github.com/trustoverip/tswg-acdc-specification
+    target: https://trustoverip.github.io/tswg-acdc-specification
 
   CESR-Spec:
     -: toip-cesr
     title: >
-      Composable Event Streaming Representation (CESR) Proof Format Specification
+      Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft
     author:
       org: Trust Over IP Foundation
     date: 2023
     seriesinfo:
       TOIP: TSWG-CESR-2023
-    target: https://github.com/trustoverip/tswg-cesr-proof-specification
+    target: https://trustoverip.github.io/tswg-cesr-specification/
 
   GLEIF-vLEI-EGF:
     -: gleif-fwk
@@ -157,7 +159,12 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
 
 # Introduction {#sec-intro}
 
-TODO Introduction
+The SATP architecute {{-satp-arch}} defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
+The SATP core protocol {{-satp-core}} is a protocol for exchanging digital assets that ensures the state of the asset is preserved across inter-domain transfers. It is an extensible protocol where fields containing identity and payload values that are not defined by SATP core may be defined by companion specifications.
+This specification defines a SATP core protocol binding for Verifiable Legal Entity Identifiers (vLEI) {{-iso-vlei}} used to identify SATP gateways and the organizations that operate them.
+In some use cases, the assets being transferred have legal considerations such that officers of the organization are expected to authorize digital asset transfers.
+This specification details the various vLEI credentials needed and how to integrate them with SATP core messages.
+SATP core message binding anticipates use of a message wrapper that uses media type {{-media-type}} and content format {{-content-format}} identifiers to facilitate interoperability with vLEI and other credential types.
 
 
 # Conventions and Definitions {#sec-conv}
@@ -166,13 +173,35 @@ TODO Introduction
 
 # Architecture {#sec-arch}
 
-The SATP core protocol {{-satp-core}} defines several extensible protocol fields that may contain payload values not defined by SATP core.
-To facilitate interoperability these fields SHOULD contain a media-type {{-media-type}} or content-format {{-content-format}} wrapper.
+The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
+To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
+This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-toip-cesr}} objects in JSON format. See {{sec-iana}}.
+
+## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 
 ~~~ cddl
 {::include cddl/msg-wrapper.cddl}
 ~~~
+
+## SATP Messages Containing vLEI Objects
+
+The following SATP messages are extended with vLEI contents:
+
+| SATP Message | vLEI object | Media type |
+| `verifiedOriginatorEntityId`, `verifiedBeneficiaryEntityId`, , `senderGatewayOwnerId`, `receiverGatewayOwnerId` | `LegalEntityIdentityvLEICredential`   | application/acdc+json;profile=\"urn:vlei:LegalEntityIdentityvLEICredential\" |
+| `senderGatewayId`, `recipientGatewayId`, `senderGatewayNetworkId`, `recipientGatewayNetworkId` | LegalEntityEngagementContextRolevLEICredential | application/acdc+json;profile=\"urn:vlei:LegalEntityEngagementContextRolevLEICredential\" |
+| `assetControllerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `assetControllerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `assetControllerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `lockEvidenceIssuerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `lockEvidenceIssuerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `lockEvidenceIssuerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `commitAuthorizingCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `commitAuthorizingCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`,`lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | | application/cose; cose-type="cose-key", application/jwk+json |
+{: #tbl-satp-msgs title="SATP Messages Containing vLEI Objects"}
 
 ## Example SATP Credential Payload
 

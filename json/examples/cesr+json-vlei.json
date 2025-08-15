@@ -3,39 +3,9 @@
     "0": "application/cesr+json;profile=vlei",
     "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
   },
-  "verifiedRecipientEntityId": {
+  "verifiedBeneficiaryEntityId": {
     "0": "application/cesr+json;profile=vlei;base64=true",
     "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedIntermediaryEntityIds": [
-    {
-      "0": "application/cesr+json;profile=vlei",
-      "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
-    },
-    {
-      "0": "application/cesr+json;profile=vlei;base64=true",
-      "1": "U0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
-    }
-  ],
-  "verifiedTransactionId": {
-    "0": "application/cesr+json",
-    "1": "TRNSACT10JSON0000EDIG0AAA...SAID0AAA...txn:did:keri:..."
-  },
-  "verifiedCredential": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "VkxFSUNSRURFTlRJQUwuLi5BQ0RDMUFBRi4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedPresentation": {
-    "0": "application/cesr+json",
-    "1": "PRES10JSON0000EDIG0AAA...SAID0AAA...vp:did:keri:..."
-  },
-  "verifiedEvidence": {
-    "0": "application/cesr+json;profile=vlei",
-    "1": "EVIDENCE10JSON0000EDIG0AAA...SAID0AAA...ev:did:keri:..."
-  },
-  "verifiedSignature": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "U0lHTkFUVVJFLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
   }
 }
 
