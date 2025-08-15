@@ -1164,10 +1164,10 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-satp-message-wrapper-schema" class="internal xref">SATP Message Wrapper Schema</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-satp-messages-containing-vl" class="internal xref">SATP Messages Containing vLEI Objects</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-satp-messages-containing-vl" class="internal xref">SATP Messages Containing vLEI Objects</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-satp-message-wrapper-schema" class="internal xref">SATP Message Wrapper Schema</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-example-satp-credential-pay" class="internal xref">Example SATP Credential Payload</a></p>
@@ -1249,13 +1249,142 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines several extensible protocol fields that contain identity and other values not defined by SATP core.
 To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> or content format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) <span>[<a href="#CESR-Spec" class="cite xref">CESR-Spec</a>]</span> objects in JSON format. See <a href="#sec-iana" class="auto internal xref">Section 7</a>.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div id="satp-message-wrapper-schema">
+<div id="satp-messages-containing-vlei-objects">
 <section id="section-3.1">
-        <h3 id="name-satp-message-wrapper-schema">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-satp-message-wrapper-schema" class="section-name selfRef">SATP Message Wrapper Schema</a>
+        <h3 id="name-satp-messages-containing-vl">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-satp-messages-containing-vl" class="section-name selfRef">SATP Messages Containing vLEI Objects</a>
         </h3>
-<p id="section-3.1-1">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-cddl sourcecode" id="section-3.1-2">
+<p id="section-3.1-1">The following SATP messages are extended with vLEI contents:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<span id="name-satp-messages-containing-vle"></span><div id="tbl-satp-msgs">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-satp-messages-containing-vle" class="selfRef">SATP Messages Containing vLEI Objects</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">SATP Message</th>
+              <th class="text-left" rowspan="1" colspan="1">vLEI object</th>
+              <th class="text-left" rowspan="1" colspan="1">Media type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>verifiedOriginatorEntityId</code>, <code>verifiedBeneficiaryEntityId</code>, , <code>senderGatewayOwnerId</code>, <code>receiverGatewayOwnerId</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>senderGatewayId</code>, <code>recipientGatewayId</code>, <code>senderGatewayNetworkId</code>, <code>recipientGatewayNetworkId</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">LegalEntityEngagementContextRolevLEICredential</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>originatorPubkey</code>, <code>beneficiaryPubkey</code>, <code>senderGatewaySignaturePublicKey</code>, <code>receiverGatewaySignaturePublicKey</code>, <code>senderGatewayDeviceIdentityPubkey</code>, <code>receiverGatewayDeviceIdentityPubkey</code>,<code>lockEvidenceVerificationKey</code>, <code>commitVerificationKey</code>, <code>postCommitSecureChannelKey</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">application/cose; cose-type="cose-key", application/jwk+json</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
+<div id="satp-message-wrapper-schema">
+<section id="section-3.2">
+        <h3 id="name-satp-message-wrapper-schema">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-satp-message-wrapper-schema" class="section-name selfRef">SATP Message Wrapper Schema</a>
+        </h3>
+<p id="section-3.2-1">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-cddl sourcecode" id="section-3.2-2">
 <pre>
 ; =====================================================================
 ; --- SATP message ---
@@ -1386,136 +1515,7 @@ one-of-cose-or-jwk = [
 ]
 
 
-</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="satp-messages-containing-vlei-objects">
-<section id="section-3.2">
-        <h3 id="name-satp-messages-containing-vl">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-satp-messages-containing-vl" class="section-name selfRef">SATP Messages Containing vLEI Objects</a>
-        </h3>
-<p id="section-3.2-1">The following SATP messages are extended with vLEI contents:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<span id="name-satp-messages-containing-vle"></span><div id="tbl-satp-msgs">
-<table class="center" id="table-1">
-          <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-satp-messages-containing-vle" class="selfRef">SATP Messages Containing vLEI Objects</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">SATP Message</th>
-              <th class="text-left" rowspan="1" colspan="1">vLEI object</th>
-              <th class="text-left" rowspan="1" colspan="1">Media type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>verifiedOriginatorEntityId</code>, <code>verifiedBeneficiaryEntityId</code>, , <code>senderGatewayOwnerId</code>, <code>receiverGatewayOwnerId</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityIdentityvLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>senderGatewayId</code>, <code>recipientGatewayId</code>, <code>senderGatewayNetworkId</code>, <code>recipientGatewayNetworkId</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">LegalEntityEngagementContextRolevLEICredential</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>assetControllerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityIdentityvLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>assetControllerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>OfficialOrganizationalRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>assetControllerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityEngagementContextRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>lockEvidenceIssuerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityIdentityvLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>lockEvidenceIssuerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>OfficialOrganizationalRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>lockEvidenceIssuerCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityEngagementContextRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>commitAuthorizingCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityIdentityvLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>commitAuthorizingCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>OfficialOrganizationalRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>commitAuthorizingCredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>LegalEntityEngagementContextRolevLEICredential</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">
-                <code>originatorPubkey</code>, <code>beneficiaryPubkey</code>, <code>senderGatewaySignaturePublicKey</code>, <code>receiverGatewaySignaturePublicKey</code>, <code>senderGatewayDeviceIdentityPubkey</code>, <code>receiverGatewayDeviceIdentityPubkey</code>,<code>lockEvidenceVerificationKey</code>, <code>commitVerificationKey</code>, <code>postCommitSecureChannelKey</code>
-</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">application/cose; cose-type="cose-key", application/jwk+json</td>
-            </tr>
-          </tbody>
-        </table>
+</pre><a href="#section-3.2-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>

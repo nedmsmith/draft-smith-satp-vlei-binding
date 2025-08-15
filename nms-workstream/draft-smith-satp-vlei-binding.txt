@@ -83,8 +83,8 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  Architecture
-     3.1.  SATP Message Wrapper Schema
-     3.2.  SATP Messages Containing vLEI Objects
+     3.1.  SATP Messages Containing vLEI Objects
+     3.2.  SATP Message Wrapper Schema
      3.3.  Example SATP Credential Payload
    4.  Identities
      4.1.  Identity Binding
@@ -140,7 +140,54 @@ Table of Contents
    Composable Event Streaming Representation (CESR) [CESR-Spec] objects
    in JSON format.  See Section 7.
 
-3.1.  SATP Message Wrapper Schema
+3.1.  SATP Messages Containing vLEI Objects
+
+   The following SATP messages are extended with vLEI contents:
+
+   +================================================================+==============================================+===========================================================================+
+   |SATP Message                                                    |vLEI object                                   |Media type                                                                 |
+   +================================================================+==============================================+===========================================================================+
+   |verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, ,      |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   |senderGatewayOwnerId, receiverGatewayOwnerId                    |                                              |                                                                           |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |senderGatewayId, recipientGatewayId, senderGatewayNetworkId,    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |recipientGatewayNetworkId                                       |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |originatorPubkey, beneficiaryPubkey,                            |                                              |application/cose; cose-type="cose-key", application/jwk+json               |
+   |senderGatewaySignaturePublicKey,                                |                                              |                                                                           |
+   |receiverGatewaySignaturePublicKey,                              |                                              |                                                                           |
+   |senderGatewayDeviceIdentityPubkey,                              |                                              |                                                                           |
+   |receiverGatewayDeviceIdentityPubkey,lockEvidenceVerificationKey,|                                              |                                                                           |
+   |commitVerificationKey, postCommitSecureChannelKey               |                                              |                                                                           |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+
+               Table 1: SATP Messages Containing vLEI Objects
+
+3.2.  SATP Message Wrapper Schema
 
    The following CDDL [RFC8610] defines the wrapper and application to
    SATP fields.
@@ -272,53 +319,6 @@ Table of Contents
        &(payload) 1: tstr
      }
    ]
-
-3.2.  SATP Messages Containing vLEI Objects
-
-   The following SATP messages are extended with vLEI contents:
-
-   +================================================================+==============================================+===========================================================================+
-   |SATP Message                                                    |vLEI object                                   |Media type                                                                 |
-   +================================================================+==============================================+===========================================================================+
-   |verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, ,      |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-   |senderGatewayOwnerId, receiverGatewayOwnerId                    |                                              |                                                                           |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |senderGatewayId, recipientGatewayId, senderGatewayNetworkId,    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
-   |recipientGatewayNetworkId                                       |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |assetControllerCredential                                       |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |assetControllerCredential                                       |OfficialOrganizationalRolevLEICredential      |application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |assetControllerCredential                                       |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |lockEvidenceIssuerCredential                                    |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |lockEvidenceIssuerCredential                                    |OfficialOrganizationalRolevLEICredential      |application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |lockEvidenceIssuerCredential                                    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |commitAuthorizingCredential                                     |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |commitAuthorizingCredential                                     |OfficialOrganizationalRolevLEICredential      |application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |commitAuthorizingCredential                                     |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
-   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-   |originatorPubkey, beneficiaryPubkey,                            |                                              |application/cose; cose-type="cose-key", application/jwk+json               |
-   |senderGatewaySignaturePublicKey,                                |                                              |                                                                           |
-   |receiverGatewaySignaturePublicKey,                              |                                              |                                                                           |
-   |senderGatewayDeviceIdentityPubkey,                              |                                              |                                                                           |
-   |receiverGatewayDeviceIdentityPubkey,lockEvidenceVerificationKey,|                                              |                                                                           |
-   |commitVerificationKey, postCommitSecureChannelKey               |                                              |                                                                           |
-   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
-
-               Table 1: SATP Messages Containing vLEI Objects
 
 3.3.  Example SATP Credential Payload
 
