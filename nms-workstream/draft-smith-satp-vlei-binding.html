@@ -1164,7 +1164,13 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-architecture" class="internal xref">Architecture</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-example-satp-credential-pay" class="internal xref">Example SATP Credential Payload</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-satp-message-wrapper-schema" class="internal xref">SATP Message Wrapper Schema</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-satp-messages-containing-vl" class="internal xref">SATP Messages Containing vLEI Objects</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-example-satp-credential-pay" class="internal xref">Example SATP Credential Payload</a></p>
 </li>
             </ul>
 </li>
@@ -1216,7 +1222,12 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The SATP architecute <span>[<a href="#I-D.ietf-satp-architecture" class="cite xref">I-D.ietf-satp-architecture</a>]</span> defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
+The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> is a protocol for exchanging digital assets that ensures the state of the asset is preserved across inter-domain transfers. It is an extensible protocol where fields containing identity and payload values that are not defined by SATP core may be defined by companion specifications.
+This specification defines a SATP core protocol binding for Verifiable Legal Entity Identifiers (vLEI) <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span> used to identify SATP gateways and the organizations that operate them.
+In some use cases, the assets being transferred have legal considerations such that officers of the organization are expected to authorize digital asset transfers.
+This specification details the various vLEI credentials needed and how to integrate them with SATP core messages.
+SATP core message binding anticipates use of a message wrapper that uses media type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> and content format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> identifiers to facilitate interoperability with vLEI and other credential types.<a href="#section-1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-conv">
@@ -1235,80 +1246,299 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-architecture">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-architecture" class="section-name selfRef">Architecture</a>
       </h2>
-<p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines several extensible protocol fields that may contain payload values not defined by SATP core.
-To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media-type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> or content-format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> wrapper.
-The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-3-2">
+<p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines several extensible protocol fields that contain identity and other values not defined by SATP core.
+To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> or content format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> wrapper.
+This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) <span>[<a href="#CESR-Spec" class="cite xref">CESR-Spec</a>]</span> objects in JSON format. See <a href="#sec-iana" class="auto internal xref">Section 7</a>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="satp-message-wrapper-schema">
+<section id="section-3.1">
+        <h3 id="name-satp-message-wrapper-schema">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-satp-message-wrapper-schema" class="section-name selfRef">SATP Message Wrapper Schema</a>
+        </h3>
+<p id="section-3.1-1">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-cddl sourcecode" id="section-3.1-2">
 <pre>
-; Reusable wrapper type
-msg-wrapper = {
-  &amp;(MTorCF) 0 =&gt; media-type-or-content-format,
-  &amp;(payload) 1 =&gt; bstr / tstr
+; =====================================================================
+; --- SATP message ---
+; =====================================================================
+
+satp-message = {
+  ; --- Stage 1 ---
+  ? verifiedOriginatorEntityId:          wrapped-acdc-vlei-lei-id,
+  ? verifiedBeneficiaryEntityId:         wrapped-acdc-vlei-lei-id,
+  ? senderGatewayOwnerId:                wrapped-acdc-vlei-lei-id,
+  ? receiverGatewayOwnerId:              wrapped-acdc-vlei-lei-id,
+
+  ? senderGatewayId:                     wrapped-acdc-vlei-ecr,
+  ? recipientGatewayId:                  wrapped-acdc-vlei-ecr,
+  ? senderGatewayNetworkId:              wrapped-acdc-vlei-ecr,
+  ? recipientGatewayNetworkId:           wrapped-acdc-vlei-ecr,
+
+  ? originatorPubkey:                    wrapped-key,
+  ? beneficiaryPubkey:                   wrapped-key,
+  ? senderGatewaySignaturePublicKey:     wrapped-key,
+  ? receiverGatewaySignaturePublicKey:   wrapped-key,
+  ? senderGatewayDeviceIdentityPubkey:   wrapped-key,
+  ? receiverGatewayDeviceIdentityPubkey: wrapped-key,
+
+  ; --- Stage 2 ---
+  ? assetControllerCredential:
+      wrapped-acdc-vlei-lei-id /
+      wrapped-acdc-vlei-oor /
+      wrapped-acdc-vlei-ecr,
+  ? lockEvidenceIssuerCredential:
+      wrapped-acdc-vlei-lei-id /
+      wrapped-acdc-vlei-oor /
+      wrapped-acdc-vlei-ecr,
+  ? lockEvidenceVerificationKey:         wrapped-key,
+
+  ; --- Stage 3 ---
+  ? commitAuthorizingCredential:
+      wrapped-acdc-vlei-lei-id /
+      wrapped-acdc-vlei-oor /
+      wrapped-acdc-vlei-ecr,
+  ? commitVerificationKey:               wrapped-key,
+  ? postCommitSecureChannelKey:          wrapped-key
 }
 
-media-type-or-content-format = tstr / int
+; =====================================================================
+; --- Common building blocks ---
+; =====================================================================
 
-; SATP credential-related fields
-verifiedOriginatorEntityId     = msg-wrapper / bstr / tstr
-verifiedRecipientEntityId      = msg-wrapper / bstr / tstr
-verifiedIntermediaryEntityIds  = [ + (msg-wrapper / bstr / tstr) ]
-verifiedTransactionId          = msg-wrapper / bstr / tstr
-verifiedCredential             = msg-wrapper / bstr / tstr
-verifiedPresentation           = msg-wrapper / bstr / tstr
-verifiedEvidence               = msg-wrapper / bstr / tstr
-verifiedSignature              = msg-wrapper / bstr / tstr
-</pre><a href="#section-3-2" class="pilcrow">¶</a>
+; Allowed serialization formats for all ACDC vLEI wrappers
+acdc-serializations =
+  "(json|cbor|mgpk|cesr)"
+
+; Optional extra parameters (quoted or unquoted) after profile
+acdc-param-tail =
+  "(?:;[A-Za-z0-9.-]+=(?:\\\"[^\\\"]*\\\"|[^;]+))*$"
+
+; Profile name fragments
+acdc-prof-lei = "LegalEntityvLEICredential"
+acdc-prof-oor =
+  "LegalEntityOfficialOrganizationalRolevLEICredential"
+acdc-prof-ecr =
+  "LegalEntityEngagementContextRolevLEICredential"
+
+; =====================================================================
+; --- Profile‑specific content types ---
+; =====================================================================
+
+acdc-vlei-lei-content =
+  tstr .regexp
+    "^application/acdc\\+" // acdc-serializations //
+    ";profile=\\\"urn:vlei:" // acdc-prof-lei // "\\\"" //
+    acdc-param-tail
+  / uint
+
+acdc-vlei-oor-content =
+  tstr .regexp
+    "^application/acdc\\+" // acdc-serializations //
+    ";profile=\\\"urn:vlei:" // acdc-prof-oor // "\\\"" //
+    acdc-param-tail
+  / uint
+
+acdc-vlei-ecr-content =
+  tstr .regexp
+    "^application/acdc\\+" // acdc-serializations //
+    ";profile=\\\"urn:vlei:" // acdc-prof-ecr // "\\\"" //
+    acdc-param-tail
+  / uint
+
+; =====================================================================
+; --- Wrapped ACDC vLEI wrapper definitions ---
+; =====================================================================
+
+wrapped-acdc-vlei-lei-id = {
+  &amp;(content) 0: acdc-vlei-lei-content,
+  &amp;(payload) 1: bytes / tstr
+}
+
+wrapped-acdc-vlei-oor = {
+  &amp;(content) 0: acdc-vlei-oor-content,
+  &amp;(payload) 1: bytes
+}
+
+wrapped-acdc-vlei-ecr = {
+  &amp;(content) 0: acdc-vlei-ecr-content,
+  &amp;(payload) 1: bytes
+}
+
+; =====================================================================
+; --- Wrapped key definitions ---
+; =====================================================================
+
+wrapped-key = one-of-cose-or-jwk
+
+one-of-cose-or-jwk = [
+  {
+    &amp;(content) 0:
+      tstr .regexp "application/cose;cose-type=\\\"cose-key\\\"" /
+      uint,
+    &amp;(payload) 1: bytes
+  }
+  /
+  {
+    &amp;(content) 0:
+      tstr .regexp "application/jwk\\+json" /
+      uint,
+    &amp;(payload) 1: tstr
+  }
+]
+
+
+</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="satp-messages-containing-vlei-objects">
+<section id="section-3.2">
+        <h3 id="name-satp-messages-containing-vl">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-satp-messages-containing-vl" class="section-name selfRef">SATP Messages Containing vLEI Objects</a>
+        </h3>
+<p id="section-3.2-1">The following SATP messages are extended with vLEI contents:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<span id="name-satp-messages-containing-vle"></span><div id="tbl-satp-msgs">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-satp-messages-containing-vle" class="selfRef">SATP Messages Containing vLEI Objects</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">SATP Message</th>
+              <th class="text-left" rowspan="1" colspan="1">vLEI object</th>
+              <th class="text-left" rowspan="1" colspan="1">Media type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>verifiedOriginatorEntityId</code>, <code>verifiedBeneficiaryEntityId</code>, , <code>senderGatewayOwnerId</code>, <code>receiverGatewayOwnerId</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>senderGatewayId</code>, <code>recipientGatewayId</code>, <code>senderGatewayNetworkId</code>, <code>recipientGatewayNetworkId</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">LegalEntityEngagementContextRolevLEICredential</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>assetControllerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>lockEvidenceIssuerCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityIdentityvLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>OfficialOrganizationalRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>commitAuthorizingCredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>LegalEntityEngagementContextRolevLEICredential</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>originatorPubkey</code>, <code>beneficiaryPubkey</code>, <code>senderGatewaySignaturePublicKey</code>, <code>receiverGatewaySignaturePublicKey</code>, <code>senderGatewayDeviceIdentityPubkey</code>, <code>receiverGatewayDeviceIdentityPubkey</code>,<code>lockEvidenceVerificationKey</code>, <code>commitVerificationKey</code>, <code>postCommitSecureChannelKey</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">application/cose; cose-type="cose-key", application/jwk+json</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
 </div>
 <div id="example-satp-credential-payload">
-<section id="section-3.1">
+<section id="section-3.3">
         <h3 id="name-example-satp-credential-pay">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-example-satp-credential-pay" class="section-name selfRef">Example SATP Credential Payload</a>
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-example-satp-credential-pay" class="section-name selfRef">Example SATP Credential Payload</a>
         </h3>
-<p id="section-3.1-1">The following JSON document complies with the SATP CDDL schema using synthetic CESR payloads:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-3.1-2">
+<p id="section-3.3-1">The following JSON document complies with the SATP CDDL schema using synthetic CESR payloads:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-3.3-2">
 <pre>
 {
   "verifiedOriginatorEntityId": {
     "0": "application/cesr+json;profile=vlei",
     "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
   },
-  "verifiedRecipientEntityId": {
+  "verifiedBeneficiaryEntityId": {
     "0": "application/cesr+json;profile=vlei;base64=true",
     "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedIntermediaryEntityIds": [
-    {
-      "0": "application/cesr+json;profile=vlei",
-      "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
-    },
-    {
-      "0": "application/cesr+json;profile=vlei;base64=true",
-      "1": "U0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
-    }
-  ],
-  "verifiedTransactionId": {
-    "0": "application/cesr+json",
-    "1": "TRNSACT10JSON0000EDIG0AAA...SAID0AAA...txn:did:keri:..."
-  },
-  "verifiedCredential": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "VkxFSUNSRURFTlRJQUwuLi5BQ0RDMUFBRi4uLlNBSUQwQUFBLi4u"
-  },
-  "verifiedPresentation": {
-    "0": "application/cesr+json",
-    "1": "PRES10JSON0000EDIG0AAA...SAID0AAA...vp:did:keri:..."
-  },
-  "verifiedEvidence": {
-    "0": "application/cesr+json;profile=vlei",
-    "1": "EVIDENCE10JSON0000EDIG0AAA...SAID0AAA...ev:did:keri:..."
-  },
-  "verifiedSignature": {
-    "0": "application/cesr+json;profile=vlei;base64=true",
-    "1": "U0lHTkFUVVJFLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
   }
 }
 
-</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1515,37 +1745,37 @@ verifiedSignature              = msg-wrapper / bstr / tstr
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.ietf-satp-core">[I-D.ietf-satp-core]</dt>
-        <dd>
-<span class="refAuthor">Hargreaves, M.</span>, <span class="refAuthor">Hardjono, T.</span>, <span class="refAuthor">Belchior, R.</span>, <span class="refAuthor">Ramakrishna, V.</span>, and <span class="refAuthor">A. Chiriac</span>, <span class="refTitle">"Secure Asset Transfer Protocol (SATP) Core"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-satp-core-11</span>, <time datetime="2025-08-07" class="refDate">7 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11">https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="ISO17442-3">[ISO17442-3]</dt>
-        <dd>
-<span class="refAuthor">International Organization for Standardization</span>, <span class="refTitle">"Financial services — Legal entity identifier (LEI) — Part 3: Verifiable LEIs (vLEIs)"</span>, <span class="seriesInfo">ISO 17442-3:2024</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://www.iso.org/standard/85628.html">https://www.iso.org/standard/85628.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="REQ-LEVEL">[REQ-LEVEL]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC2119">[RFC2119]</dt>
+<dt id="I-D.ietf-satp-core">[I-D.ietf-satp-core]</dt>
         <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<span class="refAuthor">Hargreaves, M.</span>, <span class="refAuthor">Hardjono, T.</span>, <span class="refAuthor">Belchior, R.</span>, <span class="refAuthor">Ramakrishna, V.</span>, and <span class="refAuthor">A. Chiriac</span>, <span class="refTitle">"Secure Asset Transfer Protocol (SATP) Core"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-satp-core-11</span>, <time datetime="2025-08-07" class="refDate">7 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11">https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD91">[STD91]</dt>
+        <dd>
+<span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7252">[RFC7252]</dt>
         <dd>
 <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
-        <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8610">[RFC8610]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="STD91">[STD91]</dt>
+<dt id="ISO17442-3">[ISO17442-3]</dt>
+        <dd>
+<span class="refAuthor">International Organization for Standardization</span>, <span class="refTitle">"Financial services — Legal entity identifier (LEI) — Part 3: Verifiable LEIs (vLEIs)"</span>, <span class="seriesInfo">ISO 17442-3:2024</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://www.iso.org/standard/85628.html">https://www.iso.org/standard/85628.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
       <dd>
-<span class="refAuthor">Freed, N.</span>, <span class="refAuthor">Klensin, J.</span>, and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6838">https://www.rfc-editor.org/rfc/rfc6838</a>&gt;</span>. </dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1556,13 +1786,25 @@ verifiedSignature              = msg-wrapper / bstr / tstr
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-satp-architecture">[I-D.ietf-satp-architecture]</dt>
+        <dd>
+<span class="refAuthor">Hardjono, T.</span>, <span class="refAuthor">Hargreaves, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">V. Ramakrishna</span>, <span class="refTitle">"Secure Asset Transfer (SAT) Interoperability Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-satp-architecture-08</span>, <time datetime="2025-07-31" class="refDate">31 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-satp-architecture-08">https://datatracker.ietf.org/doc/html/draft-ietf-satp-architecture-08</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ISO17442-1">[ISO17442-1]</dt>
+        <dd>
+<span class="refAuthor">International Organization for Standardization</span>, <span class="refTitle">"Financial services — Legal entity identifier (LEI) — Part 1: Assignment"</span>, <span class="seriesInfo">ISO 17442-1:2020</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://www.iso.org/standard/59771.html">https://www.iso.org/standard/59771.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KERI-Spec">[KERI-Spec]</dt>
+        <dd>
+<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Key Event Receipt Infrastructure (KERI) Specification, v0.9, Draft"</span>, <span class="seriesInfo">TOIP TSWG-KERI-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://trustoverip.github.io/tswg-keri-specification/">https://trustoverip.github.io/tswg-keri-specification/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="ACDC-Spec">[ACDC-Spec]</dt>
         <dd>
-<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Authentic Chained Data Containers (ACDC) Specification"</span>, <span class="seriesInfo">TOIP TSWG-ACDC-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://github.com/trustoverip/tswg-acdc-specification">https://github.com/trustoverip/tswg-acdc-specification</a>&gt;</span>. </dd>
+<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Authentic Chained Data Containers (ACDC) Specification, v0.9, Draft"</span>, <span class="seriesInfo">TOIP TSWG-ACDC-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://trustoverip.github.io/tswg-acdc-specification">https://trustoverip.github.io/tswg-acdc-specification</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CESR-Spec">[CESR-Spec]</dt>
         <dd>
-<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Composable Event Streaming Representation (CESR) Proof Format Specification"</span>, <span class="seriesInfo">TOIP TSWG-CESR-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://github.com/trustoverip/tswg-cesr-proof-specification">https://github.com/trustoverip/tswg-cesr-proof-specification</a>&gt;</span>. </dd>
+<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft"</span>, <span class="seriesInfo">TOIP TSWG-CESR-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://trustoverip.github.io/tswg-cesr-specification/">https://trustoverip.github.io/tswg-cesr-specification/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="GLEIF-vLEI-EGF">[GLEIF-vLEI-EGF]</dt>
         <dd>
@@ -1577,16 +1819,8 @@ verifiedSignature              = msg-wrapper / bstr / tstr
 <span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 2: vLEI Credentials"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part2-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="GLEIF-vLEI-TechReq-Part3">[GLEIF-vLEI-TechReq-Part3]</dt>
-        <dd>
-<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 3: vLEI Credential Schema Registry"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part3-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="ISO17442-1">[ISO17442-1]</dt>
-        <dd>
-<span class="refAuthor">International Organization for Standardization</span>, <span class="refTitle">"Financial services — Legal entity identifier (LEI) — Part 1: Assignment"</span>, <span class="seriesInfo">ISO 17442-1:2020</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://www.iso.org/standard/59771.html">https://www.iso.org/standard/59771.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="KERI-Spec">[KERI-Spec]</dt>
       <dd>
-<span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Key Event Receipt Infrastructure (KERI) Specification"</span>, <span class="seriesInfo">TOIP TSWG-KERI-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://github.com/trustoverip/tswg-keri-specification">https://github.com/trustoverip/tswg-keri-specification</a>&gt;</span>. </dd>
+<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 3: vLEI Credential Schema Registry"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part3-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>

@@ -83,7 +83,9 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  Architecture
-     3.1.  Example SATP Credential Payload
+     3.1.  SATP Message Wrapper Schema
+     3.2.  SATP Messages Containing vLEI Objects
+     3.3.  Example SATP Credential Payload
    4.  Identities
      4.1.  Identity Binding
    5.  Verification of vLEI Payloads
@@ -98,7 +100,26 @@ Table of Contents
 
 1.  Introduction
 
-   TODO Introduction
+   The SATP architecute [I-D.ietf-satp-architecture] defines an
+   interoperability architecture for interconnection between networks or
+   systems that anticipates a secure asset transfer protocol that
+   satisfies security, privacy, atomicity and liveliness requirements in
+   the transfer of assets.  The SATP core protocol [I-D.ietf-satp-core]
+   is a protocol for exchanging digital assets that ensures the state of
+   the asset is preserved across inter-domain transfers.  It is an
+   extensible protocol where fields containing identity and payload
+   values that are not defined by SATP core may be defined by companion
+   specifications.  This specification defines a SATP core protocol
+   binding for Verifiable Legal Entity Identifiers (vLEI) [ISO17442-3]
+   used to identify SATP gateways and the organizations that operate
+   them.  In some use cases, the assets being transferred have legal
+   considerations such that officers of the organization are expected to
+   authorize digital asset transfers.  This specification details the
+   various vLEI credentials needed and how to integrate them with SATP
+   core messages.  SATP core message binding anticipates use of a
+   message wrapper that uses media type [STD91] and content format
+   [RFC7252] identifiers to facilitate interoperability with vLEI and
+   other credential types.
 
 2.  Conventions and Definitions
 
@@ -111,31 +132,195 @@ Table of Contents
 3.  Architecture
 
    The SATP core protocol [I-D.ietf-satp-core] defines several
-   extensible protocol fields that may contain payload values not
+   extensible protocol fields that contain identity and other values not
    defined by SATP core.  To facilitate interoperability these fields
-   SHOULD contain a media-type [STD91] or content-format [RFC7252]
-   wrapper.  The following CDDL [RFC8610] defines the wrapper and
-   application to SATP fields.
+   SHOULD contain a media type [STD91] or content format [RFC7252]
+   wrapper.  This specation requests IANA assignment of media type and
+   content format identifiers for vLEIs which are serialized as
+   Composable Event Streaming Representation (CESR) [CESR-Spec] objects
+   in JSON format.  See Section 7.
 
-   ; Reusable wrapper type
-   msg-wrapper = {
-     &(MTorCF) 0 => media-type-or-content-format,
-     &(payload) 1 => bstr / tstr
+3.1.  SATP Message Wrapper Schema
+
+   The following CDDL [RFC8610] defines the wrapper and application to
+   SATP fields.
+
+   ; =====================================================================
+   ; --- SATP message ---
+   ; =====================================================================
+
+   satp-message = {
+     ; --- Stage 1 ---
+     ? verifiedOriginatorEntityId:          wrapped-acdc-vlei-lei-id,
+     ? verifiedBeneficiaryEntityId:         wrapped-acdc-vlei-lei-id,
+     ? senderGatewayOwnerId:                wrapped-acdc-vlei-lei-id,
+     ? receiverGatewayOwnerId:              wrapped-acdc-vlei-lei-id,
+
+     ? senderGatewayId:                     wrapped-acdc-vlei-ecr,
+     ? recipientGatewayId:                  wrapped-acdc-vlei-ecr,
+     ? senderGatewayNetworkId:              wrapped-acdc-vlei-ecr,
+     ? recipientGatewayNetworkId:           wrapped-acdc-vlei-ecr,
+
+     ? originatorPubkey:                    wrapped-key,
+     ? beneficiaryPubkey:                   wrapped-key,
+     ? senderGatewaySignaturePublicKey:     wrapped-key,
+     ? receiverGatewaySignaturePublicKey:   wrapped-key,
+     ? senderGatewayDeviceIdentityPubkey:   wrapped-key,
+     ? receiverGatewayDeviceIdentityPubkey: wrapped-key,
+
+     ; --- Stage 2 ---
+     ? assetControllerCredential:
+         wrapped-acdc-vlei-lei-id /
+         wrapped-acdc-vlei-oor /
+         wrapped-acdc-vlei-ecr,
+     ? lockEvidenceIssuerCredential:
+         wrapped-acdc-vlei-lei-id /
+         wrapped-acdc-vlei-oor /
+         wrapped-acdc-vlei-ecr,
+     ? lockEvidenceVerificationKey:         wrapped-key,
+
+     ; --- Stage 3 ---
+     ? commitAuthorizingCredential:
+         wrapped-acdc-vlei-lei-id /
+         wrapped-acdc-vlei-oor /
+         wrapped-acdc-vlei-ecr,
+     ? commitVerificationKey:               wrapped-key,
+     ? postCommitSecureChannelKey:          wrapped-key
    }
 
-   media-type-or-content-format = tstr / int
+   ; =====================================================================
+   ; --- Common building blocks ---
+   ; =====================================================================
 
-   ; SATP credential-related fields
-   verifiedOriginatorEntityId     = msg-wrapper / bstr / tstr
-   verifiedRecipientEntityId      = msg-wrapper / bstr / tstr
-   verifiedIntermediaryEntityIds  = [ + (msg-wrapper / bstr / tstr) ]
-   verifiedTransactionId          = msg-wrapper / bstr / tstr
-   verifiedCredential             = msg-wrapper / bstr / tstr
-   verifiedPresentation           = msg-wrapper / bstr / tstr
-   verifiedEvidence               = msg-wrapper / bstr / tstr
-   verifiedSignature              = msg-wrapper / bstr / tstr
+   ; Allowed serialization formats for all ACDC vLEI wrappers
+   acdc-serializations =
+     "(json|cbor|mgpk|cesr)"
 
-3.1.  Example SATP Credential Payload
+   ; Optional extra parameters (quoted or unquoted) after profile
+   acdc-param-tail =
+     "(?:;[A-Za-z0-9.-]+=(?:\\\"[^\\\"]*\\\"|[^;]+))*$"
+
+   ; Profile name fragments
+   acdc-prof-lei = "LegalEntityvLEICredential"
+   acdc-prof-oor =
+     "LegalEntityOfficialOrganizationalRolevLEICredential"
+   acdc-prof-ecr =
+     "LegalEntityEngagementContextRolevLEICredential"
+
+   ; =====================================================================
+   ; --- Profile-specific content types ---
+   ; =====================================================================
+
+   acdc-vlei-lei-content =
+     tstr .regexp
+       "^application/acdc\\+" // acdc-serializations //
+       ";profile=\\\"urn:vlei:" // acdc-prof-lei // "\\\"" //
+       acdc-param-tail
+     / uint
+
+   acdc-vlei-oor-content =
+     tstr .regexp
+       "^application/acdc\\+" // acdc-serializations //
+       ";profile=\\\"urn:vlei:" // acdc-prof-oor // "\\\"" //
+       acdc-param-tail
+     / uint
+
+   acdc-vlei-ecr-content =
+     tstr .regexp
+       "^application/acdc\\+" // acdc-serializations //
+       ";profile=\\\"urn:vlei:" // acdc-prof-ecr // "\\\"" //
+       acdc-param-tail
+     / uint
+
+   ; =====================================================================
+   ; --- Wrapped ACDC vLEI wrapper definitions ---
+   ; =====================================================================
+
+   wrapped-acdc-vlei-lei-id = {
+     &(content) 0: acdc-vlei-lei-content,
+     &(payload) 1: bytes / tstr
+   }
+
+   wrapped-acdc-vlei-oor = {
+     &(content) 0: acdc-vlei-oor-content,
+     &(payload) 1: bytes
+   }
+
+   wrapped-acdc-vlei-ecr = {
+     &(content) 0: acdc-vlei-ecr-content,
+     &(payload) 1: bytes
+   }
+
+   ; =====================================================================
+   ; --- Wrapped key definitions ---
+   ; =====================================================================
+
+   wrapped-key = one-of-cose-or-jwk
+
+   one-of-cose-or-jwk = [
+     {
+       &(content) 0:
+         tstr .regexp "application/cose;cose-type=\\\"cose-key\\\"" /
+         uint,
+       &(payload) 1: bytes
+     }
+     /
+     {
+       &(content) 0:
+         tstr .regexp "application/jwk\\+json" /
+         uint,
+       &(payload) 1: tstr
+     }
+   ]
+
+3.2.  SATP Messages Containing vLEI Objects
+
+   The following SATP messages are extended with vLEI contents:
+
+   +================================================================+==============================================+===========================================================================+
+   |SATP Message                                                    |vLEI object                                   |Media type                                                                 |
+   +================================================================+==============================================+===========================================================================+
+   |verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, ,      |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   |senderGatewayOwnerId, receiverGatewayOwnerId                    |                                              |                                                                           |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |senderGatewayId, recipientGatewayId, senderGatewayNetworkId,    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |recipientGatewayNetworkId                                       |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |assetControllerCredential                                       |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |lockEvidenceIssuerCredential                                    |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |LegalEntityIdentityvLEICredential             |application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |OfficialOrganizationalRolevLEICredential      |application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential"      |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |commitAuthorizingCredential                                     |LegalEntityEngagementContextRolevLEICredential|application/                                                               |
+   |                                                                |                                              |acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential"|
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+   |originatorPubkey, beneficiaryPubkey,                            |                                              |application/cose; cose-type="cose-key", application/jwk+json               |
+   |senderGatewaySignaturePublicKey,                                |                                              |                                                                           |
+   |receiverGatewaySignaturePublicKey,                              |                                              |                                                                           |
+   |senderGatewayDeviceIdentityPubkey,                              |                                              |                                                                           |
+   |receiverGatewayDeviceIdentityPubkey,lockEvidenceVerificationKey,|                                              |                                                                           |
+   |commitVerificationKey, postCommitSecureChannelKey               |                                              |                                                                           |
+   +----------------------------------------------------------------+----------------------------------------------+---------------------------------------------------------------------------+
+
+               Table 1: SATP Messages Containing vLEI Objects
+
+3.3.  Example SATP Credential Payload
 
    The following JSON document complies with the SATP CDDL schema using
    synthetic CESR payloads:
@@ -145,39 +330,9 @@ Table of Contents
        "0": "application/cesr+json;profile=vlei",
        "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
      },
-     "verifiedRecipientEntityId": {
+     "verifiedBeneficiaryEntityId": {
        "0": "application/cesr+json;profile=vlei;base64=true",
        "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
-     },
-     "verifiedIntermediaryEntityIds": [
-       {
-         "0": "application/cesr+json;profile=vlei",
-         "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
-       },
-       {
-         "0": "application/cesr+json;profile=vlei;base64=true",
-         "1": "U0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi5FRElHMEZBQS4uLg=="
-       }
-     ],
-     "verifiedTransactionId": {
-       "0": "application/cesr+json",
-       "1": "TRNSACT10JSON0000EDIG0AAA...SAID0AAA...txn:did:keri:..."
-     },
-     "verifiedCredential": {
-       "0": "application/cesr+json;profile=vlei;base64=true",
-       "1": "VkxFSUNSRURFTlRJQUwuLi5BQ0RDMUFBRi4uLlNBSUQwQUFBLi4u"
-     },
-     "verifiedPresentation": {
-       "0": "application/cesr+json",
-       "1": "PRES10JSON0000EDIG0AAA...SAID0AAA...vp:did:keri:..."
-     },
-     "verifiedEvidence": {
-       "0": "application/cesr+json;profile=vlei",
-       "1": "EVIDENCE10JSON0000EDIG0AAA...SAID0AAA...ev:did:keri:..."
-     },
-     "verifiedSignature": {
-       "0": "application/cesr+json;profile=vlei;base64=true",
-       "1": "U0lHTkFUVVJFLi4uU0FURDAxQUNEMUZCLi4uU0FJRDExQkYuLi4u"
      }
    }
 
@@ -281,6 +436,12 @@ Table of Contents
 
 8.1.  Normative References
 
+   [REQ-LEVEL]
+              Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
    [I-D.ietf-satp-core]
               Hargreaves, M., Hardjono, T., Belchior, R., Ramakrishna,
               V., and A. Chiriac, "Secure Asset Transfer Protocol (SATP)
@@ -289,31 +450,15 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
               core-11>.
 
-   [ISO17442-3]
-              International Organization for Standardization, "Financial
-              services — Legal entity identifier (LEI) — Part 3:
-              Verifiable LEIs (vLEIs)", ISO 17442-3:2024, 2024,
-              <https://www.iso.org/standard/85628.html>.
-
-   [REQ-LEVEL]
-              Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
+   [STD91]    Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, DOI 10.17487/RFC6838, January 2013,
+              <https://www.rfc-editor.org/rfc/rfc6838>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/rfc/rfc7252>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
               Definition Language (CDDL): A Notational Convention to
@@ -321,24 +466,54 @@ Table of Contents
               JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
               June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
-   [STD91]    Freed, N., Klensin, J., and T. Hansen, "Media Type
-              Specifications and Registration Procedures", BCP 13,
-              RFC 6838, DOI 10.17487/RFC6838, January 2013,
-              <https://www.rfc-editor.org/rfc/rfc6838>.
+   [ISO17442-3]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 3:
+              Verifiable LEIs (vLEIs)", ISO 17442-3:2024, 2024,
+              <https://www.iso.org/standard/85628.html>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
 8.2.  Informative References
 
+   [I-D.ietf-satp-architecture]
+              Hardjono, T., Hargreaves, M., Smith, N., and V.
+              Ramakrishna, "Secure Asset Transfer (SAT) Interoperability
+              Architecture", Work in Progress, Internet-Draft, draft-
+              ietf-satp-architecture-08, 31 July 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
+              architecture-08>.
+
+   [ISO17442-1]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 1:
+              Assignment", ISO 17442-1:2020, 2020,
+              <https://www.iso.org/standard/59771.html>.
+
+   [KERI-Spec]
+              Trust Over IP Foundation, "Key Event Receipt
+              Infrastructure (KERI) Specification, v0.9, Draft", TOIP 
+              TSWG-KERI-2023, 2023,
+              <https://trustoverip.github.io/tswg-keri-specification/>.
+
    [ACDC-Spec]
               Trust Over IP Foundation, "Authentic Chained Data
-              Containers (ACDC) Specification", TOIP TSWG-ACDC-2023,
-              2023,
-              <https://github.com/trustoverip/tswg-acdc-specification>.
+              Containers (ACDC) Specification, v0.9, Draft", TOIP TSWG-
+              ACDC-2023, 2023,
+              <https://trustoverip.github.io/tswg-acdc-specification>.
 
    [CESR-Spec]
               Trust Over IP Foundation, "Composable Event Streaming
-              Representation (CESR) Proof Format Specification", TOIP 
-              TSWG-CESR-2023, 2023, <https://github.com/trustoverip/
-              tswg-cesr-proof-specification>.
+              Representation (CESR) Proof Format Specification, v0.9,
+              Draft", TOIP TSWG-CESR-2023, 2023,
+              <https://trustoverip.github.io/tswg-cesr-specification/>.
 
    [GLEIF-vLEI-EGF]
               Global Legal Entity Identifier Foundation, "Verifiable LEI
@@ -369,18 +544,6 @@ Table of Contents
               GLEIF vLEI-EGF-TechReq-Part3-v1.1, 15 December 2023,
               <https://www.gleif.org/en/vlei/introducing-the-vlei-
               ecosystem-governance-framework>.
-
-   [ISO17442-1]
-              International Organization for Standardization, "Financial
-              services — Legal entity identifier (LEI) — Part 1:
-              Assignment", ISO 17442-1:2020, 2020,
-              <https://www.iso.org/standard/59771.html>.
-
-   [KERI-Spec]
-              Trust Over IP Foundation, "Key Event Receipt
-              Infrastructure (KERI) Specification", TOIP TSWG-KERI-2023,
-              2023,
-              <https://github.com/trustoverip/tswg-keri-specification>.
 
 Acknowledgments
 
