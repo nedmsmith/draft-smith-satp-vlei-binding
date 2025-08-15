@@ -186,9 +186,9 @@ The following JSON document complies with the SATP CDDL schema using synthetic C
 
 # Identities {#sec-ids}
 
-# Identity Binding {#sec-bind}
+## Identity Binding {#sec-bind}
 
-# Binding Verification {#sec-verify}
+# Verification of vLEI Payloads {#sec-verify}
 
 # Security Considerations {#sec-sec}
 
