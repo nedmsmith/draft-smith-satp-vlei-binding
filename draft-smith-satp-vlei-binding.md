@@ -181,19 +181,19 @@ This specation requests IANA assignment of media type and content format identif
 
 The following SATP messages are extended with vLEI contents:
 
-| SATP Message | vLEI object | Media type |
-| `verifiedOriginatorEntityId`, `verifiedBeneficiaryEntityId`, , `senderGatewayOwnerId`, `receiverGatewayOwnerId` | `LegalEntityIdentityvLEICredential`   | application/acdc+json;profile=\"urn:vlei:LegalEntityIdentityvLEICredential\" |
-| `senderGatewayId`, `recipientGatewayId`, `senderGatewayNetworkId`, `recipientGatewayNetworkId` | LegalEntityEngagementContextRolevLEICredential | application/acdc+json;profile=\"urn:vlei:LegalEntityEngagementContextRolevLEICredential\" |
-| `assetControllerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `assetControllerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `assetControllerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `lockEvidenceIssuerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `lockEvidenceIssuerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `lockEvidenceIssuerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `commitAuthorizingCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `commitAuthorizingCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`,`lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | N/A | application/cose; cose-type="cose-key", application/jwk+json |
+| SATP Message | vLEI object | Media type | Profile |
+| `verifiedOriginatorEntityId`, `verifiedBeneficiaryEntityId`, `senderGatewayOwnerId`, `receiverGatewayOwnerId` | `LegalEntityIdentityvLEICredential`   | application/acdc+json | ;profile=\"urn:vlei:LegalEntityIdentityvLEICredential\" |
+| `senderGatewayId`, `recipientGatewayId`, `senderGatewayNetworkId`, `recipientGatewayNetworkId` | LegalEntityEngagementContextRolevLEICredential | application/acdc+json | ;profile=\"urn:vlei:LegalEntityEngagementContextRolevLEICredential\" |
+| `assetControllerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `assetControllerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `assetControllerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `lockEvidenceIssuerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `lockEvidenceIssuerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `lockEvidenceIssuerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `commitAuthorizingCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
+| `commitAuthorizingCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
+| `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
+| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`, `lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | N/A | application/cose; cose-type="cose-key", application/jwk+json | N/A |
 {: #tbl-satp-msgs title="SATP Messages Containing vLEI Objects"}
 
 ## SATP Message Wrapper Schema
