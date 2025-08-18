@@ -366,9 +366,11 @@ Table of Contents
                         +------------------------+
                         | application/acdc+cbor  |
                         +------------------------+
+                        | application/acdc+msgpk |
+                        +------------------------+
                         | application/acdc+cesr  |
                         +------------------------+
-                        | application/acdc+msgpk |
+                        | application/said+cesr  |
                         +------------------------+
 
                         Table 2: vLEI media types
