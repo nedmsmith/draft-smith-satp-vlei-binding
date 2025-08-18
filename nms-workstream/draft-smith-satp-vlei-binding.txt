@@ -319,12 +319,12 @@ Table of Contents
 
    wrapped-acdc-vlei-oor = {
      &(content) 0: acdc-vlei-oor-content,
-     &(payload) 1: bytes
+     &(payload) 1: bytes / tstr
    }
 
    wrapped-acdc-vlei-ecr = {
      &(content) 0: acdc-vlei-ecr-content,
-     &(payload) 1: bytes
+     &(payload) 1: bytes / tstr
    }
 
    ; =====================================================================
