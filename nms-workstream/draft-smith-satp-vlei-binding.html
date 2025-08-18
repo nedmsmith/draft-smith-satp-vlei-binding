@@ -1184,7 +1184,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-satp-message-wrapper-schema" class="internal xref">SATP Message Wrapper Schema</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-vlei-profiles" class="internal xref">vLEI Profiles</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-vlei-media-types" class="internal xref">vLEI Media Types</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-example-satp-credential-pay" class="internal xref">Example SATP Credential Payload</a></p>
@@ -1497,40 +1497,85 @@ one-of-cose-or-jwk = [
 </div>
 </section>
 </div>
-<div id="vlei-profiles">
+<div id="vlei-media-types">
 <section id="section-3.3">
-        <h3 id="name-vlei-profiles">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-vlei-profiles" class="section-name selfRef">vLEI Profiles</a>
+        <h3 id="name-vlei-media-types">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-vlei-media-types" class="section-name selfRef">vLEI Media Types</a>
         </h3>
-<div id="tbl-vlei-profiles">
+<p id="section-3.3-1">vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) <span>[<a href="#ACDC-Spec" class="cite xref">ACDC-Spec</a>]</span>.
+Section <a href="#sec-iana" class="auto internal xref">Section 7</a> request IANA assignment of ACDC media types <span>[<a href="#STD91" class="cite xref">STD91</a>]</span>.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">SATP messages as JSON can contain JSON wrapped ACDCs, but other ACDC formats are possible.
+The follwing media types <span class="bcp14">MAY</span> be used when supplying ACDC credential payloads:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<span id="name-vlei-media-types-2"></span><div id="tbl-vlei-media-types">
 <table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-vlei-media-types-2" class="selfRef">vLEI media types</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Media Types</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+json</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+cbor</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+cesr</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">application/acdc+msgpk</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<span id="name-vlei-profiles"></span><div id="tbl-vlei-profiles">
+<table class="center" id="table-3">
+          <caption>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-vlei-profiles" class="selfRef">vLEI profiles</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Profile name</th>
-              <th class="text-left" rowspan="1" colspan="1">Compact profile value</th>
-              <th class="text-left" rowspan="1" colspan="1">Media type</th>
+              <th class="text-left" rowspan="1" colspan="1">Profile ID</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Legal Entity Identity (LEI‑ID)</td>
               <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:lei-id"</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Engagement Context Role (ECR)</td>
               <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:ecr"</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Official Organizational Role (OOR)</td>
               <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:oor"</td>
-              <td class="text-left" rowspan="1" colspan="1">application/acdc+json</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Legal Entity Authorizing Role (LAR)</td>
+              <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:lar"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Qualified vLEI Issuer (QVI)</td>
+              <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:qvi"</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">vLEI Root Authority (vRA)</td>
+              <td class="text-left" rowspan="1" colspan="1">;profile="urn:vlei:vra"</td>
             </tr>
           </tbody>
         </table>
 </div>
+<p id="section-3.3-5">The various vLEI credential types can be specified in a media type using the profile option.
+<a href="#tbl-vlei-profiles" class="auto internal xref">Table 3</a> summarizes the profile identifiers for the various vLEI credential types.
+A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="example-satp-credential-payload">

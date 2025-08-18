@@ -90,7 +90,7 @@ Table of Contents
        3.1.3.  OfficialOrganizationalRolevLEICredential Credentials
        3.1.4.  JWK Key Structures
      3.2.  SATP Message Wrapper Schema
-     3.3.  vLEI Profiles
+     3.3.  vLEI Media Types
      3.4.  Example SATP Credential Payload
    4.  Identities
      4.1.  Identity Binding
@@ -349,23 +349,53 @@ Table of Contents
      }
    ]
 
-3.3.  vLEI Profiles
+3.3.  vLEI Media Types
 
-    +====================+============================+==============+
-    | Profile name       | Compact profile value      | Media type   |
-    +====================+============================+==============+
-    | Legal Entity       | ;profile="urn:vlei:lei-id" | application/ |
-    | Identity (LEI-ID)  |                            | acdc+json    |
-    +--------------------+----------------------------+--------------+
-    | Engagement Context | ;profile="urn:vlei:ecr"    | application/ |
-    | Role (ECR)         |                            | acdc+json    |
-    +--------------------+----------------------------+--------------+
-    | Official           | ;profile="urn:vlei:oor"    | application/ |
-    | Organizational     |                            | acdc+json    |
-    | Role (OOR)         |                            |              |
-    +--------------------+----------------------------+--------------+
+   vLEI credentials are expressed as Authentic Chained Data Containers
+   (ACDC) [ACDC-Spec].  Section Section 7 request IANA assignment of
+   ACDC media types [STD91].
 
-                                 Table 2
+   SATP messages as JSON can contain JSON wrapped ACDCs, but other ACDC
+   formats are possible.  The follwing media types MAY be used when
+   supplying ACDC credential payloads:
+
+                        +========================+
+                        | Media Types            |
+                        +========================+
+                        | application/acdc+json  |
+                        +------------------------+
+                        | application/acdc+cbor  |
+                        +------------------------+
+                        | application/acdc+cesr  |
+                        +------------------------+
+                        | application/acdc+msgpk |
+                        +------------------------+
+
+                        Table 2: vLEI media types
+
+   +=====================================+============================+
+   | Profile name                        | Profile ID                 |
+   +=====================================+============================+
+   | Legal Entity Identity (LEI-ID)      | ;profile="urn:vlei:lei-id" |
+   +-------------------------------------+----------------------------+
+   | Engagement Context Role (ECR)       | ;profile="urn:vlei:ecr"    |
+   +-------------------------------------+----------------------------+
+   | Official Organizational Role (OOR)  | ;profile="urn:vlei:oor"    |
+   +-------------------------------------+----------------------------+
+   | Legal Entity Authorizing Role (LAR) | ;profile="urn:vlei:lar"    |
+   +-------------------------------------+----------------------------+
+   | Qualified vLEI Issuer (QVI)         | ;profile="urn:vlei:qvi"    |
+   +-------------------------------------+----------------------------+
+   | vLEI Root Authority (vRA)           | ;profile="urn:vlei:vra"    |
+   +-------------------------------------+----------------------------+
+
+                          Table 3: vLEI profiles
+
+   The various vLEI credential types can be specified in a media type
+   using the profile option.  Table 3 summarizes the profile identifiers
+   for the various vLEI credential types.  A comprehensive listing of
+   vLEI profiles is provided even though some of the vLEI credential
+   types are not anticipated by the vLEI binding to SATP at this time.
 
 3.4.  Example SATP Credential Payload
 
