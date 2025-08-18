@@ -66,7 +66,7 @@ informative:
     target: https://www.iso.org/standard/59771.html
 
   KERI-Spec:
-    -: toip-keri
+    -: keri
     title: >
       Key Event Receipt Infrastructure (KERI) Specification, v0.9, Draft
     author:
@@ -77,7 +77,7 @@ informative:
     target: https://trustoverip.github.io/tswg-keri-specification/
 
   ACDC-Spec:
-    -: toip-acdc
+    -: acdc
     title: >
       Authentic Chained Data Containers (ACDC) Specification, v0.9, Draft
     author:
@@ -88,7 +88,7 @@ informative:
     target: https://trustoverip.github.io/tswg-acdc-specification
 
   CESR-Spec:
-    -: toip-cesr
+    -: cesr
     title: >
       Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft
     author:
@@ -176,7 +176,7 @@ SATP core message binding anticipates use of a message wrapper that uses media t
 
 The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
 To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
-This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-toip-cesr}} objects in JSON format. See {{sec-iana}}.
+This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON format. See {{sec-iana}}.
 
 ## SATP Messages Containing vLEI Credentials
 
@@ -189,7 +189,7 @@ The following SATP messages are extended to contain vLEI credentials:
 | 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityIdentityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
 | 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JSON Web Key |
 |===
-{: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials"}
+{: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials" align=left}
 
 ### LegalEntityIdentityvLEICredential Credentials
 
@@ -223,15 +223,38 @@ The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 {::include cddl/msg-wrapper.cddl}
 ~~~
 
-## vLEI Profiles
+## vLEI Media Types
 
- | Profile name | Compact profile value | Media type |
- |===
- | Legal Entity Identity (LEI‑ID) | ;profile="urn:vlei:lei-id" | application/acdc+json |
- | Engagement Context Role (ECR) | ;profile="urn:vlei:ecr" | application/acdc+json |
- | Official Organizational Role (OOR) | ;profile="urn:vlei:oor" | application/acdc+json |
- |===
- {: #tbl-vlei-profiles}
+vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) {{-acdc}}.
+Section {{sec-iana}} request IANA assignment of ACDC media types {{-media-type}}.
+
+SATP messages as JSON can contain JSON wrapped ACDCs, but other ACDC formats are possible.
+The follwing media types MAY be used when supplying ACDC credential payloads:
+
+| Media Types |
+|===
+| application/acdc+json |
+| application/acdc+cbor |
+| application/acdc+cesr |
+| application/acdc+msgpk |
+|===
+{: #tbl-vlei-media-types title="vLEI media types" align=left}
+
+| Profile name                               | Profile ID                         |
+|===                                         |                                     |
+| Legal Entity Identity (LEI‑ID)             | ;profile="urn:vlei:lei-id"          |
+| Engagement Context Role (ECR)              | ;profile="urn:vlei:ecr"             |
+| Official Organizational Role (OOR)         | ;profile="urn:vlei:oor"             |
+| Legal Entity Authorizing Role (LAR)        | ;profile="urn:vlei:lar"             |
+| Qualified vLEI Issuer (QVI)                | ;profile="urn:vlei:qvi"             |
+| vLEI Root Authority (vRA)                  | ;profile="urn:vlei:vra"             |
+|===
+{: #tbl-vlei-profiles title="vLEI profiles" align=left}
+
+
+The various vLEI credential types can be specified in a media type using the profile option.
+{{tbl-vlei-profiles}} summarizes the profile identifiers for the various vLEI credential types.
+A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.
 
 ## Example SATP Credential Payload
 
