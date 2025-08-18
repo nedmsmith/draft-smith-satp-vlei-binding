@@ -235,8 +235,9 @@ The follwing media types MAY be used when supplying ACDC credential payloads:
 |===
 | application/acdc+json |
 | application/acdc+cbor |
-| application/acdc+cesr |
 | application/acdc+msgpk |
+| application/acdc+cesr |
+| application/said+cesr |
 |===
 {: #tbl-vlei-media-types title="vLEI media types" align=left}
 
@@ -263,8 +264,6 @@ The following JSON document complies with the SATP CDDL schema using synthetic C
 ~~~ json
 {::include json/examples/cesr+json-vlei.json}
 ~~~
-
-
 
 # Identities {#sec-ids}
 
