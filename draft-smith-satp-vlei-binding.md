@@ -33,6 +33,7 @@ author:
 normative:
   REQ-LEVEL: RFC2119
   I-D.ietf-satp-core: satp-core
+  RFC7517: jwk
   STD91:
     -: media-type
     =: RFC6838
@@ -177,24 +178,43 @@ The SATP core protocol {{-satp-core}} defines several extensible protocol fields
 To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-toip-cesr}} objects in JSON format. See {{sec-iana}}.
 
-## SATP Messages Containing vLEI Objects
+## SATP Messages Containing vLEI Credentials
 
-The following SATP messages are extended with vLEI contents:
+The following SATP messages are extended to contain vLEI credentials:
 
-| SATP Message | vLEI object | Media type | Profile |
-| `verifiedOriginatorEntityId`, `verifiedBeneficiaryEntityId`, `senderGatewayOwnerId`, `receiverGatewayOwnerId` | `LegalEntityIdentityvLEICredential`   | application/acdc+json | ;profile=\"urn:vlei:LegalEntityIdentityvLEICredential\" |
-| `senderGatewayId`, `recipientGatewayId`, `senderGatewayNetworkId`, `recipientGatewayNetworkId` | LegalEntityEngagementContextRolevLEICredential | application/acdc+json | ;profile=\"urn:vlei:LegalEntityEngagementContextRolevLEICredential\" |
-| `assetControllerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `assetControllerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `assetControllerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `lockEvidenceIssuerCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `lockEvidenceIssuerCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `lockEvidenceIssuerCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `commitAuthorizingCredential` | `LegalEntityIdentityvLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityIdentityvLEICredential" |
-| `commitAuthorizingCredential` | `OfficialOrganizationalRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:OfficialOrganizationalRolevLEICredential" |
-| `commitAuthorizingCredential` | `LegalEntityEngagementContextRolevLEICredential` | application/acdc+json | ;profile="urn:vlei:LegalEntityEngagementContextRolevLEICredential" |
-| `originatorPubkey`, `beneficiaryPubkey`, `senderGatewaySignaturePublicKey`, `receiverGatewaySignaturePublicKey`, `senderGatewayDeviceIdentityPubkey`, `receiverGatewayDeviceIdentityPubkey`, `lockEvidenceVerificationKey`, `commitVerificationKey`, `postCommitSecureChannelKey` | N/A | application/cose; cose-type="cose-key", application/jwk+json | N/A |
-{: #tbl-satp-msgs title="SATP Messages Containing vLEI Objects"}
+| # | SATP Message | Credential Type |
+|===
+| 1 | verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId | LegalEntityIdentityvLEICredential |
+| 2 | senderGatewayId, recipientGatewayId, senderGatewayNetworkId, recipientGatewayNetworkId | LegalEntityEngagementContextRolevLEICredential |
+| 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityIdentityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
+| 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JSON Web Key |
+|===
+{: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials"}
+
+### LegalEntityIdentityvLEICredential Credentials
+
+The SATP messages in row 1 of {{tbl-satp-msgs}} are realized using a LegalEntityIdentityvLEICredential because these message identify legal entities.
+Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
+
+### LegalEntityEngagementContextRolevLEICredential Credentials
+
+The SATP messages in row 2 of {{tbl-satp-msgs}} are realized using a LegalEntityEngagementContextRolevLEICredential because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.
+
+### OfficialOrganizationalRolevLEICredential Credentials
+
+The SATP messages in row 3 of {{tbl-satp-msgs}} are realized using various vLEI credentials depending on use case context.
+
+Examples:
+
+ * LegalEntityIdentityvLEICredential is used if an asset controller, lock evidence issuer, or commit authority are legal entities.
+
+* OfficialOrganizationalRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
+
+* LegalEntityEngagementContextRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
+
+### JWK Key Structures
+
+The SATP messages in row 4 of {{tbl-satp-msgs}} are realized using JSON Web Key (JWK)  {{-jwk}} structures.
 
 ## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
@@ -202,6 +222,16 @@ The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 ~~~ cddl
 {::include cddl/msg-wrapper.cddl}
 ~~~
+
+## vLEI Profiles
+
+ | Profile name | Compact profile value | Media type |
+ |===
+ | Legal Entity Identity (LEI‑ID) | ;profile="urn:vlei:lei-id" | application/acdc+json |
+ | Engagement Context Role (ECR) | ;profile="urn:vlei:ecr" | application/acdc+json |
+ | Official Organizational Role (OOR) | ;profile="urn:vlei:oor" | application/acdc+json |
+ |===
+ {: #tbl-vlei-profiles}
 
 ## Example SATP Credential Payload
 
