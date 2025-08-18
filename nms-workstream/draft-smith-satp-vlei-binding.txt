@@ -270,7 +270,7 @@ Table of Contents
 
    ; Allowed serialization formats for all ACDC vLEI wrappers
    acdc-serializations =
-     "(json|cbor|mgpk|cesr)"
+     "(json|cbor|msgpk|cesr)"
 
    ; Optional extra parameters (quoted or unquoted) after profile
    acdc-param-tail =
