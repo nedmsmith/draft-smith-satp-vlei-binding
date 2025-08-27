@@ -33,12 +33,50 @@ author:
 normative:
   REQ-LEVEL: RFC2119
   I-D.ietf-satp-core: satp-core
+  RFC7159: json
   RFC7517: jwk
+  RFC2585: pkix-key
+  STD96:
+    -: cose-key
+    =: RFC9052
   STD91:
     -: media-type
     =: RFC6838
   RFC7252: content-format
   RFC8610: cddl
+  GLEIF-vLEI-TechReq-Part1:
+    -: gleif-req1
+    title: >
+      Technical Requirements Part 1: KERI Infrastructure
+    author:
+      org: Global Legal Entity Identifier Foundation
+    date: 2025-04-16
+    seriesinfo:
+      GLEIF: vLEI-EGF-TechReq-Part1-v1.3
+    target: https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf
+
+  GLEIF-vLEI-TechReq-Part2:
+    -: gleif-req2
+    title: >
+      Technical Requirements Part 2: vLEI Credentials
+    author:
+      org: Global Legal Entity Identifier Foundation
+    date: 2023-12-15
+    seriesinfo:
+      GLEIF: vLEI-EGF-TechReq-Part2-v1.1
+    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+
+  GLEIF-vLEI-TechReq-Part3:
+    -: gleif-req3
+    title: >
+      Technical Requirements Part 3: vLEI Credential Schema Registry
+    author:
+      org: Global Legal Entity Identifier Foundation
+    date: 2023-12-15
+    seriesinfo:
+      GLEIF: vLEI-EGF-TechReq-Part3-v1.1
+    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+
   ISO17442-3:
     -: iso-vlei
     title: >
@@ -110,39 +148,6 @@ informative:
       GLEIF: vLEI-EGF-v3.0
     target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
 
-  GLEIF-vLEI-TechReq-Part1:
-    -: gleif-req1
-    title: >
-      Technical Requirements Part 1: KERI Infrastructure
-    author:
-      org: Global Legal Entity Identifier Foundation
-    date: 2025-04-16
-    seriesinfo:
-      GLEIF: vLEI-EGF-TechReq-Part1-v1.3
-    target: https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf
-
-  GLEIF-vLEI-TechReq-Part2:
-    -: gleif-req2
-    title: >
-      Technical Requirements Part 2: vLEI Credentials
-    author:
-      org: Global Legal Entity Identifier Foundation
-    date: 2023-12-15
-    seriesinfo:
-      GLEIF: vLEI-EGF-TechReq-Part2-v1.1
-    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
-
-  GLEIF-vLEI-TechReq-Part3:
-    -: gleif-req3
-    title: >
-      Technical Requirements Part 3: vLEI Credential Schema Registry
-    author:
-      org: Global Legal Entity Identifier Foundation
-    date: 2023-12-15
-    seriesinfo:
-      GLEIF: vLEI-EGF-TechReq-Part3-v1.1
-    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
-
 entity:
   SELF: "RFCthis"
 
@@ -184,37 +189,55 @@ The following SATP messages are extended to contain vLEI credentials:
 
 | # | SATP Message | Credential Type |
 |===
-| 1 | verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId | LegalEntityIdentityvLEICredential |
+| 1 | verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId | LegalEntityvLEICredential |
 | 2 | senderGatewayId, recipientGatewayId, senderGatewayNetworkId, recipientGatewayNetworkId | LegalEntityEngagementContextRolevLEICredential |
-| 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityIdentityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
-| 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JSON Web Key |
+| 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
+| 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JOSE or COSE Key |
 |===
 {: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials" align=left}
 
+
+
+
+
+
+
+The SATP Messages in row 4 of {{tbl-satp-msgs}} SHALL be a JSON Web Key as defined by {{-jwk}} or a COSE Key as defined by {{-cose-key}}.
+
 ### LegalEntityIdentityvLEICredential Credentials
 
-The SATP messages in row 1 of {{tbl-satp-msgs}} are realized using a LegalEntityIdentityvLEICredential because these message identify legal entities.
+The SATP Messages in row 1 of {{tbl-satp-msgs}} SHALL be a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
+
+These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
 Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
 
 ### LegalEntityEngagementContextRolevLEICredential Credentials
 
-The SATP messages in row 2 of {{tbl-satp-msgs}} are realized using a LegalEntityEngagementContextRolevLEICredential because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.
+The SATP Messages in row 2 of {{tbl-satp-msgs}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
+
+These messages are realized using a Legal Entity Engagement Context Role vLEI Credential (LEECRvLEIC) because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.
 
 ### OfficialOrganizationalRolevLEICredential Credentials
 
-The SATP messages in row 3 of {{tbl-satp-msgs}} are realized using various vLEI credentials depending on use case context.
+The SATP Messages in row 3 of {{tbl-satp-msgs}} SHALL be one of a LegalEntityvLEICredential, LegalEntityEngagementContextRolevLEICredential, or OfficialOrganizationalRolevLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json), [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json), and [LEOORvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json) schemas.
+
+These messages are realized using various vLEI credentials depending on use case context.
 
 Examples:
 
- * LegalEntityIdentityvLEICredential is used if an asset controller, lock evidence issuer, or commit authority are legal entities.
+ * LEvLEIC is used if an asset controller, lock evidence issuer, or commit authority are legal entities.
 
-* OfficialOrganizationalRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
+ * LEECRvLEIC is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
 
-* LegalEntityEngagementContextRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
+* Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
 
-### JWK Key Structures
+### Key Structures
 
-The SATP messages in row 4 of {{tbl-satp-msgs}} are realized using JSON Web Key (JWK)  {{-jwk}} structures.
+Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
+
+The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats.
+
+The key structure SHOULD be extensible to support additional key formats.
 
 ## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
