@@ -253,20 +253,20 @@ Table of Contents
    SATP fields.
 
    ; =====================================================================
-   ; --- SATP message ---
+   ; --- SATP Message (Entry Point) ---
    ; =====================================================================
 
    satp-message = {
      ; --- Stage 1 ---
-     ? verifiedOriginatorEntityId:          wrapped-acdc-vlei-lei-id,
-     ? verifiedBeneficiaryEntityId:         wrapped-acdc-vlei-lei-id,
-     ? senderGatewayOwnerId:                wrapped-acdc-vlei-lei-id,
-     ? receiverGatewayOwnerId:              wrapped-acdc-vlei-lei-id,
+     ? verifiedOriginatorEntityId:          wrapped-vlei-lei-id,
+     ? verifiedBeneficiaryEntityId:         wrapped-vlei-lei-id,
+     ? senderGatewayOwnerId:                wrapped-vlei-lei-id,
+     ? receiverGatewayOwnerId:               wrapped-vlei-lei-id,
 
-     ? senderGatewayId:                     wrapped-acdc-vlei-ecr,
-     ? recipientGatewayId:                  wrapped-acdc-vlei-ecr,
-     ? senderGatewayNetworkId:              wrapped-acdc-vlei-ecr,
-     ? recipientGatewayNetworkId:           wrapped-acdc-vlei-ecr,
+     ? senderGatewayId:                     wrapped-vlei-ecr,
+     ? recipientGatewayId:                  wrapped-vlei-ecr,
+     ? senderGatewayNetworkId:              wrapped-vlei-ecr,
+     ? recipientGatewayNetworkId:           wrapped-vlei-ecr,
 
      ? originatorPubkey:                    wrapped-key,
      ? beneficiaryPubkey:                   wrapped-key,
@@ -276,109 +276,99 @@ Table of Contents
      ? receiverGatewayDeviceIdentityPubkey: wrapped-key,
 
      ; --- Stage 2 ---
-     ? assetControllerCredential:
-         wrapped-acdc-vlei-lei-id /
-         wrapped-acdc-vlei-oor /
-         wrapped-acdc-vlei-ecr,
-     ? lockEvidenceIssuerCredential:
-         wrapped-acdc-vlei-lei-id /
-         wrapped-acdc-vlei-oor /
-         wrapped-acdc-vlei-ecr,
+     ? assetControllerCredential:           any-wrapped-vlei,
+     ? lockEvidenceIssuerCredential:        any-wrapped-vlei,
      ? lockEvidenceVerificationKey:         wrapped-key,
 
      ; --- Stage 3 ---
-     ? commitAuthorizingCredential:
-         wrapped-acdc-vlei-lei-id /
-         wrapped-acdc-vlei-oor /
-         wrapped-acdc-vlei-ecr,
+     ? commitAuthorizingCredential:         any-wrapped-vlei,
      ? commitVerificationKey:               wrapped-key,
      ? postCommitSecureChannelKey:          wrapped-key
    }
 
    ; =====================================================================
-   ; --- Common building blocks ---
+   ; --- Wrapped vLEI Objects ---
    ; =====================================================================
 
-   ; Allowed serialization formats for all ACDC vLEI wrappers
-   acdc-serializations =
-     "(json|cbor|msgpk|cesr)"
+   ; Specific profile wrappers
+   wrapped-vlei-lei-id = { content: vlei-profile-content(media-root, prof-lei-id), payload: bstr / tstr }
+   wrapped-vlei-ecr    = { content: vlei-profile-content(media-root, prof-ecr),    payload: bstr / tstr }
+   wrapped-vlei-oor    = { content: vlei-profile-content(media-root, prof-oor),    payload: bstr / tstr }
+   wrapped-vlei-lar    = { content: vlei-profile-content(media-root, prof-lar),    payload: bstr / tstr }
+   wrapped-vlei-qvi    = { content: vlei-profile-content(media-root, prof-qvi),    payload: bstr / tstr }
+   wrapped-vlei-vra    = { content: vlei-profile-content(media-root, prof-vra),    payload: bstr / tstr }
 
-   ; Optional extra parameters (quoted or unquoted) after profile
-   acdc-param-tail =
-     "(?:;[A-Za-z0-9.-]+=(?:\\\"[^\\\"]*\\\"|[^;]+))*$"
-
-   ; Profile name fragments
-   acdc-prof-lei = "LegalEntityvLEICredential"
-   acdc-prof-oor =
-     "LegalEntityOfficialOrganizationalRolevLEICredential"
-   acdc-prof-ecr =
-     "LegalEntityEngagementContextRolevLEICredential"
+   ; Convenience group for "accept any vLEI credential"
+   any-wrapped-vlei =
+       wrapped-vlei-lei-id /
+       wrapped-vlei-ecr /
+       wrapped-vlei-oor /
+       wrapped-vlei-lar /
+       wrapped-vlei-qvi /
+       wrapped-vlei-vra
 
    ; =====================================================================
-   ; --- Profile-specific content types ---
+   ; --- Generic Profile Content Rule ---
    ; =====================================================================
 
-   acdc-vlei-lei-content =
+   vlei-profile-content(root: tstr, profile: tstr) =
      tstr .regexp
-       "^application/acdc\\+" // acdc-serializations //
-       ";profile=\\\"urn:vlei:" // acdc-prof-lei // "\\\"" //
-       acdc-param-tail
-     / uint
-
-   acdc-vlei-oor-content =
-     tstr .regexp
-       "^application/acdc\\+" // acdc-serializations //
-       ";profile=\\\"urn:vlei:" // acdc-prof-oor // "\\\"" //
-       acdc-param-tail
-     / uint
-
-   acdc-vlei-ecr-content =
-     tstr .regexp
-       "^application/acdc\\+" // acdc-serializations //
-       ";profile=\\\"urn:vlei:" // acdc-prof-ecr // "\\\"" //
-       acdc-param-tail
+       "^application/" // root // "\\+" // serializations //
+       ";profile=\\\"urn:vlei:" // profile // "\\\"" //
+       param-tail
      / uint
 
    ; =====================================================================
-   ; --- Wrapped ACDC vLEI wrapper definitions ---
+   ; --- Enumerations ---
    ; =====================================================================
 
-   wrapped-acdc-vlei-lei-id = {
-     &(content) 0: acdc-vlei-lei-content,
-     &(payload) 1: bytes / tstr
-   }
+   ; Top-level Media Roots (extensible for future)
+   media-root = "acdc" / "said"
 
-   wrapped-acdc-vlei-oor = {
-     &(content) 0: acdc-vlei-oor-content,
-     &(payload) 1: bytes / tstr
-   }
+   ; vLEI Profile IDs
+   prof-lei-id = "lei-id"
+   prof-ecr    = "ecr"
+   prof-oor    = "oor"
+   prof-lar    = "lar"
+   prof-qvi    = "qvi"
+   prof-vra    = "vra"
 
-   wrapped-acdc-vlei-ecr = {
-     &(content) 0: acdc-vlei-ecr-content,
-     &(payload) 1: bytes / tstr
-   }
+   ; Supported Serialization Suffixes
+   serializations = "json" / "cbor" / "msgpk" / "cesr"
 
    ; =====================================================================
-   ; --- Wrapped key definitions ---
+   ; --- Parameters ---
    ; =====================================================================
 
-   wrapped-key = one-of-cose-or-jwk
+   ; Tail parameters after profile — tighten as needed or
+   ; substitute original acdc-param-tail regex for stricter match
+   param-tail = "" / ";".*
 
-   one-of-cose-or-jwk = [
-     {
-       &(content) 0:
-         tstr .regexp "application/cose;cose-type=\\\"cose-key\\\"" /
-         uint,
-       &(payload) 1: bytes
-     }
-     /
-     {
-       &(content) 0:
-         tstr .regexp "application/jwk\\+json" /
-         uint,
-       &(payload) 1: tstr
-     }
-   ]
+   ; =====================================================================
+   ; --- Wrapped Key Definitions ---
+   ; =====================================================================
+
+   wrapped-key = $key-type
+
+   $key-type /= cose-key
+   $key-type /= jwk-key
+   $key-type /= pkix-key
+
+   cose-key = {
+     content: tstr .regexp "^application/cose;cose-type=\\\"cose-key\\\"$" / uint,
+     payload: bstr
+   }
+
+   jwk-key = {
+     content: tstr .regexp "^application/jwk\\+json$" / uint,
+     payload: tstr
+   }
+
+   pkix-key = {
+     media-type: "application/pkix-cert",
+     encoding: "PEM" / "DER",
+     payload: tstr / bstr
+   }
 
 3.3.  vLEI Media Types
 
