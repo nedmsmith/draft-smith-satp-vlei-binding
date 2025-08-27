@@ -1,0 +1,30 @@
+/* Ensure tables respect viewport */
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+td, th {
+  overflow-wrap: anywhere;  /* wrap long URNs, MIME types, etc. */
+  word-break: break-word;   /* fallback */
+}
+
+/* Make ToC and body not overlap */
+#table-of-contents {
+  max-width: 20%;
+  overflow-wrap: anywhere;
+}
+
+body {
+  margin-left: 22%;  /* at least TOC width + padding */
+}
+
+/* Optional: hide TOC on narrow screens */
+@media (max-width: 800px) {
+  #table-of-contents {
+    display: none;
+  }
+  body {
+    margin-left: 0;
+  }
+}

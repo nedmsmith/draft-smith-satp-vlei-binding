@@ -1,0 +1,11 @@
+{
+  "verifiedOriginatorEntityId": {
+    "0": "application/cesr+json;profile=vlei",
+    "1": "ACDC10JSON0000EDIG0AAA...SAID0AAA...i:did:keri:..."
+  },
+  "verifiedBeneficiaryEntityId": {
+    "0": "application/cesr+json;profile=vlei;base64=true",
+    "1": "QUNEQzFBQUMwRkIuLi5FRElHMEFBQS4uLlNBSUQwQUFBLi4u"
+  }
+}
+

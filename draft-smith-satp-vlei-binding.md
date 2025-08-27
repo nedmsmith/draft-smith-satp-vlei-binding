@@ -14,7 +14,8 @@ workgroup: "Secure Asset Transfer Protocol"
 keyword:
  - verifiable identities
  - internet draft
-
+pi:
+  css: css/overrides.css
 venue:
   group: "Secure Asset Transfer Protocol"
   type: "Working Group"
@@ -32,76 +33,17 @@ author:
 normative:
   REQ-LEVEL: RFC2119
   I-D.ietf-satp-core: satp-core
-  ISO17442-3:
-    -: iso-vlei
-    title: >
-      Financial services — Legal entity identifier (LEI) —
-      Part 3: Verifiable LEIs (vLEIs)
-    author:
-      org: International Organization for Standardization
-    date: 2024
-    seriesinfo:
-      ISO: 17442-3:2024
-    target: https://www.iso.org/standard/85628.html
-
-informative:
-  ISO17442-1:
-    -: iso-lei
-    title: >
-      Financial services — Legal entity identifier (LEI) —
-      Part 1: Assignment
-    author:
-      org: International Organization for Standardization
-    date: 2020
-    seriesinfo:
-      ISO: 17442-1:2020
-    target: https://www.iso.org/standard/59771.html
-
-  KERI-Spec:
-    -: toip-keri
-    title: >
-      Key Event Receipt Infrastructure (KERI) Specification
-    author:
-      org: Trust Over IP Foundation
-    date: 2023
-    seriesinfo:
-      TOIP: TSWG-KERI-2023
-    target: https://github.com/trustoverip/tswg-keri-specification
-
-  ACDC-Spec:
-    -: toip-acdc
-    title: >
-      Authentic Chained Data Containers (ACDC) Specification
-    author:
-      org: Trust Over IP Foundation
-    date: 2023
-    seriesinfo:
-      TOIP: TSWG-ACDC-2023
-    target: https://github.com/trustoverip/tswg-acdc-specification
-
-  CESR-Spec:
-    -: toip-cesr
-    title: >
-      Composable Event Streaming Representation (CESR) Proof Format Specification
-    author:
-      org: Trust Over IP Foundation
-    date: 2023
-    seriesinfo:
-      TOIP: TSWG-CESR-2023
-    target: https://github.com/trustoverip/tswg-cesr-proof-specification
-
-  GLEIF-vLEI-EGF:
-    -: gleif-fwk
-    title: >
-      Verifiable LEI (vLEI) Ecosystem Governance Framework:
-      Primary and Controlled Documents
-    author:
-      org: Global Legal Entity Identifier Foundation
-    date: 2025-04-16
-    seriesinfo:
-      GLEIF: vLEI-EGF-v3.0
-    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
-
+  RFC7159: json
+  RFC7517: jwk
+  RFC2585: pkix-key
+  STD96:
+    -: cose-key
+    =: RFC9052
+  STD91:
+    -: media-type
+    =: RFC6838
+  RFC7252: content-format
+  RFC8610: cddl
   GLEIF-vLEI-TechReq-Part1:
     -: gleif-req1
     title: >
@@ -135,6 +77,77 @@ informative:
       GLEIF: vLEI-EGF-TechReq-Part3-v1.1
     target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
 
+  ISO17442-3:
+    -: iso-vlei
+    title: >
+      Financial services — Legal entity identifier (LEI) —
+      Part 3: Verifiable LEIs (vLEIs)
+    author:
+      org: International Organization for Standardization
+    date: 2024
+    seriesinfo:
+      ISO: 17442-3:2024
+    target: https://www.iso.org/standard/85628.html
+
+informative:
+  I-D.ietf-satp-architecture: satp-arch
+  ISO17442-1:
+    -: iso-lei
+    title: >
+      Financial services — Legal entity identifier (LEI) —
+      Part 1: Assignment
+    author:
+      org: International Organization for Standardization
+    date: 2020
+    seriesinfo:
+      ISO: 17442-1:2020
+    target: https://www.iso.org/standard/59771.html
+
+  KERI-Spec:
+    -: keri
+    title: >
+      Key Event Receipt Infrastructure (KERI) Specification, v0.9, Draft
+    author:
+      org: Trust Over IP Foundation
+    date: 2023
+    seriesinfo:
+      TOIP: TSWG-KERI-2023
+    target: https://trustoverip.github.io/tswg-keri-specification/
+
+  ACDC-Spec:
+    -: acdc
+    title: >
+      Authentic Chained Data Containers (ACDC) Specification, v0.9, Draft
+    author:
+      org: Trust Over IP Foundation
+    date: 2023
+    seriesinfo:
+      TOIP: TSWG-ACDC-2023
+    target: https://trustoverip.github.io/tswg-acdc-specification
+
+  CESR-Spec:
+    -: cesr
+    title: >
+      Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft
+    author:
+      org: Trust Over IP Foundation
+    date: 2023
+    seriesinfo:
+      TOIP: TSWG-CESR-2023
+    target: https://trustoverip.github.io/tswg-cesr-specification/
+
+  GLEIF-vLEI-EGF:
+    -: gleif-fwk
+    title: >
+      Verifiable LEI (vLEI) Ecosystem Governance Framework:
+      Primary and Controlled Documents
+    author:
+      org: Global Legal Entity Identifier Foundation
+    date: 2025-04-16
+    seriesinfo:
+      GLEIF: vLEI-EGF-v3.0
+    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+
 entity:
   SELF: "RFCthis"
 
@@ -152,7 +165,12 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
 
 # Introduction {#sec-intro}
 
-TODO Introduction
+The SATP architecute {{-satp-arch}} defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
+The SATP core protocol {{-satp-core}} is a protocol for exchanging digital assets that ensures the state of the asset is preserved across inter-domain transfers. It is an extensible protocol where fields containing identity and payload values that are not defined by SATP core may be defined by companion specifications.
+This specification defines a SATP core protocol binding for Verifiable Legal Entity Identifiers (vLEI) {{-iso-vlei}} used to identify SATP gateways and the organizations that operate them.
+In some use cases, the assets being transferred have legal considerations such that officers of the organization are expected to authorize digital asset transfers.
+This specification details the various vLEI credentials needed and how to integrate them with SATP core messages.
+SATP core message binding anticipates use of a message wrapper that uses media type {{-media-type}} and content format {{-content-format}} identifiers to facilitate interoperability with vLEI and other credential types.
 
 
 # Conventions and Definitions {#sec-conv}
@@ -161,11 +179,120 @@ TODO Introduction
 
 # Architecture {#sec-arch}
 
+The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
+To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
+This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON format. See {{sec-iana}}.
+
+## SATP Messages Containing vLEI Credentials
+
+The following SATP messages are extended to contain vLEI credentials:
+
+| # | SATP Message | Credential Type |
+|===
+| 1 | verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId | LegalEntityvLEICredential |
+| 2 | senderGatewayId, recipientGatewayId, senderGatewayNetworkId, recipientGatewayNetworkId | LegalEntityEngagementContextRolevLEICredential |
+| 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
+| 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JOSE or COSE Key |
+|===
+{: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials" align=left}
+
+
+
+
+
+
+
+The SATP Messages in row 4 of {{tbl-satp-msgs}} SHALL be a JSON Web Key as defined by {{-jwk}} or a COSE Key as defined by {{-cose-key}}.
+
+### LegalEntityIdentityvLEICredential Credentials
+
+The SATP Messages in row 1 of {{tbl-satp-msgs}} SHALL be a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
+
+These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
+Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
+
+### LegalEntityEngagementContextRolevLEICredential Credentials
+
+The SATP Messages in row 2 of {{tbl-satp-msgs}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
+
+These messages are realized using a Legal Entity Engagement Context Role vLEI Credential (LEECRvLEIC) because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.
+
+### OfficialOrganizationalRolevLEICredential Credentials
+
+The SATP Messages in row 3 of {{tbl-satp-msgs}} SHALL be one of a LegalEntityvLEICredential, LegalEntityEngagementContextRolevLEICredential, or OfficialOrganizationalRolevLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json), [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json), and [LEOORvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json) schemas.
+
+These messages are realized using various vLEI credentials depending on use case context.
+
+Examples:
+
+ * LEvLEIC is used if an asset controller, lock evidence issuer, or commit authority are legal entities.
+
+ * LEECRvLEIC is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
+
+* Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
+
+### Key Structures
+
+Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
+
+The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats.
+
+The key structure SHOULD be extensible to support additional key formats.
+
+## SATP Message Wrapper Schema
+The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
+
+~~~ cddl
+{::include cddl/msg-wrapper.cddl}
+~~~
+
+## vLEI Media Types
+
+vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) {{-acdc}}.
+Section {{sec-iana}} request IANA assignment of ACDC media types {{-media-type}}.
+
+SATP messages as JSON can contain JSON wrapped ACDCs, but other ACDC formats are possible.
+The follwing media types MAY be used when supplying ACDC credential payloads:
+
+| Media Types |
+|===
+| application/acdc+json |
+| application/acdc+cbor |
+| application/acdc+msgpk |
+| application/acdc+cesr |
+| application/said+cesr |
+|===
+{: #tbl-vlei-media-types title="vLEI media types" align=left}
+
+| Profile name                               | Profile ID                         |
+|===                                         |                                     |
+| Legal Entity Identity (LEI‑ID)             | ;profile="urn:vlei:lei-id"          |
+| Engagement Context Role (ECR)              | ;profile="urn:vlei:ecr"             |
+| Official Organizational Role (OOR)         | ;profile="urn:vlei:oor"             |
+| Legal Entity Authorizing Role (LAR)        | ;profile="urn:vlei:lar"             |
+| Qualified vLEI Issuer (QVI)                | ;profile="urn:vlei:qvi"             |
+| vLEI Root Authority (vRA)                  | ;profile="urn:vlei:vra"             |
+|===
+{: #tbl-vlei-profiles title="vLEI profiles" align=left}
+
+
+The various vLEI credential types can be specified in a media type using the profile option.
+{{tbl-vlei-profiles}} summarizes the profile identifiers for the various vLEI credential types.
+A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.
+
+## Example SATP Credential Payload
+
+The following JSON document complies with the SATP CDDL schema using synthetic CESR payloads:
+
+~~~ json
+{::include json/examples/cesr+json-vlei.json}
+~~~
+
 # Identities {#sec-ids}
 
-# Identity Binding {#sec-bind}
+## Identity Binding {#sec-bind}
 
-# Binding Verification {#sec-verify}
+# Verification of vLEI Payloads {#sec-verify}
 
 # Security Considerations {#sec-sec}
 
@@ -174,7 +301,67 @@ TODO Security
 
 # IANA Considerations {#sec-iana}
 
-This document has no IANA actions.
+## Media Type Registration: application/cesr+json
+
+Type name:
+: application
+
+Subtype name:
+: cesr+json
+
+Required parameters:
+: None
+
+Optional parameters:
+: `profile` — Indicates the credential conforms to a specific schema registry (e.g., "vlei")
+: `base64` — Indicates the CESR stream is base64-encoded for transport in JSON wrappers
+: `charset` — Optional; default is UTF-8
+
+Encoding considerations:
+: 8bit; CESR text encoding is UTF-8 compatible and self-framing.
+: When `base64=true`, the CESR stream is base64-encoded for safe embedding in JSON.
+
+Security considerations:
+: CESR payloads are cryptographically signed and self-framing.
+: Signature verification is required to ensure authenticity and integrity.
+: Schema SAIDs must be validated against the [GLEIF vLEI Credential Schema Registry](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf).
+: Credential provenance must be anchored to the GLEIF Root AID via ACDC edges.
+
+Interoperability considerations:
+: CESR supports dual text-binary encoding; this media type assumes CESR text encoding.
+: When `base64=true`, payloads are safely embeddable in JSON-based SATP wrappers.
+: Compatible with SATP, ACDC, and KERI protocols.
+
+Published specification:
+: Composable Event Streaming Representation (CESR) — [draft-ssmith-cesr-03](https://www.ietf.org/archive/id/draft-ssmith-cesr-03.html)
+: GLEIF vLEI Credential Schema Registry — [GLEIF Registry PDF](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf)
+
+Applications that use this media type:
+: GLEIF vLEI issuance and verification systems
+: SATP-compliant credential exchange platforms
+: Forensic credential chaining and audit systems
+
+Fragment identifier considerations:
+: None
+
+Additional information:
+: Magic number(s): None
+: File extension(s): `.cesrj`
+: Macintosh file type code(s): None
+
+Person & email address to contact for further information:
+: N. Smith <spec-author@example.org>
+: GLEIF IT Team <vlei-support@gleif.org>
+
+Intended usage:
+: COMMON
+
+Author:
+: TBD, GLEIF IT Team
+
+Change controller:
+: IETF / GLEIF
+
 
 
 --- back
