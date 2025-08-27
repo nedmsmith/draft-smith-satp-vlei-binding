@@ -4,8 +4,8 @@
 
 Secure Asset Transfer Protocol                                  N. Smith
 Internet-Draft                                               Independent
-Intended status: Standards Track                          18 August 2025
-Expires: 19 February 2026
+Intended status: Standards Track                          27 August 2025
+Expires: 28 February 2026
 
 
                 A SATP Core Binding for vLEI Identities
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 February 2026.
+   This Internet-Draft will expire on 28 February 2026.
 
 Copyright Notice
 
@@ -88,7 +88,7 @@ Table of Contents
        3.1.2.  LegalEntityEngagementContextRolevLEICredential
                Credentials
        3.1.3.  OfficialOrganizationalRolevLEICredential Credentials
-       3.1.4.  JWK Key Structures
+       3.1.4.  Key Structures
      3.2.  SATP Message Wrapper Schema
      3.3.  vLEI Media Types
      3.4.  Example SATP Credential Payload
@@ -153,7 +153,7 @@ Table of Contents
    +=+====================================+==============================================+
    |#|SATP Message                        |Credential Type                               |
    +=+====================================+==============================================+
-   |1|verifiedOriginatorEntityId,         |LegalEntityIdentityvLEICredential             |
+   |1|verifiedOriginatorEntityId,         |LegalEntityvLEICredential                     |
    | |verifiedBeneficiaryEntityId,        |                                              |
    | |senderGatewayOwnerId,               |                                              |
    | |receiverGatewayOwnerId              |                                              |
@@ -162,11 +162,11 @@ Table of Contents
    | |senderGatewayNetworkId,             |                                              |
    | |recipientGatewayNetworkId           |                                              |
    +-+------------------------------------+----------------------------------------------+
-   |3|assetControllerCredential,          |LegalEntityIdentityvLEICredential,            |
+   |3|assetControllerCredential,          |LegalEntityvLEICredential,                    |
    | |lockEvidenceIssuerCredential,       |OfficialOrganizationalRolevLEICredential,     |
    | |commitAuthorizingCredential         |LegalEntityEngagementContextRolevLEICredential|
    +-+------------------------------------+----------------------------------------------+
-   |4|originatorPubkey, beneficiaryPubkey,|JSON Web Key                                  |
+   |4|originatorPubkey, beneficiaryPubkey,|JOSE or COSE Key                              |
    | |senderGatewaySignaturePublicKey,    |                                              |
    | |receiverGatewaySignaturePublicKey,  |                                              |
    | |senderGatewayDeviceIdentityPubkey,  |                                              |
@@ -178,43 +178,74 @@ Table of Contents
 
         Table 1: SATP messages containing vLEI and other credentials
 
+   The SATP Messages in row 4 of Table 1 SHALL be a JSON Web Key as
+   defined by [RFC7517] or a COSE Key as defined by [STD96].
+
 3.1.1.  LegalEntityIdentityvLEICredential Credentials
 
-   The SATP messages in row 1 of Table 1 are realized using a
-   LegalEntityIdentityvLEICredential because these message identify
-   legal entities.  Gateway owner identities area form of legal entity
-   as they identify the owner of a gateway rather than the gateway
-   itself.
+   The SATP Messages in row 1 of Table 1 SHALL be a
+   LegalEntityvLEICredential as defined by the LEvLEIC
+   (https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-
+   credential.json) schema.
+
+   These messages are realized using a Legal Entity vLEI Credential
+   (LEvLEIC) because these message identify legal entities.  Gateway
+   owner identities area form of legal entity as they identify the owner
+   of a gateway rather than the gateway itself.
 
 3.1.2.  LegalEntityEngagementContextRolevLEICredential Credentials
 
-   The SATP messages in row 2 of Table 1 are realized using a
-   LegalEntityEngagementContextRolevLEICredential because these message
-   identify the gateways and hosts within the respective networks
-   involved in transferring digital assets.
+   The SATP Messages in row 2 of Table 1 SHALL be a
+   LegalEntityEngagementContextRolevLEICredential as defined by the
+   LEECRvLEIC (https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-
+   entity-engagement-context-role-vLEI-credential.json) schema.
+
+   These messages are realized using a Legal Entity Engagement Context
+   Role vLEI Credential (LEECRvLEIC) because these message identify the
+   gateways and hosts within the respective networks involved in
+   transferring digital assets.
 
 3.1.3.  OfficialOrganizationalRolevLEICredential Credentials
 
-   The SATP messages in row 3 of Table 1 are realized using various vLEI
-   credentials depending on use case context.
+   The SATP Messages in row 3 of Table 1 SHALL be one of a
+   LegalEntityvLEICredential,
+   LegalEntityEngagementContextRolevLEICredential, or
+   OfficialOrganizationalRolevLEICredential as defined by the LEvLEIC
+   (https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-
+   credential.json), LEECRvLEIC (https://github.com/GLEIF-IT/vLEI-
+   schema/blob/main/legal-entity-engagement-context-role-vLEI-
+   credential.json), and LEOORvLEIC (https://github.com/GLEIF-IT/vLEI-
+   schema/blob/main/legal-entity-official-organizational-role-vLEI-
+   credential.json) schemas.
+
+   These messages are realized using various vLEI credentials depending
+   on use case context.
 
    Examples:
 
-   *  LegalEntityIdentityvLEICredential is used if an asset controller,
-      lock evidence issuer, or commit authority are legal entities.
+   *  LEvLEIC is used if an asset controller, lock evidence issuer, or
+      commit authority are legal entities.
 
-   *  OfficialOrganizationalRolevLEICredential is used if an asset
-      controller, lock evidence issuer, or commit authority are
+   *  LEECRvLEIC is used if an asset controller, lock evidence issuer,
+      or commit authority are machine hosts facilitating SATP gateways
+      or network hosts.
+
+   *  Official Organizational Role vLEI Credential (OORvLEIC) is used if
+      an asset controller, lock evidence issuer, or commit authority are
       organizational roles.
 
-   *  LegalEntityEngagementContextRolevLEICredential is used if an asset
-      controller, lock evidence issuer, or commit authority are machine
-      hosts facilitating SATP gateways or network hosts.
+3.1.4.  Key Structures
 
-3.1.4.  JWK Key Structures
+   Keys embedded in hardware or firmware may not easily be converted to
+   an interoperablel format, hence support for multiple key formats
+   ensures the SATP protocols can be implemented by a wide variety of
+   systems.
 
-   The SATP messages in row 4 of Table 1 are realized using JSON Web Key
-   (JWK) [RFC7517] structures.
+   The SATP messages in row 4 of Table 1 SHALL be encoded using JSON Web
+   Key (JWK) [RFC7517] or COSE key [STD96] formats.
+
+   The key structure SHOULD be extensible to support additional key
+   formats.
 
 3.2.  SATP Message Wrapper Schema
 
@@ -529,9 +560,23 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
               core-11>.
 
+   [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
+              2014, <https://www.rfc-editor.org/rfc/rfc7159>.
+
    [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
               DOI 10.17487/RFC7517, May 2015,
               <https://www.rfc-editor.org/rfc/rfc7517>.
+
+   [RFC2585]  Housley, R. and P. Hoffman, "Internet X.509 Public Key
+              Infrastructure Operational Protocols: FTP and HTTP",
+              RFC 2585, DOI 10.17487/RFC2585, May 1999,
+              <https://www.rfc-editor.org/rfc/rfc2585>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
 
    [STD91]    Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
@@ -548,6 +593,29 @@ Table of Contents
               Express Concise Binary Object Representation (CBOR) and
               JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
               June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [GLEIF-vLEI-TechReq-Part1]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 1: KERI Infrastructure", GLEIF vLEI-EGF-
+              TechReq-Part1-v1.3, 16 April 2025, <https://www.gleif.org/
+              organizational-identity/introducing-the-verifiable-lei-
+              vlei/introducing-the-vlei-ecosystem-governance-
+              framework/2025-04-16_vlei-egf-v3.0-technical-requirements-
+              part-1-keri-infrastructure-2024_v1.3_final.pdf>.
+
+   [GLEIF-vLEI-TechReq-Part2]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 2: vLEI Credentials", GLEIF vLEI-EGF-
+              TechReq-Part2-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [GLEIF-vLEI-TechReq-Part3]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 3: vLEI Credential Schema Registry",
+              GLEIF vLEI-EGF-TechReq-Part3-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
 
    [ISO17442-3]
               International Organization for Standardization, "Financial
@@ -602,29 +670,6 @@ Table of Contents
               Global Legal Entity Identifier Foundation, "Verifiable LEI
               (vLEI) Ecosystem Governance Framework: Primary and
               Controlled Documents", GLEIF vLEI-EGF-v3.0, 16 April 2025,
-              <https://www.gleif.org/en/vlei/introducing-the-vlei-
-              ecosystem-governance-framework>.
-
-   [GLEIF-vLEI-TechReq-Part1]
-              Global Legal Entity Identifier Foundation, "Technical
-              Requirements Part 1: KERI Infrastructure", GLEIF vLEI-EGF-
-              TechReq-Part1-v1.3, 16 April 2025, <https://www.gleif.org/
-              organizational-identity/introducing-the-verifiable-lei-
-              vlei/introducing-the-vlei-ecosystem-governance-
-              framework/2025-04-16_vlei-egf-v3.0-technical-requirements-
-              part-1-keri-infrastructure-2024_v1.3_final.pdf>.
-
-   [GLEIF-vLEI-TechReq-Part2]
-              Global Legal Entity Identifier Foundation, "Technical
-              Requirements Part 2: vLEI Credentials", GLEIF vLEI-EGF-
-              TechReq-Part2-v1.1, 15 December 2023,
-              <https://www.gleif.org/en/vlei/introducing-the-vlei-
-              ecosystem-governance-framework>.
-
-   [GLEIF-vLEI-TechReq-Part3]
-              Global Legal Entity Identifier Foundation, "Technical
-              Requirements Part 3: vLEI Credential Schema Registry",
-              GLEIF vLEI-EGF-TechReq-Part3-v1.1, 15 December 2023,
               <https://www.gleif.org/en/vlei/introducing-the-vlei-
               ecosystem-governance-framework>.
 

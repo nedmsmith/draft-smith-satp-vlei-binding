@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Smith</td>
-<td class="center">Expires 19 February 2026</td>
+<td class="center">Expires 28 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-smith-satp-vlei-binding-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-18" class="published">18 August 2025</time>
+<time datetime="2025-08-27" class="published">27 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-19">19 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-28">28 February 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1176,7 +1176,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
                     <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="auto internal xref">3.1.3</a>.  <a href="#name-officialorganizationalrolev" class="internal xref">OfficialOrganizationalRolevLEICredential Credentials</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.4">
-                    <p id="section-toc.1-1.3.2.1.2.4.1"><a href="#section-3.1.4" class="auto internal xref">3.1.4</a>.  <a href="#name-jwk-key-structures" class="internal xref">JWK Key Structures</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.4.1"><a href="#section-3.1.4" class="auto internal xref">3.1.4</a>.  <a href="#name-key-structures" class="internal xref">Key Structures</a></p>
 </li>
                 </ul>
 </li>
@@ -1289,7 +1289,7 @@ This specation requests IANA assignment of media type and content format identif
             <tr>
               <td class="text-left" rowspan="1" colspan="1">1</td>
               <td class="text-left" rowspan="1" colspan="1">verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId</td>
-              <td class="text-left" rowspan="1" colspan="1">LegalEntityIdentityvLEICredential</td>
+              <td class="text-left" rowspan="1" colspan="1">LegalEntityvLEICredential</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">2</td>
@@ -1299,23 +1299,25 @@ This specation requests IANA assignment of media type and content format identif
             <tr>
               <td class="text-left" rowspan="1" colspan="1">3</td>
               <td class="text-left" rowspan="1" colspan="1">assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential</td>
-              <td class="text-left" rowspan="1" colspan="1">LegalEntityIdentityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential</td>
+              <td class="text-left" rowspan="1" colspan="1">LegalEntityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">4</td>
               <td class="text-left" rowspan="1" colspan="1">originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey</td>
-              <td class="text-left" rowspan="1" colspan="1">JSON Web Key</td>
+              <td class="text-left" rowspan="1" colspan="1">JOSE or COSE Key</td>
             </tr>
           </tbody>
         </table>
 </div>
+<p id="section-3.1-3">The SATP Messages in row 4 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> <span class="bcp14">SHALL</span> be a JSON Web Key as defined by <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span> or a COSE Key as defined by <span>[<a href="#STD96" class="cite xref">STD96</a>]</span>.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <div id="legalentityidentityvleicredential-credentials">
 <section id="section-3.1.1">
           <h4 id="name-legalentityidentityvleicred">
 <a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-legalentityidentityvleicred" class="section-name selfRef">LegalEntityIdentityvLEICredential Credentials</a>
           </h4>
-<p id="section-3.1.1-1">The SATP messages in row 1 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> are realized using a LegalEntityIdentityvLEICredential because these message identify legal entities.
-Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-1">The SATP Messages in row 1 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> <span class="bcp14">SHALL</span> be a LegalEntityvLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEvLEIC</a> schema.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-2">These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
+Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="legalentityengagementcontextrolevleicredential-credentials">
@@ -1323,7 +1325,8 @@ Gateway owner identities area form of legal entity as they identify the owner of
           <h4 id="name-legalentityengagementcontex">
 <a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-legalentityengagementcontex" class="section-name selfRef">LegalEntityEngagementContextRolevLEICredential Credentials</a>
           </h4>
-<p id="section-3.1.2-1">The SATP messages in row 2 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> are realized using a LegalEntityEngagementContextRolevLEICredential because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-1">The SATP Messages in row 2 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> <span class="bcp14">SHALL</span> be a LegalEntityEngagementContextRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a> schema.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-2">These messages are realized using a Legal Entity Engagement Context Role vLEI Credential (LEECRvLEIC) because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="officialorganizationalrolevleicredential-credentials">
@@ -1331,27 +1334,30 @@ Gateway owner identities area form of legal entity as they identify the owner of
           <h4 id="name-officialorganizationalrolev">
 <a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-officialorganizationalrolev" class="section-name selfRef">OfficialOrganizationalRolevLEICredential Credentials</a>
           </h4>
-<p id="section-3.1.3-1">The SATP messages in row 3 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> are realized using various vLEI credentials depending on use case context.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.3-2">Examples:<a href="#section-3.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-1">The SATP Messages in row 3 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> <span class="bcp14">SHALL</span> be one of a LegalEntityvLEICredential, LegalEntityEngagementContextRolevLEICredential, or OfficialOrganizationalRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEvLEIC</a>, <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a>, and <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json">LEOORvLEIC</a> schemas.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-2">These messages are realized using various vLEI credentials depending on use case context.<a href="#section-3.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-3">Examples:<a href="#section-3.1.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.3-3.1">
-              <p id="section-3.1.3-3.1.1">LegalEntityIdentityvLEICredential is used if an asset controller, lock evidence issuer, or commit authority are legal entities.<a href="#section-3.1.3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1.3-4.1">
+              <p id="section-3.1.3-4.1.1">LEvLEIC is used if an asset controller, lock evidence issuer, or commit authority are legal entities.<a href="#section-3.1.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.3-3.2">
-              <p id="section-3.1.3-3.2.1">OfficialOrganizationalRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.<a href="#section-3.1.3-3.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.1.3-4.2">
+              <p id="section-3.1.3-4.2.1">LEECRvLEIC is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.<a href="#section-3.1.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.3-3.3">
-              <p id="section-3.1.3-3.3.1">LegalEntityEngagementContextRolevLEICredential is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.<a href="#section-3.1.3-3.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.1.3-4.3">
+              <p id="section-3.1.3-4.3.1">Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.<a href="#section-3.1.3-4.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
 </div>
-<div id="jwk-key-structures">
+<div id="key-structures">
 <section id="section-3.1.4">
-          <h4 id="name-jwk-key-structures">
-<a href="#section-3.1.4" class="section-number selfRef">3.1.4. </a><a href="#name-jwk-key-structures" class="section-name selfRef">JWK Key Structures</a>
+          <h4 id="name-key-structures">
+<a href="#section-3.1.4" class="section-number selfRef">3.1.4. </a><a href="#name-key-structures" class="section-name selfRef">Key Structures</a>
           </h4>
-<p id="section-3.1.4-1">The SATP messages in row 4 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> are realized using JSON Web Key (JWK)  <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span> structures.<a href="#section-3.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-1">Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.<a href="#section-3.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-2">The SATP messages in row 4 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 1</a> <span class="bcp14">SHALL</span> be encoded using JSON Web Key (JWK) <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span> or COSE key <span>[<a href="#STD96" class="cite xref">STD96</a>]</span> formats.<a href="#section-3.1.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-3">The key structure <span class="bcp14">SHOULD</span> be extensible to support additional key formats.<a href="#section-3.1.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1815,9 +1821,21 @@ A comprehensive listing of vLEI profiles is provided even though some of the vLE
         <dd>
 <span class="refAuthor">Hargreaves, M.</span>, <span class="refAuthor">Hardjono, T.</span>, <span class="refAuthor">Belchior, R.</span>, <span class="refAuthor">Ramakrishna, V.</span>, and <span class="refAuthor">A. Chiriac</span>, <span class="refTitle">"Secure Asset Transfer Protocol (SATP) Core"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-satp-core-11</span>, <time datetime="2025-08-07" class="refDate">7 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11">https://datatracker.ietf.org/doc/html/draft-ietf-satp-core-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7159">[RFC7159]</dt>
+        <dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">RFC 7159</span>, <span class="seriesInfo">DOI 10.17487/RFC7159</span>, <time datetime="2014-03" class="refDate">March 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7159">https://www.rfc-editor.org/rfc/rfc7159</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC7517">[RFC7517]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refTitle">"JSON Web Key (JWK)"</span>, <span class="seriesInfo">RFC 7517</span>, <span class="seriesInfo">DOI 10.17487/RFC7517</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7517">https://www.rfc-editor.org/rfc/rfc7517</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2585">[RFC2585]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Operational Protocols: FTP and HTTP"</span>, <span class="seriesInfo">RFC 2585</span>, <span class="seriesInfo">DOI 10.17487/RFC2585</span>, <time datetime="1999-05" class="refDate">May 1999</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2585">https://www.rfc-editor.org/rfc/rfc2585</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD96">[STD96]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="STD91">[STD91]</dt>
         <dd>
@@ -1830,6 +1848,18 @@ A comprehensive listing of vLEI profiles is provided even though some of the vLE
 <dt id="RFC8610">[RFC8610]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GLEIF-vLEI-TechReq-Part1">[GLEIF-vLEI-TechReq-Part1]</dt>
+        <dd>
+<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 1: KERI Infrastructure"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part1-v1.3</span>, <time datetime="2025-04-16" class="refDate">16 April 2025</time>, <span>&lt;<a href="https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf">https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GLEIF-vLEI-TechReq-Part2">[GLEIF-vLEI-TechReq-Part2]</dt>
+        <dd>
+<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 2: vLEI Credentials"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part2-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GLEIF-vLEI-TechReq-Part3">[GLEIF-vLEI-TechReq-Part3]</dt>
+        <dd>
+<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 3: vLEI Credential Schema Registry"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part3-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ISO17442-3">[ISO17442-3]</dt>
         <dd>
@@ -1873,20 +1903,8 @@ A comprehensive listing of vLEI profiles is provided even though some of the vLE
 <span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft"</span>, <span class="seriesInfo">TOIP TSWG-CESR-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://trustoverip.github.io/tswg-cesr-specification/">https://trustoverip.github.io/tswg-cesr-specification/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="GLEIF-vLEI-EGF">[GLEIF-vLEI-EGF]</dt>
-        <dd>
-<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Verifiable LEI (vLEI) Ecosystem Governance Framework: Primary and Controlled Documents"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-v3.0</span>, <time datetime="2025-04-16" class="refDate">16 April 2025</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="GLEIF-vLEI-TechReq-Part1">[GLEIF-vLEI-TechReq-Part1]</dt>
-        <dd>
-<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 1: KERI Infrastructure"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part1-v1.3</span>, <time datetime="2025-04-16" class="refDate">16 April 2025</time>, <span>&lt;<a href="https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf">https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="GLEIF-vLEI-TechReq-Part2">[GLEIF-vLEI-TechReq-Part2]</dt>
-        <dd>
-<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 2: vLEI Credentials"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part2-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="GLEIF-vLEI-TechReq-Part3">[GLEIF-vLEI-TechReq-Part3]</dt>
       <dd>
-<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Technical Requirements Part 3: vLEI Credential Schema Registry"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-TechReq-Part3-v1.1</span>, <time datetime="2023-12-15" class="refDate">15 December 2023</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
+<span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Verifiable LEI (vLEI) Ecosystem Governance Framework: Primary and Controlled Documents"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-v3.0</span>, <time datetime="2025-04-16" class="refDate">16 April 2025</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
