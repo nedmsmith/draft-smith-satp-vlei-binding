@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-26T00:58:31.036075+00:00",
+  "timestamp": "2025-08-28T00:56:06.054401+00:00",
   "repo": "nedmsmith/draft-smith-satp-vlei-binding",
   "labels": [
     {
@@ -50,5 +50,34 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOPancDc6lr-6A",
+      "title": "Workstream to document comprehensive CDDL defn of vLEI binding ",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/1",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR captures significant edits to the architecture section and cddl file which primarily addresses the vlei binding semantics to satp. ",
+      "createdAt": "2025-08-27T22:30:17Z",
+      "updatedAt": "2025-08-27T22:31:37Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "118ad1c9fabb20f85be3ebe9350210f6b86092dc",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "nms-workstream",
+      "headRefOid": "b9a7dbba83c673794ec9f13e9dc985f11800d1a0",
+      "closedAt": "2025-08-27T22:31:37Z",
+      "mergedAt": "2025-08-27T22:31:37Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "20e4d50b548d58e3521f47ab1940b5b81e5f7b4f"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
