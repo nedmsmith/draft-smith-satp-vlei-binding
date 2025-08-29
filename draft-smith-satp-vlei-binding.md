@@ -154,7 +154,7 @@ entity:
 --- abstract
 
 The verifiable Legal Entity Identifier (vLEI) is a cryptographically verifiable extension of the LEI standard, designed to automate trust in organizational identity.
-Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses W3C Verifiable Credentials, Decentralized Identifiers (DIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
+Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses Authentic Chained Data Containers (ACDCs), Self-Addressing Identifiers (SAIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
 It enables secure, machine-readable identity assertions across financial, regulatory, and supply chain ecosystems, supporting role-based delegation and interoperability with decentralized trust frameworks.
 
 This specification defines vLEI for verifiable gateway operator identities and cryptographically links the gateway operator identity to the gateway identity.
@@ -165,7 +165,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
 
 # Introduction {#sec-intro}
 
-The SATP architecute {{-satp-arch}} defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
+The SATP architecture {{-satp-arch}} defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
 The SATP core protocol {{-satp-core}} is a protocol for exchanging digital assets that ensures the state of the asset is preserved across inter-domain transfers. It is an extensible protocol where fields containing identity and payload values that are not defined by SATP core may be defined by companion specifications.
 This specification defines a SATP core protocol binding for Verifiable Legal Entity Identifiers (vLEI) {{-iso-vlei}} used to identify SATP gateways and the organizations that operate them.
 In some use cases, the assets being transferred have legal considerations such that officers of the organization are expected to authorize digital asset transfers.
@@ -229,13 +229,13 @@ Examples:
 
  * LEECRvLEIC is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
 
-* Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
+ * Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
 
 ### Key Structures
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
-The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats.
+The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats. 
 
 The key structure SHOULD be extensible to support additional key formats.
 
