@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-28T00:56:06.054401+00:00",
+  "timestamp": "2025-08-31T01:00:24.649997+00:00",
   "repo": "nedmsmith/draft-smith-satp-vlei-binding",
   "labels": [
     {
@@ -76,6 +76,32 @@
       "mergeCommit": {
         "oid": "20e4d50b548d58e3521f47ab1940b5b81e5f7b4f"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOPancDc6mCSX4",
+      "title": "Update draft-smith-satp-vlei-binding.md",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/2",
+      "state": "OPEN",
+      "author": "Nicholas-Keystate",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Just made some small edits and typo fixes, hi Ned!\r\n\r\n\r\n",
+      "createdAt": "2025-08-29T18:27:10Z",
+      "updatedAt": "2025-08-29T18:27:11Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "eafe13b3a98f3fb75a15498894246fc227c24d35",
+      "headRepository": "Nicholas-Keystate/draft-smith-satp-vlei-binding",
+      "headRefName": "patch-1",
+      "headRefOid": "f1fcf9d242f31517c907ac034277dbc104870f2f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
