@@ -30,6 +30,9 @@ jobs:
         ruby-version: '3.1'
         bundler-cache: true
 
+    - name: Install Ruby gems
+      run: bundle install
+
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"
