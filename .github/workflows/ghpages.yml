@@ -24,15 +24,6 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v4
 
-    - name: Setup Ruby and Install Gems
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.1'
-        bundler-cache: true
-
-    - name: Install Ruby gems
-      run: bundle install
-
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"
