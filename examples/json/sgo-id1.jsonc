@@ -1,0 +1,7 @@
+{
+  "senderGatewayOwnerId": {
+    "content": "application/acdc+msgpk;profile=urn:vlei:leid",
+    "payload": "ACDC10MSGP...SAID...i:did:keri:..."
+    // ⟶ Plain text CESR framing around MessagePack serialization
+  }
+}

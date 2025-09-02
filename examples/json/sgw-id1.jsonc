@@ -1,0 +1,8 @@
+{
+  "senderGatewayId": {
+    "content": "application/acdc+cesr;profile=urn:vlei:ecr",
+    "payload": "ACDC10CESR...SAID...i:did:keri:..."
+    // ⟶ CESR‑encoded credential as plain text
+  }
+}
+

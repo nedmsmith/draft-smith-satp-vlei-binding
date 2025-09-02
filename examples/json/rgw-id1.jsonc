@@ -1,0 +1,8 @@
+{
+  "recipientGatewayId": {
+    "content": "application/said+json;profile=urn:vlei:ecr",
+    "payload": "QUNEQzEwSlNPTkJhc2U2NEVuY29kZWQvLi4u"
+    // ⟶ Base64 of raw JSON bytes for SAID credential
+  }
+}
+// ⟶ Recipient Gateway Identifier Credential

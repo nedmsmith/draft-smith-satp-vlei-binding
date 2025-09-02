@@ -1,0 +1,7 @@
+{
+  "senderGatewayNetworkId": {
+    "content": "application/acdc+cbor;profile=urn:vlei:ecr",
+    "payload": "ACDC10CBOR...SAID...i:did:keri:..."
+    // ⟶ CESR framing over CBOR serialization as plain text
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "receiverGatewayOwnerId": {
+    "content": "application/said+cesr;profile=urn:vlei:leid;base64=true",
+    "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
+    // ⟶ Base64 of binary CESR stream encoding of SAID credential
+  }
+}
