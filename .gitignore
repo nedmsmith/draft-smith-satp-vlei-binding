@@ -7,7 +7,6 @@
 *~
 .tags
 /*-[0-9][0-9].xml
-/.*.mk
 /.gems/
 /.idea/
 /.refcache
@@ -22,3 +21,4 @@ draft-smith-satp-vlei-binding.xml
 package-lock.json
 report.xml
 !requirements.txt
+*-autogen.cddl
