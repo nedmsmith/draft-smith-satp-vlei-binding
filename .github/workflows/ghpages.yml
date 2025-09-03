@@ -24,6 +24,9 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v4
 
+    - name: Debug workspace contents
+      run: ls -la /github/workspace
+
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"
