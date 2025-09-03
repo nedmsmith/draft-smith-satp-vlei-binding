@@ -17,8 +17,6 @@ include $(LIBDIR)/main.mk
 # ==== Functions ====
 include $(TOP)/funcs.mk
 EXAMPLES_JSONC := $(wildcard $(TOP)/examples/json/*.jsonc)
-export SCHEMA := $(CDDL_DIR)/autogen-mw.cddl
-
 $(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC)))
 
 $(LIBDIR)/main.mk:
