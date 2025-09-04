@@ -21,4 +21,5 @@ draft-smith-satp-vlei-binding.xml
 package-lock.json
 report.xml
 !requirements.txt
-*-autogen.cddl
+cddl/*-autogen.cddl
+examples/json/*.json
