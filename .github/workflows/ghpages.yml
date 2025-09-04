@@ -23,7 +23,7 @@ jobs:
     steps:
     - name: "Checkout"
       uses: actions/checkout@v4
-      
+
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"

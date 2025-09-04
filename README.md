@@ -2,7 +2,7 @@
 
 # SATP vLEI Binding
 
-This is the working area for the individual Internet-Draft, "TODO - Your title".
+This is the working area for the individual Internet-Draft, "A SATP Core Binding for vLEI Identities".
 
 * [Editor's Copy](https://nedmsmith.github.io/draft-smith-satp-vlei-binding/#go.draft-smith-satp-vlei-binding.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-smith-satp-vlei-binding)
