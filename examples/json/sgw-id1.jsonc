@@ -1,8 +1,13 @@
 {
   "senderGatewayId": {
-    "content": "application/acdc+cesr;profile=urn:vlei:ecr",
+    "vleitype": "sender-gateway-id",
+    "content": {
+      "mt": "application/acdc+cesr;profile=urn:vlei:ecr"
+      // cf, cbt, oid omitted — optional in schema
+    },
     "payload": "ACDC10CESR...SAID...i:did:keri:..."
-    // ⟶ CESR‑encoded credential as plain text
+    // CESR-encoded ACDC credential (ECR profile) as plain text
   }
 }
+
 

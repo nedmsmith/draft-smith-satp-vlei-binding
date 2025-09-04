@@ -1,7 +1,12 @@
 {
   "receiverGatewayOwnerId": {
-    "content": "application/said+cesr;profile=urn:vlei:leid;base64=true",
+    "vleitype": "leid", // always "leid" for this field
+    "content": {
+      "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
+      // could also include cf, cbt, oid if known
+    },
     "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
     // ⟶ Base64 of binary CESR stream encoding of SAID credential
   }
 }
+

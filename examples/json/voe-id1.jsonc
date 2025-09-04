@@ -1,7 +1,13 @@
 {
   "verifiedOriginatorEntityId": {
-    "content": "application/acdc+json;profile=urn:vlei:leid",
-    "payload": "ACDC10JSON...SAID...i:did:keri:..." 
-    // ⟶ Plain text CESR/ACDC credential in JSON serialization
+    "vleitype": "verified-originator-entity-id",
+    "content": {
+      "mt": "application/acdc+json;profile=urn:vlei:leid"
+      // JSON serialization of an ACDC credential (LEID profile)
+      // CESR framing in plain text, not CBOR
+    },
+    "payload": "ACDC10JSON...SAID...i:did:keri:..."
+    // literal CESR/ACDC JSON text, not base64
   }
 }
+

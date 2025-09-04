@@ -1,9 +1,12 @@
 {
-  "recipientGatewayNetworkId": {
-    // Media type string per vLEI profile-content rule
-    "content": "application/acdc+cbor;profile=urn:vlei:ecr",
-    // Fictitious CESR-over-CBOR payload (safe test data)
-    "payload": "ACDC10CBORTESTSAIDi:did:keri:EXAMPLERGWNETID"
-    // ⟶ CESR framing over CBOR serialization as plain text
+  "senderGatewayNetworkId": {
+    "vleitype": "sender-gateway-network-id",
+    "content": {
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
+      "cbt": false
+    },
+    "payload": "gEEBAQ..." 
+    // base64 of CBOR-encoded ACDC (ECR profile)
   }
 }
+

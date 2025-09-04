@@ -5,7 +5,8 @@
   },
   "beneficiaryPubkey": {
     "content": "application/cose;cose-type=cose-key",
-    "payload": "hKMBpQ..."
+    "encoding": "base64", // explicitly flagging representation
+    "payload": "aEtNQnBRLi4u" // base64 of CBOR COSE_Key bytes
   },
   "senderGatewaySignaturePublicKey": {
     "content": "application/jwk+json",
@@ -13,7 +14,8 @@
   },
   "receiverGatewaySignaturePublicKey": {
     "content": "application/cose;cose-type=cose-key",
-    "payload": "hKMCpA..."
+    "encoding": "base64",
+    "payload": "aEtNQ3BBLi4u"
   },
   "senderGatewayDeviceIdentityPubkey": {
     "content": "application/pkix-cert",
@@ -23,7 +25,7 @@
   "receiverGatewayDeviceIdentityPubkey": {
     "content": "application/pkix-cert",
     "encoding": "DER",
-    "payload": "MIIB..."
+    "payload": "MIIB..." // base64 DER
   },
   "lockEvidenceVerificationKey": {
     "content": "application/jwk+json",
@@ -31,12 +33,14 @@
   },
   "commitVerificationKey": {
     "content": "application/cose;cose-type=cose-key",
-    "payload": "hKMDpQ..."
+    "encoding": "base64",
+    "payload": "aEtNQ3BBLi4u"
   },
   "postCommitSecureChannelKey": {
     "content": "application/jwk+json",
     "payload": "{ \"kty\": \"EC\", \"crv\": \"P-384\", \"x\": \"...\", \"y\": \"...\" }"
   }
 }
+
 
 

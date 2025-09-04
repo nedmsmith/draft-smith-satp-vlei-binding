@@ -1,7 +1,12 @@
 {
   "senderGatewayNetworkId": {
-    "content": "application/acdc+cbor;profile=urn:vlei:ecr",
-    "payload": "ACDC10CBOR...SAID...i:did:keri:..."
-    // ⟶ CESR framing over CBOR serialization as plain text
+    "vleitype": "sender-gateway-network-id",
+    "content": {
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
+      "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
+    },
+    "payload": "oWJ0ZXN0LWVjci1jcmVkZW50aWFs..." 
+    // base64 of the CBOR-encoded ACDC (ECR profile)
   }
 }
+

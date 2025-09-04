@@ -1,7 +1,11 @@
 {
   "senderGatewayOwnerId": {
-    "content": "application/acdc+msgpk;profile=urn:vlei:leid",
+    "vleitype": "sender-gateway-owner-id",
+    "content": {
+      "mt": "application/acdc+msgpk;profile=urn:vlei:leid"
+      // cf, cbt, oid omitted here — optional in schema
+    },
     "payload": "ACDC10MSGP...SAID...i:did:keri:..."
-    // ⟶ Plain text CESR framing around MessagePack serialization
+    // MessagePack serialization of an ACDC credential (LEID profile)
   }
 }
