@@ -235,7 +235,7 @@ Examples:
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
-The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats. 
+The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats.
 
 The key structure SHOULD be extensible to support additional key formats.
 
