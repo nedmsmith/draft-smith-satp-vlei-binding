@@ -1,6 +1,5 @@
 {
   "senderGatewayOwnerId": {
-    "vleitype": "sender-gateway-owner-id",
     "content": {
       "mt": "application/acdc+msgpk;profile=urn:vlei:leid"
       // cf, cbt, oid omitted here — optional in schema

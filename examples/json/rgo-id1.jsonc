@@ -1,6 +1,5 @@
 {
   "receiverGatewayOwnerId": {
-    "vleitype": "leid", // always "leid" for this field
     "content": {
       "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
       // could also include cf, cbt, oid if known

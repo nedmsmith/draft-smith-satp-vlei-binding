@@ -1,12 +1,10 @@
 {
   "verifiedBeneficiaryEntityId": {
-    "vleitype": "verified-beneficiary-entity-id",
     "content": {
-      "mt": "application/said+cbor;profile=urn:vlei:leid;base64=true",
-      "cbt": false // no TN() CBOR tag; payload is base64 of raw CBOR
+      "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
     },
     "payload": "QUNEQzEwQ0JPUkJhc2U2NEVuY29kZWQvLi4u"
-    // base64 of binary CBOR serialization of SAID credential (LEID profile)
+    // base64 of binary CESR serialization of SAID credential (LEID profile)
   }
 }
 

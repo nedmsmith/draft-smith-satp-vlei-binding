@@ -1,6 +1,5 @@
 {
   "senderGatewayId": {
-    "vleitype": "sender-gateway-id",
     "content": {
       "mt": "application/acdc+cesr;profile=urn:vlei:ecr"
       // cf, cbt, oid omitted — optional in schema

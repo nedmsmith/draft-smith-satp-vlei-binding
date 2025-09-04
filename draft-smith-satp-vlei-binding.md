@@ -264,14 +264,18 @@ The follwing media types MAY be used when supplying ACDC credential payloads:
 |===
 {: #tbl-vlei-media-types title="vLEI media types" align=left}
 
-| Profile name                               | Profile ID                         |
-|===                                         |                                     |
-| Legal Entity Identity (LEI‑ID)             | ;profile="urn:vlei:lei-id"          |
-| Engagement Context Role (ECR)              | ;profile="urn:vlei:ecr"             |
-| Official Organizational Role (OOR)         | ;profile="urn:vlei:oor"             |
-| Legal Entity Authorizing Role (LAR)        | ;profile="urn:vlei:lar"             |
-| Qualified vLEI Issuer (QVI)                | ;profile="urn:vlei:qvi"             |
-| vLEI Root Authority (vRA)                  | ;profile="urn:vlei:vra"             |
+### Profile Optonal Parameter
+
+The media type assignments have an optional parameter named "profile=" that can be used to identify the vLEI credential type. It is expressed in URI format.
+
+| Profile name                               | Profile ID                        |
+|===                                         |                                   |
+| Legal Entity Identity (LEID)             | profile=urn:vlei:leid          |
+| Engagement Context Role (ECR)              | profile=urn:vlei:ecr             |
+| Official Organizational Role (OOR)         | profile=urn:vlei:oor             |
+| Legal Entity Authorizing Role (LAR)        | profile=urn:vlei:lar             |
+| Qualified vLEI Issuer (QVI)                | profile=urn:vlei:qvi             |
+| vLEI Root Authority (vRA)                  | profile=urn:vlei:vra             |
 |===
 {: #tbl-vlei-profiles title="vLEI profiles" align=left}
 
@@ -279,7 +283,490 @@ The various vLEI credential types can be specified in a media type using the pro
 {{tbl-vlei-profiles}} summarizes the profile identifiers for the various vLEI credential types.
 A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.
 
-## Example SATP Credential Payload
+### Charset Optonal Parameter
+
+The media type assignments have an optional parameter named "charset=" that can be used to identify the character encoding scheme when payload is a text encoding. By default "utf-8" is assumed. Alternative character set encodings MUST populate "charset=".
+
+# Identities {#sec-ids}
+
+TODO
+
+## Identity Binding {#sec-bind}
+
+TODO
+
+# Verification of vLEI Payloads {#sec-verify}
+
+TODO
+
+# Implementation Status
+
+TODO
+
+# Security Considerations {#sec-sec}
+
+TODO
+
+# IANA Considerations {#sec-iana}
+
+## Media Type Assignment
+
+IANA is requested to add the following media types to the "Media Types"
+registry {{!IANA.media-types}}.
+
+### application/acdc+json
+
+*Type name:*
+
+- application
+
+*Subtype name:*
+
+- acdc+json
+
+*Required parameters:*
+
+- None
+
+*Optional parameters:*
+
+- `profile` — Indicates the payload conforms to a specific vLEI credential type.
+- `base64=true` — Indicates the ACDC stream is binary and base64-encoded for use in text transports.
+- `base64=false` — Indicates the ACDC stream is text encoded. By defaualt `base64=false`.
+- `charset` — Indicates character set for text encodings, default is UTF-8.
+
+*Encoding considerations:*
+
+- 8-bit; JSON text encoding defaults to UTF-8.
+- When `base64=true`, the ACDC stream is base64-encoded for safe embedding in JSON.
+
+*Security considerations:*
+
+- ACDC payloads are cryptographically signed.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
+- See {{sec-iana}}.
+
+*Interoperability considerations:*
+
+- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+
+*Published specification:*
+
+- {{&SELF}}
+- Key Event Receipt Infrastructure (KERI) — {{-keri}}
+- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
+- Composable Event Streaming Representation (CESR) — {{-cesr}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+
+*Applications that use this media type:*
+
+- GLEIF vLEI issuance and verification systems.
+- SATP-compliant credential exchange platforms.
+- Forensic credential chaining and audit systems.
+
+*Fragment identifier considerations:*
+
+- None
+
+*Additional information:*
+
+- *Magic number(s):* None
+- *File extension(s):* `.acdcjson`
+- *Macintosh file type code(s):* None
+
+*Person & email address to contact for further information:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Intended usage:*
+
+- COMMON
+
+*Author:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Change controller:*
+
+- IETF / GLEIF
+
+### application/acdc+cbor
+
+*Type name:*
+
+- application
+
+*Subtype name:*
+
+- acdc+cbor
+
+*Required parameters:*
+
+- None
+
+*Optional parameters:*
+
+- `profile` — Indicates the payload conforms to a specific vLEI credential type.
+- `base64=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
+- `base64=false` — Indicates the ACDC stream is binary for use in binary transports. By default `base64=false`.
+
+*Encoding considerations:*
+
+- ACDC streams are CBOR encoded for use with binary transports.
+If the transport is a text stream the `base64=true` option should be used.
+
+*Security considerations:*
+
+- CESR payloads are cryptographically signed and self-framing.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
+- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
+- See {{sec-iana}}.
+
+*Interoperability considerations:*
+
+- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+
+*Published specification:*
+
+- {{&SELF}}
+- Key Event Receipt Infrastructure (KERI) — {{-keri}}
+- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
+- Composable Event Streaming Representation (CESR) — {{-cesr}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+
+*Applications that use this media type:*
+
+- GLEIF vLEI issuance and verification systems
+- SATP-compliant credential exchange platforms
+- Forensic credential chaining and audit systems
+
+*Fragment identifier considerations:*
+
+- None
+
+*Additional information:*
+
+- Magic number(s): None
+- File extension(s): `.acdcbor`
+- Macintosh file type code(s): None
+
+*Person & email address to contact for further information:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Intended usage:*
+
+- COMMON
+
+*Author:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Change controller:*
+
+- IETF / GLEIF
+
+### application/acdc+msgpk
+
+*Type name:*
+
+- application
+
+*Subtype name:*
+
+- acdc+msgpk
+
+*Required parameters:*
+
+- None
+
+*Optional parameters:*
+
+- `profile` — Indicates the payload conforms to a specific vLEI credential type.
+- `base64=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
+- `base64=false` — Indicates the ACDC stream is binary for use in binary transports. By default `base64=false`.
+
+*Encoding considerations:*
+
+- ACDC streams are MSGPK encoded for use with binary transports.
+If the transport is a text stream the `base64=true` option should be used.
+
+*Security considerations:*
+
+- ACDC payloads are cryptographically signed and self-framing.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
+- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
+- See {{sec-iana}}.
+
+*Interoperability considerations:*
+
+- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+
+*Published specification:*
+
+- {{&SELF}}
+- Key Event Receipt Infrastructure (KERI) — {{-keri}}
+- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
+- Composable Event Streaming Representation (CESR) — {{-cesr}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+
+*Applications that use this media type:*
+
+- GLEIF vLEI issuance and verification systems
+- SATP-compliant credential exchange platforms
+- Forensic credential chaining and audit systems
+
+*Fragment identifier considerations:*
+
+- None
+
+*Additional information:*
+
+- Magic number(s): None
+- File extension(s): `.acdcmsgpk`
+- Macintosh file type code(s): None
+
+*Person & email address to contact for further information:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Intended usage:*
+
+- COMMON
+
+*Author:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Change controller:*
+
+- IETF / GLEIF
+
+### application/acdc+cesr
+
+*Type name:*
+
+- application
+
+*Subtype name:*
+
+- acdc+cesr
+
+*Required parameters:*
+
+- None
+
+*Optional parameters:*
+
+- `profile` — Indicates the payload conforms to a specific vLEI credential type.
+- `base64=true` — Indicates the CESR stream is text encoded. By default `base64=true`.
+- `base64=false` — Indicates the CESR stream is binary encoded.
+- `charset` — Optional; default is UTF-8
+
+*Encoding considerations:*
+
+- 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
+- When `base64=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+
+*Security considerations:*
+
+- CESR payloads are cryptographically signed and self-framing.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
+- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
+- See {{sec-iana}}.
+
+*Interoperability considerations:*
+
+- CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
+If CESR is binary encoded, the `base64=` parameter must be set to `false`.
+
+*Published specification:*
+
+- {{&SELF}}
+- Key Event Receipt Infrastructure (KERI) — {{-keri}}
+- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
+- Composable Event Streaming Representation (CESR) — {{-cesr}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+
+*Applications that use this media type:*
+
+- GLEIF vLEI issuance and verification systems
+- SATP-compliant credential exchange platforms
+- Forensic credential chaining and audit systems
+
+*Fragment identifier considerations:*
+
+- None
+
+*Additional information:*
+
+- Magic number(s): None
+- File extension(s): `.acdccesr`
+- Macintosh file type code(s): None
+
+*Person & email address to contact for further information:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Intended usage:*
+
+- COMMON
+
+*Author:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Change controller:*
+
+- IETF / GLEIF
+
+### application/said+cesr
+
+*Type name:*
+
+- application
+
+*Subtype name:*
+
+- said+cesr
+
+*Required parameters:*
+
+- None
+
+*Optional parameters:*
+
+- `profile` — Indicates the payload conforms to a specific vLEI credential type
+- `base64=true` — Indicates the CESR stream is text encoded. By default `base64=true`.
+- `base64=false` — Indicates the CESR stream is binary encoded.
+- `charset` — Optional; default is UTF-8
+
+*Encoding considerations:*
+
+- 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
+- When `base64=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+
+*Security considerations:*
+
+- CESR payloads are cryptographically signed and self-framing.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
+- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
+- See {{sec-iana}}.
+
+*Interoperability considerations:*
+
+- CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
+If CESR is binary encoded, the `base64=` parameter must be set to `false`.
+
+*Published specification:*
+
+- {{&SELF}}
+- Key Event Receipt Infrastructure (KERI) — {{-keri}}
+- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
+- Composable Event Streaming Representation (CESR) — {{-cesr}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+
+*Applications that use this media type:*
+
+- GLEIF vLEI issuance and verification systems
+- SATP-compliant credential exchange platforms
+- Forensic credential chaining and audit systems
+
+*Fragment identifier considerations:*
+
+- None
+
+*Additional information:*
+
+- Magic number(s): None
+- File extension(s): `.saidcesr`
+- Macintosh file type code(s): None
+
+*Person & email address to contact for further information:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Intended usage:*
+
+- COMMON
+
+*Author:*
+
+- N. Smith <ned.smith.ietf@outlook.com>
+- GLEIF IT Team <vlei-support@gleif.org>
+
+*Change controller:*
+
+- IETF / GLEIF
+
+## CoAP Content-Format ID Assignments
+
+IANA is requested to assign the following Content-Format numbers in the
+"CoAP Content-Formats" sub-registry, within the "Constrained RESTful
+Environments (CoRE) Parameters" Registry {{!IANA.core-parameters}}:
+
+| Content-Type | Content Coding | ID | Reference |
+|---
+| application/acdc+json | - | TBA1 | {{&SELF}} |
+| application/acdc+cbor | - | TBD2 | {{&SELF}} |
+| application/acdc+msgpk | - | TBD3 | {{&SELF}} |
+| application/acdc+cesr | - | TBD4 | {{&SELF}} |
+| application/said+cesr | - | TBD5 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:leid | - | TBA10 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:ecr | - | TBA11 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:oor | - | TBA12 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:lar | - | TBA13 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:qvi | - | TBA14 | {{&SELF}} |
+| application/acdc+json;profile=urn:vlei:vra | - | TBA15 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:leid | - | TBA20 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:ecr | - | TBA21 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:oor | - | TBA22 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:lar | - | TBA23 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:qvi | - | TBA24 | {{&SELF}} |
+| application/acdc+cbor;profile=urn:vlei:vra | - | TBA25 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:leid | - | TBA30 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:ecr | - | TBA31 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:oor | - | TBA32 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:lar | - | TBA33 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:qvr | - | TBA34 | {{&SELF}} |
+| application/acdc+msgpk;profile=urn:vlei:vra | - | TBA35 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:leid | - | TBA40 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:ecr | - | TBA41 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:oor | - | TBA42 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:lar | - | TBA43 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:qvr | - | TBA44 | {{&SELF}} |
+| application/acdc+cesr;profile=urn:vlei:vra | - | TBA45 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:leid | - | TBA50 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:ecr | - | TBA51 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:oor | - | TBA52 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:lar | - | TBA53 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:qvr | - | TBA54 | {{&SELF}} |
+| application/said+cesr;profile=urn:vlei:vra | - | TBA55 | {{&SELF}} |
+{: align="left" title="New Content-Formats"}
+
+--- back
+
+# Full CDDL {#sec-autogen}
+
+~~~ cddl
+{::include cddl/satp-autogen.cddl}
+~~~
+
+# Examples in JSON
 
 The following SATP wrapper examples show synthetic vLEI data:
 
@@ -320,84 +807,6 @@ The following SATP wrapper examples show synthetic key data:
 ~~~ json
 {::include examples/json/key-carrier1.jsonc}
 ~~~
-
-# Identities {#sec-ids}
-
-## Identity Binding {#sec-bind}
-
-# Verification of vLEI Payloads {#sec-verify}
-
-# Security Considerations {#sec-sec}
-
-TODO Security
-
-
-# IANA Considerations {#sec-iana}
-
-## Media Type Registration: application/acdc+json
-
-Type name:
-: application
-
-Subtype name:
-: acdc+json
-
-Required parameters:
-: None
-
-Optional parameters:
-: `profile` — Indicates the credential conforms to a specific schema registry (e.g., "vlei")
-: `base64` — Indicates the CESR stream is base64-encoded for transport in JSON wrappers
-: `charset` — Optional; default is UTF-8
-
-Encoding considerations:
-: 8bit; CESR text encoding is UTF-8 compatible and self-framing.
-: When `base64=true`, the CESR stream is base64-encoded for safe embedding in JSON.
-
-Security considerations:
-: CESR payloads are cryptographically signed and self-framing.
-: Signature verification is required to ensure authenticity and integrity.
-: Schema SAIDs must be validated against the [GLEIF vLEI Credential Schema Registry](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf).
-: Credential provenance must be anchored to the GLEIF Root AID via ACDC edges.
-
-Interoperability considerations:
-: CESR supports dual text-binary encoding; this media type assumes CESR text encoding.
-: When `base64=true`, payloads are safely embeddable in JSON-based SATP wrappers.
-: Compatible with SATP, ACDC, and KERI protocols.
-
-Published specification:
-: Composable Event Streaming Representation (CESR) — [draft-ssmith-cesr-03](https://www.ietf.org/archive/id/draft-ssmith-cesr-03.html)
-: GLEIF vLEI Credential Schema Registry — [GLEIF Registry PDF](https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/60ede5e451-1755158176/2023-12-15_vlei-egf-v3.0-technical-requirements-part-3-vlei-credential-schema-registry_v1.1-final.pdf)
-
-Applications that use this media type:
-: GLEIF vLEI issuance and verification systems
-: SATP-compliant credential exchange platforms
-: Forensic credential chaining and audit systems
-
-Fragment identifier considerations:
-: None
-
-Additional information:
-: Magic number(s): None
-: File extension(s): `.cesrj`
-: Macintosh file type code(s): None
-
-Person & email address to contact for further information:
-: N. Smith <spec-author@example.org>
-: GLEIF IT Team <vlei-support@gleif.org>
-
-Intended usage:
-: COMMON
-
-Author:
-: TBD, GLEIF IT Team
-
-Change controller:
-: IETF / GLEIF
-
-
-
---- back
 
 # Acknowledgments
 {:numbered="false"}
