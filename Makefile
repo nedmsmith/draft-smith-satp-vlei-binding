@@ -19,23 +19,6 @@ else
 	    -b main https://github.com/martinthomson/i-d-template $(LIBDIR)
 endif
 
-# ==== Tool Detection ====
-#TOOLS_MK := $(TOP)/tools.mk
-#include $(TOOLS_MK)
-#$(info [cddl/Makefile] TOOLS_MK = $(TOOLS_MK))
-
-# ==== Functions ====
-#include $(TOP)/funcs.mk
-#EXAMPLES_JSONC := $(wildcard $(TOP)/examples/json/*.jsonc)
-#$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC)))
-
-# ==== Targets ====
-#.DEFAULT_GOAL := build-doc
-
-#build-doc: check-satp-examples
-#	$(MAKE) draft-smith-satp-vlei-binding.txt
-#	$(MAKE) draft-smith-satp-vlei-binding.html
-
 include $(CDDL_DIR)frags.mk
 # $1 - schema name
 # $2 - list of cddl input files
@@ -48,6 +31,8 @@ $(CDDL_DIR)$(1)-autogen.cddl: $(addprefix $(CDDL_DIR),$(2))
 	$(MAKE) -C $(CDDL_DIR) check-$(1)-examples
 
 endef # cddl_targets
+
+$(eval $(call cddl_targets,satp,$(CDDL_FRAGS)))
 
 clean::
 	$(MAKE) -C $(CDDL_DIR) clean
