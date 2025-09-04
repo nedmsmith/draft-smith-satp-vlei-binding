@@ -1,6 +1,5 @@
 {
   "recipientGatewayId": {
-    "vleitype": "recipient-gateway-id",
     "content": {
       "mt": "application/acdc+cbor;profile=urn:vlei:ecr", // from vlei-media-type enum
       "cf": 0,

@@ -1,6 +1,5 @@
 {
   "senderGatewayNetworkId": {
-    "vleitype": "sender-gateway-network-id",
     "content": {
       "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
