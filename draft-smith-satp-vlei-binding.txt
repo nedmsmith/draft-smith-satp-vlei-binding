@@ -16,13 +16,13 @@ Abstract
    The verifiable Legal Entity Identifier (vLEI) is a cryptographically
    verifiable extension of the LEI standard, designed to automate trust
    in organizational identity.  Governed by the Global Legal Entity
-   Identifier Foundation (GLEIF), the vLEI system uses W3C Verifiable
-   Credentials, Decentralized Identifiers (DIDs), and Key Event Receipt
-   Infrastructure (KERI) to issue and verify credentials for legal
-   entities and their authorized representatives.  It enables secure,
-   machine-readable identity assertions across financial, regulatory,
-   and supply chain ecosystems, supporting role-based delegation and
-   interoperability with decentralized trust frameworks.
+   Identifier Foundation (GLEIF), the vLEI system uses Authentic Chained
+   Data Containers (ACDCs), Self-Addressing Identifiers (SAIDs), and Key
+   Event Receipt Infrastructure (KERI) to issue and verify credentials
+   for legal entities and their authorized representatives.  It enables
+   secure, machine-readable identity assertions across financial,
+   regulatory, and supply chain ecosystems, supporting role-based
+   delegation and interoperability with decentralized trust frameworks.
 
    This specification defines vLEI for verifiable gateway operator
    identities and cryptographically links the gateway operator identity
@@ -106,7 +106,7 @@ Table of Contents
 
 1.  Introduction
 
-   The SATP architecute [I-D.ietf-satp-architecture] defines an
+   The SATP architecture [I-D.ietf-satp-architecture] defines an
    interoperability architecture for interconnection between networks or
    systems that anticipates a secure asset transfer protocol that
    satisfies security, privacy, atomicity and liveliness requirements in

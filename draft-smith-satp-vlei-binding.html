@@ -8,7 +8,7 @@
 <meta content="Ned Smith" name="author">
 <meta content="
        The verifiable Legal Entity Identifier (vLEI) is a cryptographically verifiable extension of the LEI standard, designed to automate trust in organizational identity.
-Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses W3C Verifiable Credentials, Decentralized Identifiers (DIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
+Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses Authentic Chained Data Containers (ACDCs), Self-Addressing Identifiers (SAIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
 It enables secure, machine-readable identity assertions across financial, regulatory, and supply chain ecosystems, supporting role-based delegation and interoperability with decentralized trust frameworks. 
        This specification defines vLEI for verifiable gateway operator identities and cryptographically links the gateway operator identity to the gateway identity.
 Thus SATP core lock assertions are cryptographically linked to gateway operator identities. 
@@ -1085,7 +1085,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">The verifiable Legal Entity Identifier (vLEI) is a cryptographically verifiable extension of the LEI standard, designed to automate trust in organizational identity.
-Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses W3C Verifiable Credentials, Decentralized Identifiers (DIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
+Governed by the Global Legal Entity Identifier Foundation (GLEIF), the vLEI system uses Authentic Chained Data Containers (ACDCs), Self-Addressing Identifiers (SAIDs), and Key Event Receipt Infrastructure (KERI) to issue and verify credentials for legal entities and their authorized representatives.
 It enables secure, machine-readable identity assertions across financial, regulatory, and supply chain ecosystems, supporting role-based delegation and interoperability with decentralized trust frameworks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">This specification defines vLEI for verifiable gateway operator identities and cryptographically links the gateway operator identity to the gateway identity.
 Thus SATP core lock assertions are cryptographically linked to gateway operator identities.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
@@ -1239,7 +1239,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The SATP architecute <span>[<a href="#I-D.ietf-satp-architecture" class="cite xref">I-D.ietf-satp-architecture</a>]</span> defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
+<p id="section-1-1">The SATP architecture <span>[<a href="#I-D.ietf-satp-architecture" class="cite xref">I-D.ietf-satp-architecture</a>]</span> defines an interoperability architecture for interconnection between networks or systems that anticipates a secure asset transfer protocol that satisfies security, privacy, atomicity and liveliness requirements in the transfer of assets.
 The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> is a protocol for exchanging digital assets that ensures the state of the asset is preserved across inter-domain transfers. It is an extensible protocol where fields containing identity and payload values that are not defined by SATP core may be defined by companion specifications.
 This specification defines a SATP core protocol binding for Verifiable Legal Entity Identifiers (vLEI) <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span> used to identify SATP gateways and the organizations that operate them.
 In some use cases, the assets being transferred have legal considerations such that officers of the organization are expected to authorize digital asset transfers.
