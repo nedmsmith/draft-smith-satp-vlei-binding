@@ -2,7 +2,7 @@
 ROOT := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 TOP := $(abspath $(ROOT))
 LIBDIR := lib/
-CDDL_DIR := $(TOP)/cddl/
+CDDL_DIR := cddl/
 
 SHELL := /bin/bash
 .SHELLFLAGS := -lc
