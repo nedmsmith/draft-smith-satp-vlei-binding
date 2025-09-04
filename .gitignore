@@ -22,3 +22,4 @@ package-lock.json
 report.xml
 !requirements.txt
 *-autogen.cddl
+examples/json/*.json
