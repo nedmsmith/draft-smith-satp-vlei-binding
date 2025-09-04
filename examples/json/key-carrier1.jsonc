@@ -1,0 +1,46 @@
+{
+  "originatorPubkey": {
+    "content": "application/jwk+json",
+    "payload": "{ \"kty\": \"EC\", \"crv\": \"P-256\", \"x\": \"...\", \"y\": \"...\" }"
+  },
+  "beneficiaryPubkey": {
+    "content": "application/cose;cose-type=cose-key",
+    "encoding": "base64", // explicitly flagging representation
+    "payload": "aEtNQnBRLi4u" // base64 of CBOR COSE_Key bytes
+  },
+  "senderGatewaySignaturePublicKey": {
+    "content": "application/jwk+json",
+    "payload": "{ \"kty\": \"RSA\", \"n\": \"...\", \"e\": \"AQAB\" }"
+  },
+  "receiverGatewaySignaturePublicKey": {
+    "content": "application/cose;cose-type=cose-key",
+    "encoding": "base64",
+    "payload": "aEtNQ3BBLi4u"
+  },
+  "senderGatewayDeviceIdentityPubkey": {
+    "content": "application/pkix-cert",
+    "encoding": "PEM",
+    "payload": "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----"
+  },
+  "receiverGatewayDeviceIdentityPubkey": {
+    "content": "application/pkix-cert",
+    "encoding": "DER",
+    "payload": "MIIB..." // base64 DER
+  },
+  "lockEvidenceVerificationKey": {
+    "content": "application/jwk+json",
+    "payload": "{ \"kty\": \"OKP\", \"crv\": \"Ed25519\", \"x\": \"...\" }"
+  },
+  "commitVerificationKey": {
+    "content": "application/cose;cose-type=cose-key",
+    "encoding": "base64",
+    "payload": "aEtNQ3BBLi4u"
+  },
+  "postCommitSecureChannelKey": {
+    "content": "application/jwk+json",
+    "payload": "{ \"kty\": \"EC\", \"crv\": \"P-384\", \"x\": \"...\", \"y\": \"...\" }"
+  }
+}
+
+
+

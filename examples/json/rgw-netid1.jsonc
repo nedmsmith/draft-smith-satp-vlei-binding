@@ -1,0 +1,12 @@
+{
+  "senderGatewayNetworkId": {
+    "vleitype": "sender-gateway-network-id",
+    "content": {
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
+      "cbt": false
+    },
+    "payload": "gEEBAQ..." 
+    // base64 of CBOR-encoded ACDC (ECR profile)
+  }
+}
+

@@ -1,0 +1,13 @@
+{
+  "recipientGatewayId": {
+    "vleitype": "recipient-gateway-id",
+    "content": {
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr", // from vlei-media-type enum
+      "cf": 0,
+      "oid": "1.2.3.4.6" // actual OID for this credential type
+    },
+    "payload": "ACDC10CBORTESTSAIDi:did:keri:EXAMPLERGWNETID"
+    // raw CBOR bytes or base64/base64url string, but not CBOR-tagged
+  }
+}
+

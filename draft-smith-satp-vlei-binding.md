@@ -275,17 +275,50 @@ The follwing media types MAY be used when supplying ACDC credential payloads:
 |===
 {: #tbl-vlei-profiles title="vLEI profiles" align=left}
 
-
 The various vLEI credential types can be specified in a media type using the profile option.
 {{tbl-vlei-profiles}} summarizes the profile identifiers for the various vLEI credential types.
 A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.
 
 ## Example SATP Credential Payload
 
-The following JSON document complies with the SATP CDDL schema using synthetic CESR payloads:
+The following SATP wrapper examples show synthetic vLEI data:
 
 ~~~ json
-{::include json/examples/cesr+json-vlei.json}
+{::include examples/json/voe-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/vbe-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/sgo-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/rgo-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/sgw-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/rgw-id1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/sgw-netid1.jsonc}
+~~~
+
+~~~ json
+{::include examples/json/rgw-netid1.jsonc}
+~~~
+
+The following SATP wrapper examples show synthetic key data:
+
+~~~ json
+{::include examples/json/key-carrier1.jsonc}
 ~~~
 
 # Identities {#sec-ids}
@@ -301,13 +334,13 @@ TODO Security
 
 # IANA Considerations {#sec-iana}
 
-## Media Type Registration: application/cesr+json
+## Media Type Registration: application/acdc+json
 
 Type name:
 : application
 
 Subtype name:
-: cesr+json
+: acdc+json
 
 Required parameters:
 : None

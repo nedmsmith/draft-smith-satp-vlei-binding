@@ -1,117 +1,82 @@
+
 ; =====================================================================
 ; --- SATP Message (Entry Point) ---
 ; =====================================================================
 
 satp-message = {
   ; --- Stage 1 ---
-  ? verifiedOriginatorEntityId:          wrapped-vlei-lei-id,
-  ? verifiedBeneficiaryEntityId:         wrapped-vlei-lei-id,
-  ? senderGatewayOwnerId:                wrapped-vlei-lei-id,
-  ? receiverGatewayOwnerId:               wrapped-vlei-lei-id,
+  ? verifiedOriginatorEntityId: wrapped-vlei ; always "leid"
+  ? verifiedBeneficiaryEntityId: wrapped-vlei ; always "leid"
+  ? senderGatewayOwnerId: wrapped-vlei ; always "leid"
+  ? receiverGatewayOwnerId: wrapped-vlei ; always "leid"
 
-  ? senderGatewayId:                     wrapped-vlei-ecr,
-  ? recipientGatewayId:                  wrapped-vlei-ecr,
-  ? senderGatewayNetworkId:              wrapped-vlei-ecr,
-  ? recipientGatewayNetworkId:           wrapped-vlei-ecr,
+  ? senderGatewayId: wrapped-vlei ; always "ecr"
+  ? recipientGatewayId: wrapped-vlei ; always "ecr"
+  ? senderGatewayNetworkId: wrapped-vlei ; always "ecr"
+  ? recipientGatewayNetworkId: wrapped-vlei ; always "ecr"
 
-  ? originatorPubkey:                    wrapped-key,
-  ? beneficiaryPubkey:                   wrapped-key,
-  ? senderGatewaySignaturePublicKey:     wrapped-key,
-  ? receiverGatewaySignaturePublicKey:   wrapped-key,
-  ? senderGatewayDeviceIdentityPubkey:   wrapped-key,
-  ? receiverGatewayDeviceIdentityPubkey: wrapped-key,
+  ? originatorPubkey: wrapped-key
+  ? beneficiaryPubkey: wrapped-key
+  ? senderGatewaySignaturePublicKey: wrapped-key
+  ? receiverGatewaySignaturePublicKey: wrapped-key
+  ? senderGatewayDeviceIdentityPubkey: wrapped-key
+  ? receiverGatewayDeviceIdentityPubkey: wrapped-key
 
   ; --- Stage 2 ---
-  ? assetControllerCredential:           any-wrapped-vlei,
-  ? lockEvidenceIssuerCredential:        any-wrapped-vlei,
-  ? lockEvidenceVerificationKey:         wrapped-key,
+  ? assetControllerCredential: wrapped-vlei ; can be "leid", "ecr" or "oor"
+  ? lockEvidenceIssuerCredential: wrapped-vlei ; can be "leid", "ecr" or "oor"
+  ? lockEvidenceVerificationKey: wrapped-key
 
   ; --- Stage 3 ---
-  ? commitAuthorizingCredential:         any-wrapped-vlei,
-  ? commitVerificationKey:               wrapped-key,
-  ? postCommitSecureChannelKey:          wrapped-key
+  ? commitAuthorizingCredential: wrapped-vlei ; can be "leid", "ecr" or "oor"
+  ? commitVerificationKey: wrapped-key
+  ? postCommitSecureChannelKey: wrapped-key
 }
 
 ; =====================================================================
-; --- Wrapped vLEI Objects ---
+; --- Wrapped vLEI Payloads ---
 ; =====================================================================
 
-; Specific profile wrappers
-wrapped-vlei-lei-id = { content: vlei-profile-content(media-root, prof-lei-id), payload: bstr / tstr }
-wrapped-vlei-ecr    = { content: vlei-profile-content(media-root, prof-ecr),    payload: bstr / tstr }
-wrapped-vlei-oor    = { content: vlei-profile-content(media-root, prof-oor),    payload: bstr / tstr }
-wrapped-vlei-lar    = { content: vlei-profile-content(media-root, prof-lar),    payload: bstr / tstr }
-wrapped-vlei-qvi    = { content: vlei-profile-content(media-root, prof-qvi),    payload: bstr / tstr }
-wrapped-vlei-vra    = { content: vlei-profile-content(media-root, prof-vra),    payload: bstr / tstr }
+wrapped-vlei = {
+ vleitype: tstr
+ content: content-ref
+ payload: bstr / tstr
+}
 
-; Convenience group for "accept any vLEI credential"
-any-wrapped-vlei =
-    wrapped-vlei-lei-id /
-    wrapped-vlei-ecr /
-    wrapped-vlei-oor /
-    wrapped-vlei-lar /
-    wrapped-vlei-qvi /
-    wrapped-vlei-vra
-
-; =====================================================================
-; --- Generic Profile Content Rule ---
-; =====================================================================
-
-vlei-profile-content(root: tstr, profile: tstr) =
-  tstr .regexp
-    "^application/" // root // "\\+" // serializations //
-    ";profile=\\\"urn:vlei:" // profile // "\\\"" //
-    param-tail
-  / uint
-
-; =====================================================================
-; --- Enumerations ---
-; =====================================================================
-
-; Top-level Media Roots (extensible for future)
-media-root = "acdc" / "said"
-
-; vLEI Profile IDs
-prof-lei-id = "lei-id"
-prof-ecr    = "ecr"
-prof-oor    = "oor"
-prof-lar    = "lar"
-prof-qvi    = "qvi"
-prof-vra    = "vra"
-
-; Supported Serialization Suffixes
-serializations = "json" / "cbor" / "msgpk" / "cesr"
-
-; =====================================================================
-; --- Parameters ---
-; =====================================================================
-
-; Tail parameters after profile — tighten as needed or
-; substitute original acdc-param-tail regex for stricter match
-param-tail = "" / ";".*
+content-ref = { 
+ ? mt: tstr ; TBA e.g., "application/acdc+json"
+ ? cf: uint ; TBA content format id
+ ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true
+ ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
+}
 
 ; =====================================================================
 ; --- Wrapped Key Definitions ---
 ; =====================================================================
 
 wrapped-key = $key-type
-
 $key-type /= cose-key
 $key-type /= jwk-key
 $key-type /= pkix-key
 
+$wrapped-key-content /= "application/cose;cose-type=cose-key"
+$wrapped-key-content /= "application/jwk+json"
+$wrapped-key-content /= "application/pkix-cert"
+$wrapped-key-content /= uint
+
 cose-key = {
-  content: tstr .regexp "^application/cose;cose-type=\\\"cose-key\\\"$" / uint,
-  payload: bstr
+ content: "application/cose;cose-type=cose-key" / uint,
+ encoding: "cbor" / "base64",
+ payload: bstr / tstr
 }
 
 jwk-key = {
-  content: tstr .regexp "^application/jwk\\+json$" / uint,
+  content: "application/jwk+json" / uint,
   payload: tstr
 }
 
 pkix-key = {
-  media-type: "application/pkix-cert",
+  content: "application/pkix-cert" / uint,
   encoding: "PEM" / "DER",
   payload: tstr / bstr
 }

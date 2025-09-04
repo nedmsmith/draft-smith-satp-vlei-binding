@@ -24,12 +24,6 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v4
 
-    - name: "Install Ruby and cddl gem"
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ruby-full
-        gem install cddl
-
     - name: "Setup"
       id: setup
       run: date -u "+date=%FT%T" >>"$GITHUB_OUTPUT"

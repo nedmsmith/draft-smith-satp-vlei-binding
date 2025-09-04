@@ -1,0 +1,10 @@
+draft-smith-satp-vlei-binding.xml: cddl/msg-wrapper.cddl
+draft-smith-satp-vlei-binding.xml: examples/json/voe-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/vbe-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/sgo-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/rgo-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/sgw-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/rgw-id1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/sgw-netid1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/rgw-netid1.jsonc
+draft-smith-satp-vlei-binding.xml: examples/json/key-carrier1.jsonc
