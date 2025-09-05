@@ -1,12 +1,10 @@
 # ==== Environment Setup ====
-ROOT := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
-TOP := $(abspath $(ROOT))
 LIBDIR := lib/
 CDDL_DIR := cddl/
 
-SHELL := /bin/bash
-.SHELLFLAGS := -lc
-export SHELL .SHELLFLAGS TOP
+#SHELL := /bin/bash
+#.SHELLFLAGS := -lc
+#export SHELL .SHELLFLAGS TOP
 
 include $(LIBDIR)main.mk
 # ==== Main Target ====
