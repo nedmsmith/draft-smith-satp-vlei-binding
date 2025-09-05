@@ -12,9 +12,9 @@ $(info [cddl/Makefile] TOP  = $(TOP))
 # ============================================================================
 # Prefer local tools.mk; fallback to parent's tools.mk
 # ============================================================================
-TOOLS_MK := $(HERE)tools.mk
-include $(TOOLS_MK)
-$(info [cddl/Makefile] TOOLS_MK = $(TOOLS_MK))
+#TOOLS_MK := $(HERE)tools.mk
+#include $(TOOLS_MK)
+#$(info [cddl/Makefile] TOOLS_MK = $(TOOLS_MK))
 
 include $(HERE)frags.mk
 
