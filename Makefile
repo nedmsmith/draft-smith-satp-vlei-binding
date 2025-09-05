@@ -2,9 +2,9 @@
 LIBDIR := lib/
 CDDL_DIR := cddl/
 
-SHELL := /bin/bash
-.SHELLFLAGS := -lc
-export SHELL .SHELLFLAGS TOP
+#SHELL := /bin/bash
+#.SHELLFLAGS := -lc
+#export SHELL .SHELLFLAGS TOP
 
 include $(LIBDIR)main.mk
 # ==== Main Target ====
