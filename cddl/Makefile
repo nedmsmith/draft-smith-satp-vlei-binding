@@ -13,7 +13,7 @@ $(info [cddl/Makefile] TOP  = $(TOP))
 # Prefer local tools.mk; fallback to parent's tools.mk
 # ============================================================================
 TOOLS_MK := $(HERE)tools.mk
-include $(TOOLS_MK)
+#include $(TOOLS_MK)
 $(info [cddl/Makefile] TOOLS_MK = $(TOOLS_MK))
 
 include $(HERE)frags.mk
@@ -24,8 +24,12 @@ check:: check-satp check-satp-examples
 
 EXAMPLES_JSONC := $(wildcard $(TOP)examples/json/*.jsonc)
 
-$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC)))
+$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC),../lib/.gems/bin/cddl))
 
 clean::
 	rm -rf $(HERE)*autogen.cddl ; rm -rf $(EXAMPLES_JSONC:.jsonc=.json)
 .PHONY: clean
+
+testcddl:
+	ls ../lib/.gems/bin/cddl
+	../lib/.gems/bin/cddl --version

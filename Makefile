@@ -29,7 +29,7 @@ $(drafts_xml): $(CDDL_DIR)$(1)-autogen.cddl
 $(CDDL_DIR)$(1)-autogen.cddl: $(addprefix $(CDDL_DIR),$(2))
 	$(MAKE) -C $(CDDL_DIR) check-$(1)
 	$(MAKE) -C $(CDDL_DIR) check-$(1)-examples
-
+	
 endef # cddl_targets
 
 $(eval $(call cddl_targets,satp,$(CDDL_FRAGS)))
