@@ -9,7 +9,7 @@ define CHECK_JSONC_EXAMPLES
 CLEANFILES += $(2:.jsonc=.json)
 
 check-$(1): $(1)-autogen.cddl
-	$$(cddl) $$< g 1 | $$(diag2diag) -e
+	$(3) $$< g 1 | $$(diag2diag) -e
 
 .PHONY: check-$(1)
 
