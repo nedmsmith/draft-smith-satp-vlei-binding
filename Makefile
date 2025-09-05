@@ -1,6 +1,4 @@
 # ==== Environment Setup ====
-ROOT := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
-TOP := $(abspath $(ROOT))
 LIBDIR := lib/
 CDDL_DIR := cddl/
 

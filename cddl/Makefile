@@ -4,7 +4,7 @@
 # ============================================================================
 #export HERE := $(realpath $(dir $(lastword $(MAKEFILE_LIST))/))
 export HERE := ./
-export TOP  := $(abspath $(HERE)/..)/
+export TOP  := ../
 
 $(info [cddl/Makefile] HERE = $(HERE))
 $(info [cddl/Makefile] TOP  = $(TOP))
