@@ -4,7 +4,7 @@
 $(info $(shell which cddl))
 cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
-	$(info $(shell which cddlc)) ; \
+	$(info $(shell which cddl)) ; \
 	$(error cddl not found. To install cddl: 'gem install cddl')
 endif
 
