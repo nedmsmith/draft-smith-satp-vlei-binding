@@ -1,14 +1,18 @@
 # cddl and curl are prerequisite
 # fail hard if they are not found
 
+$(info $(shell which cddl))
 cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
-$(error cddl not found. To install cddl: 'gem install cddl')
+	$(info $(shell which cddlc)) ; \
+	$(error cddl not found. To install cddl: 'gem install cddl')
 endif
 
+$(info $(shell which cddlc))
 cddlc ?= $(shell command -v cddlc)
 ifeq ($(strip $(cddlc)),)
-$(error cddlc not found. To install cddlc: 'gem install cddlc')
+	$(info $(shell which cddlc)) ; \
+	$(error cddlc not found. To install cddlc: 'gem install cddlc')
 endif
 
 curl ?= $(shell command -v curl)

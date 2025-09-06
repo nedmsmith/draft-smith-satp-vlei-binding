@@ -20,9 +20,6 @@ include $(HERE)frags.mk
 
 include $(HERE)funcs.mk
 
-$(info $(shell which cddlc))
-$(info $(shell which cddl))
-
 check:: check-satp check-satp-examples
 
 EXAMPLES_JSONC := $(wildcard $(TOP)examples/json/*.jsonc)
