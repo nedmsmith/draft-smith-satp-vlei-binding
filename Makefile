@@ -8,7 +8,7 @@ SHELL := /bin/bash
 .SHELLFLAGS := -lc
 export SHELL .SHELLFLAGS TOP
 
-include $(LIBDIR)main.mk
+include $(LIBDIR)/main.mk
 # ==== Main Target ====
 $(LIBDIR)main.mk:
 ifneq (,$(shell grep "path *= *$(LIBDIR)" .gitmodules 2>/dev/null))
