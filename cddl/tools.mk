@@ -1,6 +1,10 @@
 # cddl and curl are prerequisite
 # fail hard if they are not found
-
+$(info Ruby: $(shell ruby -v 2>/dev/null))
+$(info Bundler: $(shell bundler -v 2>/dev/null))
+$(info PATH: $(PATH))
+$(info GEM_HOME: $(GEM_HOME))
+$(info GEM_PATH: $(GEM_PATH))
 $(info cddl path: '$(shell which cddl)')
 cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
