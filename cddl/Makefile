@@ -27,7 +27,7 @@ check:: check-satp check-satp-examples
 
 EXAMPLES_JSONC := $(wildcard $(TOP)examples/json/*.jsonc)
 
-$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC))
+$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC)))
 
 clean::
 	rm -rf $(HERE)*autogen.cddl ; rm -rf $(EXAMPLES_JSONC:.jsonc=.json)
