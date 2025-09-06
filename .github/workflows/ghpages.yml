@@ -40,13 +40,11 @@ jobs:
         key: i-d-${{ steps.setup.outputs.date }}
         restore-keys: i-d-
 
-    - name: "Add local gem bin to PATH"
-      run: echo "$GITHUB_WORKSPACE/lib/.gems/bin" >> $GITHUB_PATH
-
     - name: "Build Drafts"
       uses: martinthomson/i-d-template@v1
       with:
         token: ${{ github.token }}
+        make: PATH="$GITHUB_WORKSPACE/lib/.gems/bin:$PATH" all
 
     - name: "Update GitHub Pages"
       uses: martinthomson/i-d-template@v1
