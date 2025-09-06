@@ -44,7 +44,6 @@ jobs:
       uses: martinthomson/i-d-template@v1
       with:
         token: ${{ github.token }}
-        make: PATH="$GITHUB_WORKSPACE/lib/.gems/bin:$PATH" all
 
     - name: "Update GitHub Pages"
       uses: martinthomson/i-d-template@v1
