@@ -3,19 +3,14 @@
 $(info Ruby: $(shell ruby -v 2>/dev/null))
 $(info Bundler: $(shell bundler -v 2>/dev/null))
 $(info PATH: $(PATH))
-$(info GEM_HOME: $(GEM_HOME))
-$(info GEM_PATH: $(GEM_PATH))
-$(info cddl path: '$(shell which cddl)')
+
 cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
-$(info cddl path: '$(shell which cddl)')
 $(error cddl not found. To install cddl: 'gem install cddl')
 endif
 
-$(info cddlc path: '$(shell which cddlc)')
 cddlc ?= $(shell command -v cddlc)
 ifeq ($(strip $(cddlc)),)
-$(info cddlc path: '$(shell which cddlc)')
 $(error cddlc not found. To install cddlc: 'gem install cddlc')
 endif
 
@@ -28,13 +23,3 @@ diag2diag ?= $(shell command -v diag2diag.rb)
 ifeq ($(strip $(diag2diag)),)
 $(error diag2diag.rb not found. To install diag2diag.rb: 'gem install cbor-diag')
 endif
-
-#export BUNDLE := bundle exec
-#export BUNDLE := 
-#export CDDL    := $(BUNDLE) cddl
-#export CDDLc   := $(BUNDLE) cddlc
-#export CURL   := $(BUNDLE) curl
-
-#$(info [tools.mk] CDDL = $(CDDL))
-#$(info [tools.mk] CDDLc = $(CDDLc))
-#$(info [tools.mk] CURL = $(CURL))
