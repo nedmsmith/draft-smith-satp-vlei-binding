@@ -6,6 +6,7 @@ cddl ?= $(shell command -v cddl)
 ifeq ($(strip $(cddl)),)
 $(info cddl path: '$(shell which cddl)')
 $(error cddl not found. To install cddl: 'gem install cddl')
+gem install cddl
 endif
 
 $(info cddlc path: '$(shell which cddlc)')
@@ -13,11 +14,13 @@ cddlc ?= $(shell command -v cddlc)
 ifeq ($(strip $(cddlc)),)
 $(info cddlc path: '$(shell which cddlc)')
 $(error cddlc not found. To install cddlc: 'gem install cddlc')
+gem install cddlc
 endif
 
 curl ?= $(shell command -v curl)
 ifeq ($(strip $(curl)),)
 $(error curl not found)
+gem
 endif
 
 diag2diag ?= $(shell command -v diag2diag.rb)
