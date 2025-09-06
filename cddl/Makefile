@@ -20,16 +20,15 @@ include $(HERE)frags.mk
 
 include $(HERE)funcs.mk
 
+$(info $(shell which cddlc))
+$(info $(shell which cddl))
+
 check:: check-satp check-satp-examples
 
 EXAMPLES_JSONC := $(wildcard $(TOP)examples/json/*.jsonc)
 
-$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC),../lib/.gems/bin/cddl))
+$(eval $(call CHECK_JSONC_EXAMPLES,satp,$(EXAMPLES_JSONC))
 
 clean::
 	rm -rf $(HERE)*autogen.cddl ; rm -rf $(EXAMPLES_JSONC:.jsonc=.json)
 .PHONY: clean
-
-testcddl:
-	ls ../lib/.gems/bin/cddl
-	../lib/.gems/bin/cddl --version
