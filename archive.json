@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-04T00:53:41.519794+00:00",
+  "timestamp": "2025-09-07T00:59:45.206930+00:00",
   "repo": "nedmsmith/draft-smith-satp-vlei-binding",
   "labels": [
     {
@@ -131,6 +131,230 @@
       "mergedBy": "nedmsmith",
       "mergeCommit": {
         "oid": "76754b149bac03cca62c9d001191121111b66dd0"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOPancDc6mwLHC",
+      "title": "misc cleanup",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/4",
+      "state": "CLOSED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "removed extra comments from top level Makefile and added generated .json files to git ignore.",
+      "createdAt": "2025-09-04T01:01:11Z",
+      "updatedAt": "2025-09-04T01:11:02Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "c3f53a82fb3776f16dd83b5feee72304b61b8371",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "nms/pr3",
+      "headRefOid": "d0b4567acd1c3b72699f72b0c411d39c8a715837",
+      "closedAt": "2025-09-04T01:11:02Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "nedmsmith",
+          "authorAssociation": "OWNER",
+          "body": "has errors - closing without merging",
+          "createdAt": "2025-09-04T01:11:02Z",
+          "updatedAt": "2025-09-04T01:11:02Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOPancDc6mwPj-",
+      "title": "Update .gitignore",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/5",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "ignore generated .json files and autogen.cddl",
+      "createdAt": "2025-09-04T01:10:09Z",
+      "updatedAt": "2025-09-04T01:10:26Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "c3f53a82fb3776f16dd83b5feee72304b61b8371",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "nms-misc",
+      "headRefOid": "8b762f4380181a1900fbb972bac4e7da86b65e31",
+      "closedAt": "2025-09-04T01:10:26Z",
+      "mergedAt": "2025-09-04T01:10:26Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "47e3e61bcf6f8156187143ca3b1e099b99a439be"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOPancDc6mwSdp",
+      "title": "Update Makefile",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/6",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "remove dead code and add eval for making examples",
+      "createdAt": "2025-09-04T01:14:55Z",
+      "updatedAt": "2025-09-04T17:52:00Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "47e3e61bcf6f8156187143ca3b1e099b99a439be",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "make-cleanup/nms",
+      "headRefOid": "02ec19d704a6ec229143a8bd7d12ad4112d4e386",
+      "closedAt": "2025-09-04T17:51:52Z",
+      "mergedAt": "2025-09-04T17:51:52Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "9668c731ad5f79337330d9219c65873ae55892b7"
+      },
+      "comments": [
+        {
+          "author": "nedmsmith",
+          "authorAssociation": "OWNER",
+          "body": "Raised build issue with martin thompson template repo - merging PR recognizing the build issue hasn't be resolved.",
+          "createdAt": "2025-09-04T17:51:45Z",
+          "updatedAt": "2025-09-04T17:51:45Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOPancDc6m9YZX",
+      "title": "Nms/mediatypes",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/7",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "document restructureing, fleshed out IANA considerations section, remved unnecessary media types and reference to vleitype. fixed examples.",
+      "createdAt": "2025-09-04T23:38:40Z",
+      "updatedAt": "2025-09-04T23:39:31Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "9668c731ad5f79337330d9219c65873ae55892b7",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "nms/mediatypes",
+      "headRefOid": "5d918796eab1cf20b442e1c1a08ef6ed469603fd",
+      "closedAt": "2025-09-04T23:39:31Z",
+      "mergedAt": "2025-09-04T23:39:31Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "70f6ebd03a843a954ad0ba9ba81ef8ab97c50b61"
+      },
+      "comments": [
+        {
+          "author": "nedmsmith",
+          "authorAssociation": "OWNER",
+          "body": "merging despite bug in github actions not being able to install build tools",
+          "createdAt": "2025-09-04T23:39:23Z",
+          "updatedAt": "2025-09-04T23:39:23Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOPancDc6m990n",
+      "title": "remove dependance on absolute paths",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/8",
+      "state": "CLOSED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "remove dependance on absolute paths",
+      "createdAt": "2025-09-05T01:44:18Z",
+      "updatedAt": "2025-09-06T22:17:40Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "70f6ebd03a843a954ad0ba9ba81ef8ab97c50b61",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "fix-abs-paths",
+      "headRefOid": "f43e35fadb74a48bdc265bc2c1acdd13bdc524a8",
+      "closedAt": "2025-09-06T22:17:39Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "nedmsmith",
+          "authorAssociation": "OWNER",
+          "body": "superceded",
+          "createdAt": "2025-09-06T22:17:39Z",
+          "updatedAt": "2025-09-06T22:17:39Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOPancDc6m-NUS",
+      "title": "debug cddl tools issue",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/9",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "debug pr",
+      "createdAt": "2025-09-05T02:42:18Z",
+      "updatedAt": "2025-09-06T22:17:10Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "c30357dd9056a98c084d4ef09452f3aee52d1a1a",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "dbg1",
+      "headRefOid": "8dcd753a7c91c9feb77fda41d3768945db064c2f",
+      "closedAt": "2025-09-06T22:17:10Z",
+      "mergedAt": "2025-09-06T22:17:10Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "98c9e7269492415ff87286e199319bc7ebc65db8"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOPancDc6nOPDr",
+      "title": "Update tools.mk",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/10",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "cleanup debugging instrumentation",
+      "createdAt": "2025-09-06T22:23:29Z",
+      "updatedAt": "2025-09-06T22:24:33Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "98c9e7269492415ff87286e199319bc7ebc65db8",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "cleanup-makefiles",
+      "headRefOid": "17e1c24dfdc54671acb2a550e22245af015db3c2",
+      "closedAt": "2025-09-06T22:24:24Z",
+      "mergedAt": "2025-09-06T22:24:24Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "07d614e959b1fb807354198f7ccd744582c02275"
       },
       "comments": [],
       "reviews": []
