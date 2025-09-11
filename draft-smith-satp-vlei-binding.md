@@ -36,6 +36,7 @@ normative:
   RFC7159: json
   RFC7517: jwk
   RFC2585: pkix-key
+  RFC4648: base64uri
   STD96:
     -: cose-key
     =: RFC9052
@@ -345,7 +346,9 @@ Note5: vLEI v1.0.0 defines JSON structure containing SAID. There should be a way
 
 ### Profile Optonal Parameter
 
-The media type assignments have an optional parameter named "profile=" that can be used to identify the vLEI credential type. It is expressed in URI format.
+The media type assignments have an optional parameter named "profile=" that MAY be any value.
+It can be used to identify a vLEI profile such as vLEI credential type.
+It SHOULD be expressed in URI format as illustrated in {{tbl-vlei-profiles}}.
 
 | Profile name | Profile ID |
 |=== | |
@@ -362,9 +365,19 @@ The various vLEI credential types can be specified in a media type using the pro
 {{tbl-vlei-profiles}} summarizes the profile identifiers for the various vLEI credential types.
 A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.
 
+### Encoding Optonal Parameter
+
+The media type assignments have an optional encoding ("encoding=") parameter that can be used to tunnel an alternative encoding.
+Typically, encodings fall into two broad categories; text or binary.
+An encoding MAY be any value, but {{&SELF}} anticipates the following:
+
+* "base64uri" -- the payload is binary, as indicated by the media-type, but base64 encoded when the bounding protocol is a text stream. See Section 5, {{-base64uri}}.
+
 ### Charset Optonal Parameter
 
-The media type assignments have an optional parameter named "charset=" that can be used to identify the character encoding scheme when payload is a text encoding. By default "utf-8" is assumed. Alternative character set encodings MUST populate "charset=".
+The media type assignments have an optional character set ("charset=") parameter that can be used to identify the character encoding scheme when the payload is a text encoding.
+By default "utf-8" is assumed.
+Alternative character set encodings MUST populate "charset=".
 
 # Verification of vLEI Payloads {#sec-verify}
 
@@ -376,7 +389,14 @@ TODO
 
 # Security Considerations {#sec-sec}
 
-TODO
+The following security properties are assumed for all payloads identified by media types defined in {{&SELF}}:
+
+- ACDC payloads are cryptographically signed.
+- CESR payloads are cryptographically signed and self-framing.
+- Signature verification is required to ensure authenticity and integrity.
+- Credential provenance must be anchored to a trusted root.
+For example, the GLEIF Root AID via ACDC edges (see {{-gleif-fwk}}).
+- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
 
 # IANA Considerations {#sec-iana}
 
@@ -404,25 +424,24 @@ This media type indicates the payload is a JSON formatted vLEI.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `encoding=true` — Indicates the ACDC stream is binary and base64-encoded for use in text transports.
-- `encoding=false` — Indicates the ACDC stream is text encoded. By defaualt `encoding=false`.
-- `charset` — Indicates character set for text encodings, default is UTF-8.
+- `encoding` — Indicates the ACDC stream is text or binary.
+If binary, encoding MUST make the payload text-safe (e.g., `encoding=base64uri`.
+Defaults to `text`.
+- `charset` — Indicates character set for text encodings.
+Defaults to UTF-8.
 
 *Encoding considerations:*
 
 - 8-bit; JSON text encoding defaults to UTF-8.
-- When `encoding=true`, the ACDC stream is base64-encoded for safe embedding in JSON.
+- Binary payloads are text-safe encoded for use in JSON streams.
 
 *Security considerations:*
 
-- ACDC payloads are cryptographically signed.
-- Signature verification is required to ensure authenticity and integrity.
-- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
 - See {{sec-sec}}.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
+- Binary payloads must be base64 encoded to make payloads compatible with text streams.
 
 *Published specification:*
 
@@ -483,25 +502,23 @@ This media type indicates the payload is a JSON formatted vLEI.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `encoding=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
-- `encoding=false` — Indicates the ACDC stream is binary for use in binary transports. By default `encoding=false`.
+- `encoding` — Indicates the ACDC stream is text or binary.
+Defaults to `cbor`.
+- `charset` — Indicates character set for text encodings.
+Defaults to UTF-8.
 
 *Encoding considerations:*
 
 - ACDC streams are CBOR encoded for use with binary transports.
-If the transport is a text stream the `encoding=true` option should be used.
+If the transport is a text stream the `encoding` option should be specified.
 
 *Security considerations:*
 
-- CESR payloads are cryptographically signed and self-framing.
-- Signature verification is required to ensure authenticity and integrity.
-- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
-- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
-- See {{sec-iana}}.
+- See {{sec-sec}}.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
+None.
 
 *Published specification:*
 
@@ -562,25 +579,23 @@ If the transport is a text stream the `encoding=true` option should be used.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `encoding=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
-- `encoding=false` — Indicates the ACDC stream is binary for use in binary transports. By default `encoding=false`.
+- `encoding` — Indicates the ACDC stream is text or binary.
+Defaults to `msgpk`.
+- `charset` — Indicates character set for text encodings.
+Defaults to UTF-8.
 
 *Encoding considerations:*
 
 - ACDC streams are MSGPK encoded for use with binary transports.
-If the transport is a text stream the `encoding=true` option should be used.
+If the transport is a text stream the `encoding` option should be specified.
 
 *Security considerations:*
 
-- ACDC payloads are cryptographically signed and self-framing.
-- Signature verification is required to ensure authenticity and integrity.
-- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
-- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
-- See {{sec-iana}}.
+- See {{sec-sec}}.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
+None.
 
 *Published specification:*
 
@@ -641,27 +656,25 @@ If the transport is a text stream the `encoding=true` option should be used.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `encoding=true` — Indicates the CESR stream is text encoded. By default `encoding=true`.
-- `encoding=false` — Indicates the CESR stream is binary encoded.
-- `charset` — Optional; default is UTF-8
+- `encoding` — Indicates the CESR stream is text or binary.
+Defaults to `text`.
+`encoding=binary` indicates the CESR stream is binary encoded.
+- `charset` — Indicates character set for text encodings.
+Defaults to UTF-8.
 
 *Encoding considerations:*
 
-- 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
-- When `encoding=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+- CESR defaults to UTF-8 text encoding and is self-framing.
+- CESR can also be a binary stream.
+When used in binary mode the `encoding` option MUST be specified (e.g., `encoding=binary`).
 
 *Security considerations:*
 
-- CESR payloads are cryptographically signed and self-framing.
-- Signature verification is required to ensure authenticity and integrity.
-- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
-- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
 - See {{sec-iana}}.
 
 *Interoperability considerations:*
 
-- CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the `encoding=` parameter must be set to `false`.
+None.
 
 *Published specification:*
 
@@ -721,28 +734,26 @@ If CESR is binary encoded, the `encoding=` parameter must be set to `false`.
 
 *Optional parameters:*
 
-- `profile` — Indicates the payload conforms to a specific vLEI credential type
-- `encoding=true` — Indicates the CESR stream is text encoded. By default `encoding=true`.
-- `encoding=false` — Indicates the CESR stream is binary encoded.
-- `charset` — Optional; default is UTF-8
+- `profile` — Indicates the payload conforms to a specific vLEI credential type.
+- `encoding` — Indicates the CESR stream is text or binary.
+Defaults to `text`.
+`encoding=binary` indicates the CESR stream is binary encoded.
+- `charset` — Indicates character set for text encodings.
+Defaults to UTF-8.
 
 *Encoding considerations:*
 
-- 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
-- When `encoding=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+- CESR defaults to UTF-8 text encoding and is self-framing.
+- CESR can also be a binary stream.
+When used in binary mode the `encoding` option MUST be specified (e.g., `encoding=binary`).
 
 *Security considerations:*
 
-- CESR payloads are cryptographically signed and self-framing.
-- Signature verification is required to ensure authenticity and integrity.
-- Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
-- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
-- See {{sec-iana}}.
+- See {{sec-sec}}.
 
 *Interoperability considerations:*
 
-- CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the `encoding=` parameter must be set to `false`.
+None.
 
 *Published specification:*
 
