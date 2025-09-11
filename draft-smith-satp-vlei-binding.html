@@ -1195,7 +1195,10 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
                     <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="auto internal xref">4.3.1</a>.  <a href="#name-profile-optonal-parameter" class="internal xref">Profile Optonal Parameter</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2">
-                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-charset-optonal-parameter" class="internal xref">Charset Optonal Parameter</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-encoding-optonal-parameter" class="internal xref">Encoding Optonal Parameter</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3">
+                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-charset-optonal-parameter" class="internal xref">Charset Optonal Parameter</a></p>
 </li>
                 </ul>
 </li>
@@ -1720,7 +1723,9 @@ Note5: vLEI v1.0.0 defines JSON structure containing SAID. There should be a way
           <h4 id="name-profile-optonal-parameter">
 <a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-profile-optonal-parameter" class="section-name selfRef">Profile Optonal Parameter</a>
           </h4>
-<p id="section-4.3.1-1">The media type assignments have an optional parameter named "profile=" that can be used to identify the vLEI credential type. It is expressed in URI format.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.1-1">The media type assignments have an optional parameter named "profile=" that <span class="bcp14">MAY</span> be any value.
+It can be used to identify a vLEI profile such as vLEI credential type.
+It <span class="bcp14">SHOULD</span> be expressed in URI format as illustrated in <a href="#tbl-vlei-profiles" class="auto internal xref">Table 5</a>.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
 <span id="name-vlei-profiles"></span><div id="tbl-vlei-profiles">
 <table class="center" id="table-5">
             <caption>
@@ -1766,12 +1771,29 @@ Note5: vLEI v1.0.0 defines JSON structure containing SAID. There should be a way
 A comprehensive listing of vLEI profiles is provided even though some of the vLEI credential types are not anticipated by the vLEI binding to SATP at this time.<a href="#section-4.3.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="charset-optonal-parameter">
+<div id="encoding-optonal-parameter">
 <section id="section-4.3.2">
-          <h4 id="name-charset-optonal-parameter">
-<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-charset-optonal-parameter" class="section-name selfRef">Charset Optonal Parameter</a>
+          <h4 id="name-encoding-optonal-parameter">
+<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-encoding-optonal-parameter" class="section-name selfRef">Encoding Optonal Parameter</a>
           </h4>
-<p id="section-4.3.2-1">The media type assignments have an optional parameter named "charset=" that can be used to identify the character encoding scheme when payload is a text encoding. By default "utf-8" is assumed. Alternative character set encodings <span class="bcp14">MUST</span> populate "charset=".<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.2-1">The media type assignments have an optional encoding ("encoding=") parameter that can be used to tunnel an alternative encoding.
+Typically, encodings fall into two broad categories; text or binary.
+An encoding <span class="bcp14">MAY</span> be any value, but RFCthis anticipates the following:<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.3.2-2.1">
+              <p id="section-4.3.2-2.1.1">"base64uri" -- the payload is binary, as indicated by the media-type, but base64 encoded when the bounding protocol is a text stream. See Section 5, <span>[<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>.<a href="#section-4.3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="charset-optonal-parameter">
+<section id="section-4.3.3">
+          <h4 id="name-charset-optonal-parameter">
+<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-charset-optonal-parameter" class="section-name selfRef">Charset Optonal Parameter</a>
+          </h4>
+<p id="section-4.3.3-1">The media type assignments have an optional character set ("charset=") parameter that can be used to identify the character encoding scheme when the payload is a text encoding.
+By default "utf-8" is assumed.
+Alternative character set encodings <span class="bcp14">MUST</span> populate "charset=".<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1799,7 +1821,25 @@ A comprehensive listing of vLEI profiles is provided even though some of the vLE
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">TODO<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">The following security properties are assumed for all payloads identified by media types defined in RFCthis:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1">
+          <p id="section-7-2.1.1">ACDC payloads are cryptographically signed.<a href="#section-7-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.2">
+          <p id="section-7-2.2.1">CESR payloads are cryptographically signed and self-framing.<a href="#section-7-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.3">
+          <p id="section-7-2.3.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-7-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.4">
+          <p id="section-7-2.4.1">Credential provenance must be anchored to a trusted root.
+For example, the GLEIF Root AID via ACDC edges (see <span>[<a href="#GLEIF-vLEI-EGF" class="cite xref">GLEIF-vLEI-EGF</a>]</span>).<a href="#section-7-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.5">
+          <p id="section-7-2.5.1">vLEIs must be validated against the vLEI schema. See <span>[<a href="#GLEIF-vLEI-TechReq-Part3" class="cite xref">GLEIF-vLEI-TechReq-Part3</a>]</span>.<a href="#section-7-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="sec-iana">
@@ -1844,13 +1884,13 @@ registry <span>[<a href="#IANA.media-types" class="cite xref">IANA.media-types</
               <p id="section-8.1.1-9.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type.<a href="#section-8.1.1-9.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.1-9.2">
-              <p id="section-8.1.1-9.2.1"><code>encoding=true</code> — Indicates the ACDC stream is binary and base64-encoded for use in text transports.<a href="#section-8.1.1-9.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.1-9.2.1"><code>encoding</code> — Indicates the ACDC stream is text or binary.
+If binary, encoding <span class="bcp14">MUST</span> make the payload text-safe (e.g., <code>encoding=base64uri</code>.
+Defaults to <code>text</code>.<a href="#section-8.1.1-9.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.1-9.3">
-              <p id="section-8.1.1-9.3.1"><code>encoding=false</code> — Indicates the ACDC stream is text encoded. By defaualt <code>encoding=false</code>.<a href="#section-8.1.1-9.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.1-9.4">
-              <p id="section-8.1.1-9.4.1"><code>charset</code> — Indicates character set for text encodings, default is UTF-8.<a href="#section-8.1.1-9.4.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.1-9.3.1"><code>charset</code> — Indicates character set for text encodings.
+Defaults to UTF-8.<a href="#section-8.1.1-9.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.1-10"><em>Encoding considerations:</em><a href="#section-8.1.1-10" class="pilcrow">¶</a></p>
@@ -1859,28 +1899,19 @@ registry <span>[<a href="#IANA.media-types" class="cite xref">IANA.media-types</
               <p id="section-8.1.1-11.1.1">8-bit; JSON text encoding defaults to UTF-8.<a href="#section-8.1.1-11.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.1-11.2">
-              <p id="section-8.1.1-11.2.1">When <code>encoding=true</code>, the ACDC stream is base64-encoded for safe embedding in JSON.<a href="#section-8.1.1-11.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.1-11.2.1">Binary payloads are text-safe encoded for use in JSON streams.<a href="#section-8.1.1-11.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.1-12"><em>Security considerations:</em><a href="#section-8.1.1-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.1-13.1">
-              <p id="section-8.1.1-13.1.1">ACDC payloads are cryptographically signed.<a href="#section-8.1.1-13.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.1-13.2">
-              <p id="section-8.1.1-13.2.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-8.1.1-13.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.1-13.3">
-              <p id="section-8.1.1-13.3.1">Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.<a href="#section-8.1.1-13.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.1-13.4">
-              <p id="section-8.1.1-13.4.1">See <a href="#sec-sec" class="auto internal xref">Section 7</a>.<a href="#section-8.1.1-13.4.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.1-13.1.1">See <a href="#sec-sec" class="auto internal xref">Section 7</a>.<a href="#section-8.1.1-13.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.1-14"><em>Interoperability considerations:</em><a href="#section-8.1.1-14" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.1-15.1">
-              <p id="section-8.1.1-15.1.1">Binary payloads must be base64 encoded (e.g., <code>encoding=true</code>) to make payloads compatible with text streams.<a href="#section-8.1.1-15.1.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.1-15.1.1">Binary payloads must be base64 encoded to make payloads compatible with text streams.<a href="#section-8.1.1-15.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.1-16"><em>Published specification:</em><a href="#section-8.1.1-16" class="pilcrow">¶</a></p>
@@ -1992,43 +2023,29 @@ registry <span>[<a href="#IANA.media-types" class="cite xref">IANA.media-types</
               <p id="section-8.1.2-8.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type.<a href="#section-8.1.2-8.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.2-8.2">
-              <p id="section-8.1.2-8.2.1"><code>encoding=true</code> — Indicates the ACDC stream is base64-encoded for use in text transports.<a href="#section-8.1.2-8.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.2-8.2.1"><code>encoding</code> — Indicates the ACDC stream is text or binary.
+Defaults to <code>cbor</code>.<a href="#section-8.1.2-8.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.2-8.3">
-              <p id="section-8.1.2-8.3.1"><code>encoding=false</code> — Indicates the ACDC stream is binary for use in binary transports. By default <code>encoding=false</code>.<a href="#section-8.1.2-8.3.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.2-8.3.1"><code>charset</code> — Indicates character set for text encodings.
+Defaults to UTF-8.<a href="#section-8.1.2-8.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.2-9"><em>Encoding considerations:</em><a href="#section-8.1.2-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.2-10.1">
               <p id="section-8.1.2-10.1.1">ACDC streams are CBOR encoded for use with binary transports.
-If the transport is a text stream the <code>encoding=true</code> option should be used.<a href="#section-8.1.2-10.1.1" class="pilcrow">¶</a></p>
+If the transport is a text stream the <code>encoding</code> option should be specified.<a href="#section-8.1.2-10.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.2-11"><em>Security considerations:</em><a href="#section-8.1.2-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.2-12.1">
-              <p id="section-8.1.2-12.1.1">CESR payloads are cryptographically signed and self-framing.<a href="#section-8.1.2-12.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.2-12.2">
-              <p id="section-8.1.2-12.2.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-8.1.2-12.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.2-12.3">
-              <p id="section-8.1.2-12.3.1">Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.<a href="#section-8.1.2-12.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.2-12.4">
-              <p id="section-8.1.2-12.4.1">vLEIs must be validated against the vLEI schema. See <span>[<a href="#GLEIF-vLEI-TechReq-Part3" class="cite xref">GLEIF-vLEI-TechReq-Part3</a>]</span>.<a href="#section-8.1.2-12.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.2-12.5">
-              <p id="section-8.1.2-12.5.1">See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-8.1.2-12.5.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.2-12.1.1">See <a href="#sec-sec" class="auto internal xref">Section 7</a>.<a href="#section-8.1.2-12.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.2-13"><em>Interoperability considerations:</em><a href="#section-8.1.2-13" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.1.2-14.1">
-              <p id="section-8.1.2-14.1.1">Binary payloads must be base64 encoded (e.g., <code>encoding=true</code>) to make payloads compatible with text streams.<a href="#section-8.1.2-14.1.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
+<p id="section-8.1.2-14">None.<a href="#section-8.1.2-14" class="pilcrow">¶</a></p>
 <p id="section-8.1.2-15"><em>Published specification:</em><a href="#section-8.1.2-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.2-16.1">
@@ -2138,43 +2155,29 @@ If the transport is a text stream the <code>encoding=true</code> option should b
               <p id="section-8.1.3-8.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type.<a href="#section-8.1.3-8.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.3-8.2">
-              <p id="section-8.1.3-8.2.1"><code>encoding=true</code> — Indicates the ACDC stream is base64-encoded for use in text transports.<a href="#section-8.1.3-8.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.3-8.2.1"><code>encoding</code> — Indicates the ACDC stream is text or binary.
+Defaults to <code>msgpk</code>.<a href="#section-8.1.3-8.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.3-8.3">
-              <p id="section-8.1.3-8.3.1"><code>encoding=false</code> — Indicates the ACDC stream is binary for use in binary transports. By default <code>encoding=false</code>.<a href="#section-8.1.3-8.3.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.3-8.3.1"><code>charset</code> — Indicates character set for text encodings.
+Defaults to UTF-8.<a href="#section-8.1.3-8.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.3-9"><em>Encoding considerations:</em><a href="#section-8.1.3-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.3-10.1">
               <p id="section-8.1.3-10.1.1">ACDC streams are MSGPK encoded for use with binary transports.
-If the transport is a text stream the <code>encoding=true</code> option should be used.<a href="#section-8.1.3-10.1.1" class="pilcrow">¶</a></p>
+If the transport is a text stream the <code>encoding</code> option should be specified.<a href="#section-8.1.3-10.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.3-11"><em>Security considerations:</em><a href="#section-8.1.3-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.3-12.1">
-              <p id="section-8.1.3-12.1.1">ACDC payloads are cryptographically signed and self-framing.<a href="#section-8.1.3-12.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.3-12.2">
-              <p id="section-8.1.3-12.2.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-8.1.3-12.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.3-12.3">
-              <p id="section-8.1.3-12.3.1">Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.<a href="#section-8.1.3-12.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.3-12.4">
-              <p id="section-8.1.3-12.4.1">vLEIs must be validated against the vLEI schema. See <span>[<a href="#GLEIF-vLEI-TechReq-Part3" class="cite xref">GLEIF-vLEI-TechReq-Part3</a>]</span>.<a href="#section-8.1.3-12.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.3-12.5">
-              <p id="section-8.1.3-12.5.1">See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-8.1.3-12.5.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.3-12.1.1">See <a href="#sec-sec" class="auto internal xref">Section 7</a>.<a href="#section-8.1.3-12.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.3-13"><em>Interoperability considerations:</em><a href="#section-8.1.3-13" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.1.3-14.1">
-              <p id="section-8.1.3-14.1.1">Binary payloads must be base64 encoded (e.g., <code>encoding=true</code>) to make payloads compatible with text streams.<a href="#section-8.1.3-14.1.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
+<p id="section-8.1.3-14">None.<a href="#section-8.1.3-14" class="pilcrow">¶</a></p>
 <p id="section-8.1.3-15"><em>Published specification:</em><a href="#section-8.1.3-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.3-16.1">
@@ -2284,49 +2287,33 @@ If the transport is a text stream the <code>encoding=true</code> option should b
               <p id="section-8.1.4-8.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type.<a href="#section-8.1.4-8.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.4-8.2">
-              <p id="section-8.1.4-8.2.1"><code>encoding=true</code> — Indicates the CESR stream is text encoded. By default <code>encoding=true</code>.<a href="#section-8.1.4-8.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.4-8.2.1"><code>encoding</code> — Indicates the CESR stream is text or binary.
+Defaults to <code>text</code>.
+<code>encoding=binary</code> indicates the CESR stream is binary encoded.<a href="#section-8.1.4-8.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.4-8.3">
-              <p id="section-8.1.4-8.3.1"><code>encoding=false</code> — Indicates the CESR stream is binary encoded.<a href="#section-8.1.4-8.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.4-8.4">
-              <p id="section-8.1.4-8.4.1"><code>charset</code> — Optional; default is UTF-8<a href="#section-8.1.4-8.4.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.4-8.3.1"><code>charset</code> — Indicates character set for text encodings.
+Defaults to UTF-8.<a href="#section-8.1.4-8.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.4-9"><em>Encoding considerations:</em><a href="#section-8.1.4-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.4-10.1">
-              <p id="section-8.1.4-10.1.1">8-bit; CESR text encoding is UTF-8 compatible and self-framing.<a href="#section-8.1.4-10.1.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.4-10.1.1">CESR defaults to UTF-8 text encoding and is self-framing.<a href="#section-8.1.4-10.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.4-10.2">
-              <p id="section-8.1.4-10.2.1">When <code>encoding=true</code>, the CESR stream is base64-encoded for safe embedding in text streams.<a href="#section-8.1.4-10.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.4-10.2.1">CESR can also be a binary stream.
+When used in binary mode the <code>encoding</code> option <span class="bcp14">MUST</span> be specified (e.g., <code>encoding=binary</code>).<a href="#section-8.1.4-10.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.4-11"><em>Security considerations:</em><a href="#section-8.1.4-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.4-12.1">
-              <p id="section-8.1.4-12.1.1">CESR payloads are cryptographically signed and self-framing.<a href="#section-8.1.4-12.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.4-12.2">
-              <p id="section-8.1.4-12.2.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-8.1.4-12.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.4-12.3">
-              <p id="section-8.1.4-12.3.1">Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.<a href="#section-8.1.4-12.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.4-12.4">
-              <p id="section-8.1.4-12.4.1">vLEIs must be validated against the vLEI schema. See <span>[<a href="#GLEIF-vLEI-TechReq-Part3" class="cite xref">GLEIF-vLEI-TechReq-Part3</a>]</span>.<a href="#section-8.1.4-12.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.4-12.5">
-              <p id="section-8.1.4-12.5.1">See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-8.1.4-12.5.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.4-12.1.1">See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-8.1.4-12.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.4-13"><em>Interoperability considerations:</em><a href="#section-8.1.4-13" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.1.4-14.1">
-              <p id="section-8.1.4-14.1.1">CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the <code>encoding=</code> parameter must be set to <code>false</code>.<a href="#section-8.1.4-14.1.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
+<p id="section-8.1.4-14">None.<a href="#section-8.1.4-14" class="pilcrow">¶</a></p>
 <p id="section-8.1.4-15"><em>Published specification:</em><a href="#section-8.1.4-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.4-16.1">
@@ -2433,52 +2420,36 @@ If CESR is binary encoded, the <code>encoding=</code> parameter must be set to <
 <p id="section-8.1.5-7"><em>Optional parameters:</em><a href="#section-8.1.5-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.5-8.1">
-              <p id="section-8.1.5-8.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type<a href="#section-8.1.5-8.1.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-8.1.1"><code>profile</code> — Indicates the payload conforms to a specific vLEI credential type.<a href="#section-8.1.5-8.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.5-8.2">
-              <p id="section-8.1.5-8.2.1"><code>encoding=true</code> — Indicates the CESR stream is text encoded. By default <code>encoding=true</code>.<a href="#section-8.1.5-8.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-8.2.1"><code>encoding</code> — Indicates the CESR stream is text or binary.
+Defaults to <code>text</code>.
+<code>encoding=binary</code> indicates the CESR stream is binary encoded.<a href="#section-8.1.5-8.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.5-8.3">
-              <p id="section-8.1.5-8.3.1"><code>encoding=false</code> — Indicates the CESR stream is binary encoded.<a href="#section-8.1.5-8.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.5-8.4">
-              <p id="section-8.1.5-8.4.1"><code>charset</code> — Optional; default is UTF-8<a href="#section-8.1.5-8.4.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-8.3.1"><code>charset</code> — Indicates character set for text encodings.
+Defaults to UTF-8.<a href="#section-8.1.5-8.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.5-9"><em>Encoding considerations:</em><a href="#section-8.1.5-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.5-10.1">
-              <p id="section-8.1.5-10.1.1">8-bit; CESR text encoding is UTF-8 compatible and self-framing.<a href="#section-8.1.5-10.1.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-10.1.1">CESR defaults to UTF-8 text encoding and is self-framing.<a href="#section-8.1.5-10.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-8.1.5-10.2">
-              <p id="section-8.1.5-10.2.1">When <code>encoding=true</code>, the CESR stream is base64-encoded for safe embedding in text streams.<a href="#section-8.1.5-10.2.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-10.2.1">CESR can also be a binary stream.
+When used in binary mode the <code>encoding</code> option <span class="bcp14">MUST</span> be specified (e.g., <code>encoding=binary</code>).<a href="#section-8.1.5-10.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.5-11"><em>Security considerations:</em><a href="#section-8.1.5-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.5-12.1">
-              <p id="section-8.1.5-12.1.1">CESR payloads are cryptographically signed and self-framing.<a href="#section-8.1.5-12.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.5-12.2">
-              <p id="section-8.1.5-12.2.1">Signature verification is required to ensure authenticity and integrity.<a href="#section-8.1.5-12.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.5-12.3">
-              <p id="section-8.1.5-12.3.1">Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.<a href="#section-8.1.5-12.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.5-12.4">
-              <p id="section-8.1.5-12.4.1">vLEIs must be validated against the vLEI schema. See <span>[<a href="#GLEIF-vLEI-TechReq-Part3" class="cite xref">GLEIF-vLEI-TechReq-Part3</a>]</span>.<a href="#section-8.1.5-12.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-8.1.5-12.5">
-              <p id="section-8.1.5-12.5.1">See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-8.1.5-12.5.1" class="pilcrow">¶</a></p>
+              <p id="section-8.1.5-12.1.1">See <a href="#sec-sec" class="auto internal xref">Section 7</a>.<a href="#section-8.1.5-12.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-8.1.5-13"><em>Interoperability considerations:</em><a href="#section-8.1.5-13" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.1.5-14.1">
-              <p id="section-8.1.5-14.1.1">CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the <code>encoding=</code> parameter must be set to <code>false</code>.<a href="#section-8.1.5-14.1.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
+<p id="section-8.1.5-14">None.<a href="#section-8.1.5-14" class="pilcrow">¶</a></p>
 <p id="section-8.1.5-15"><em>Published specification:</em><a href="#section-8.1.5-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1.5-16.1">
@@ -2830,6 +2801,10 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
         <dd>
 <span class="refAuthor">Housley, R.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Operational Protocols: FTP and HTTP"</span>, <span class="seriesInfo">RFC 2585</span>, <span class="seriesInfo">DOI 10.17487/RFC2585</span>, <time datetime="1999-05" class="refDate">May 1999</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2585">https://www.rfc-editor.org/rfc/rfc2585</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC4648">[RFC4648]</dt>
+        <dd>
+<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="STD96">[STD96]</dt>
         <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
@@ -2989,56 +2964,59 @@ vlei-media-type =
   "application/acdc+json;profile=urn:vlei:ecra" /
   "application/acdc+json;profile=urn:vlei:qvi" /
   "application/acdc+json;profile=urn:vlei:oora" /
+  "application/acdc+json;profile=urn:vlei:oora;encoding=base64uri" /
   "application/acdc+cbor;profile=urn:vlei:leid" /
-  "application/acdc+cbor;profile=urn:vlei:leid;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:leid;encoding=text" /
   "application/acdc+cbor;profile=urn:vlei:ecr" /
-  "application/acdc+cbor;profile=urn:vlei:ecr;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri" /
+  "application/acdc+cbor;profile=urn:vlei:ecr;encoding=text" /
   "application/acdc+cbor;profile=urn:vlei:oor" /
-  "application/acdc+cbor;profile=urn:vlei:oor;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:oor;encoding=text" /
   "application/acdc+cbor;profile=urn:vlei:ecra" /
-  "application/acdc+cbor;profile=urn:vlei:ecra;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:ecra;encoding=text" /
   "application/acdc+cbor;profile=urn:vlei:qvi" /
-  "application/acdc+cbor;profile=urn:vlei:qvi;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:qvi;encoding=text" /
   "application/acdc+cbor;profile=urn:vlei:oora" /
-  "application/acdc+cbor;profile=urn:vlei:oora;base64=true" /
+  "application/acdc+cbor;profile=urn:vlei:oora;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:leid" /
-  "application/acdc+msgpk;profile=urn:vlei:leid;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:leid;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:ecr" /
-  "application/acdc+msgpk;profile=urn:vlei:ecr;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:ecr;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:oor" /
-  "application/acdc+msgpk;profile=urn:vlei:oor;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:oor;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:ecra" /
-  "application/acdc+msgpk;profile=urn:vlei:ecra;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:ecra;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:qvi" /
-  "application/acdc+msgpk;profile=urn:vlei:qvi;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:qvi;encoding=text" /
   "application/acdc+msgpk;profile=urn:vlei:oora" /
-  "application/acdc+msgpk;profile=urn:vlei:oora;base64=true" /
+  "application/acdc+msgpk;profile=urn:vlei:oora;encoding=text" /
   "application/acdc+cesr;profile=urn:vlei:leid" /
-  "application/acdc+cesr;profile=urn:vlei:leid;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:leid;encoding=binary" /
   "application/acdc+cesr;profile=urn:vlei:leid;charset=utf-16le" /
   "application/acdc+cesr;profile=urn:vlei:ecr" /
-  "application/acdc+cesr;profile=urn:vlei:ecr;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:ecr;encoding=binary" /
   "application/acdc+cesr;profile=urn:vlei:oor" /
-  "application/acdc+cesr;profile=urn:vlei:oor;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:oor;encoding=binary" /
   "application/acdc+cesr;profile=urn:vlei:ecra" /
-  "application/acdc+cesr;profile=urn:vlei:ecra;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:ecra;encoding=binary" /
   "application/acdc+cesr;profile=urn:vlei:qvi" /
-  "application/acdc+cesr;profile=urn:vlei:qvi;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:qvi;bencoding=binary" /
   "application/acdc+cesr;profile=urn:vlei:oora" /
-  "application/acdc+cesr;profile=urn:vlei:oora;base64=true" /
+  "application/acdc+cesr;profile=urn:vlei:oora;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:leid" /
-  "application/said+cesr;profile=urn:vlei:leid;base64=true" /
+  "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri" /
+  "application/said+cesr;profile=urn:vlei:leid;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:leid;charset=utf-16le" /
   "application/said+cesr;profile=urn:vlei:ecr" /
-  "application/said+cesr;profile=urn:vlei:ecr;base64=true" /
+  "application/said+cesr;profile=urn:vlei:ecr;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:oor" /
-  "application/said+cesr;profile=urn:vlei:oor;base64=true" /
+  "application/said+cesr;profile=urn:vlei:oor;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:ecra" /
-  "application/said+cesr;profile=urn:vlei:ecra;base64=true" /
+  "application/said+cesr;profile=urn:vlei:ecra;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:qvi" /
-  "application/said+cesr;profile=urn:vlei:qvi;base64=true" /
+  "application/said+cesr;profile=urn:vlei:qvi;encoding=binary" /
   "application/said+cesr;profile=urn:vlei:oora" /
-  "application/said+cesr;profile=urn:vlei:oora;base64=true"
+  "application/said+cesr;profile=urn:vlei:oora;encoding=binary"
 
 
 </pre><a href="#appendix-A-1" class="pilcrow">¶</a>
@@ -3071,7 +3049,7 @@ vlei-media-type =
 {
   "verifiedBeneficiaryEntityId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
+      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=binary"
     },
     "payload": "QUNEQzEwQ0JPUkJhc2U2NEVuY29kZWQvLi4u"
     // base64 of binary CESR serialization of SAID credential (LEID profile)
@@ -3099,7 +3077,7 @@ vlei-media-type =
 {
   "receiverGatewayOwnerId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
+      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri"
       // could also include cf, cbt, oid if known
     },
     "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
@@ -3146,7 +3124,7 @@ vlei-media-type =
 {
   "senderGatewayNetworkId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
     },
     "payload": "oWJ0ZXN0LWVjci1jcmVkZW50aWFs..."
@@ -3161,7 +3139,7 @@ vlei-media-type =
 {
   "senderGatewayNetworkId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;base64=true",
+      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
     },
     "payload": "gEEBAQ..."
