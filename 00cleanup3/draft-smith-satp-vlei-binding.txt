@@ -1546,7 +1546,7 @@ Appendix B.  Examples in JSON
      },
      "beneficiaryPubkey": {
        "content": "application/cose;cose-type=cose-key",
-       "encoding": "base64", // explicitly flagging representation
+       "encoding": "base64uri", // explicitly flagging representation
        "payload": "aEtNQnBRLi4u" // base64 of CBOR COSE_Key bytes
      },
      "senderGatewaySignaturePublicKey": {
@@ -1555,7 +1555,7 @@ Appendix B.  Examples in JSON
      },
      "receiverGatewaySignaturePublicKey": {
        "content": "application/cose;cose-type=cose-key",
-       "encoding": "base64",
+       "encoding": "base64uri",
        "payload": "aEtNQ3BBLi4u"
      },
      "senderGatewayDeviceIdentityPubkey": {
