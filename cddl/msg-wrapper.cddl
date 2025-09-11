@@ -49,7 +49,7 @@ $key-type /= pkix-key
 
 cose-key = {
  content: "application/cose;cose-type=cose-key" / uint,
- encoding: "cbor" / "base64",
+ encoding: "cbor" / "base64uri" / "text",
  payload: bstr / tstr
 }
 
