@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-09T00:55:55.545328+00:00",
+  "timestamp": "2025-09-11T00:55:33.022694+00:00",
   "repo": "nedmsmith/draft-smith-satp-vlei-binding",
   "labels": [
     {
@@ -355,6 +355,34 @@
       "mergedBy": "nedmsmith",
       "mergeCommit": {
         "oid": "07d614e959b1fb807354198f7ccd744582c02275"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOPancDc6n6yv-",
+      "title": "doc cleanup and section 4 addition",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/11",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Added section 4 on Identity, fixed tables and cddl to remove errant satp message info. started moving from \"base64-\" optional parameter to \"encoding=\" paramters which is more flexible.",
+      "createdAt": "2025-09-11T00:38:39Z",
+      "updatedAt": "2025-09-11T00:39:22Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "07d614e959b1fb807354198f7ccd744582c02275",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "00cleanup",
+      "headRefOid": "b9e21b13b2b9b5156261e13f0b769ab9b9d2601e",
+      "closedAt": "2025-09-11T00:39:22Z",
+      "mergedAt": "2025-09-11T00:39:22Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "76b74fef9a770f189626b7749e7a8a863f97f445"
       },
       "comments": [],
       "reviews": []
