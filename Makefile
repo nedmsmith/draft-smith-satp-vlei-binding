@@ -27,6 +27,10 @@ endef # cddl_targets
 
 $(eval $(call cddl_targets,satp,$(CDDL_FRAGS)))
 
+check-satp-examples: $(addprefix $(CDDL_DIR),$(CDDL_EXAMPLES))
+	$(MAKE) -C $(CDDL_DIR) check-satp-examples
+.PHONY: check-satp-examples
+
 clean::
 	$(MAKE) -C $(CDDL_DIR) clean
 .PHONY: clean
