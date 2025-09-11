@@ -172,37 +172,125 @@ In some use cases, the assets being transferred have legal considerations such t
 This specification details the various vLEI credentials needed and how to integrate them with SATP core messages.
 SATP core message binding anticipates use of a message wrapper that uses media type {{-media-type}} and content format {{-content-format}} identifiers to facilitate interoperability with vLEI and other credential types.
 
-
 # Conventions and Definitions {#sec-conv}
 
 {::boilerplate bcp14-tagged}
 
-# Architecture {#sec-arch}
+# Identities {#sec-ids}
+
+The SATP core protocol {{-satp-core}} defines a set of entities that participate in an asset transfer.
+These entities are represented in differennt ways including identifiers, credentials and public keys.
+SATP entities are presumed to have been issued cryptographically relevant identities prior to stage 1 and subsequent exchanges.
+An entity with an issued identity is a principal.
+
+vLEIs {{-iso-vlei}} use Autonomic Identifiers (AID) to name principals in a system.
+AIDs are contained within an Authentic Chained Data Contain (ACDC) {{-acdc}} credential.
+ACDCs may also contain Key Event Logs (KEL) that are form of key attestation.
+KELs change periodically as key event receipts are added to the log.
+The state of the credential is therfore changing with use of the key.
+The state of an ACDC can be fixed by taking a cryptographic hash of an ACDC at some point in time.
+The digest value is a Self-Addressing Identifier (SAID) {{-cesr}}.
+
+When applying vLEI to SATP, the ACID properties expect the state of the exchanged asset and protocol endpoints are unchanging during the exchange.
+In relation to SATP messages, entity identifiers (e.g., verifiedOriginatorEntityID, senderGatewayID) use SAIDs to ensure the identity as represented by key state doesn't change during the SATP exchange.
+
+SATP messages referennce directly public keys (e.g., senderGatewaySignaturePublicKey) that refers to the key used to sign SATP messages or for use with device attestation.
+These keys might use a non-vLEI credental, consequently the representation supports a variety of key types.
+Nevertheless, use of a Key Event Recipt Infrastructure (KERI) {{-keri}} key means these keys can benefit from KEL-based key attestation.
+
+SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s) which is the normal function of ACDCs.
+Normally, the identifier, public key and credential are representations of the same entity.
+However, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the GatewaySignaturePublicKey.
+Consequently, there MAY be additional credentials issued to SATP principals that require additional verifier processing.
+The association between multiple credentials for the same entity SHOULD be established during SATP Stage 0.
+
+<cref anchor="ids-note1" source="Ned Smith">
+Note1: Need to check if there is a KERI key encoding other than ACDC.
+</cref>
+
+## Identity Binding {#sec-id-bind}
+
+The following table shows SATP entity bindings according to the various SATP message types and credential structure.
+
+| SATP Entity | SATP Message | Structure |
+|===
+| Originator | implied credential | ACDC |
+| Originator | OriginatorPubkey | ACDC or other |
+| Originator | verifiedOriginatorEntityID | SAID |
+| Beneficiary | implied credential | ACDC |
+| Beneficiary | verifiedBeneficiaryEntityID | SAID |
+| Beneficiary | OriginatorPubkey | ACDC or other |
+| Origin Asset Network | implied credential | ACDC |
+| Origin Asset Network | senderGatewayNetworkId | ACDC |
+| Dest. Asset Network | implied credential | ACDC |
+| Dest. Asset Network | recipientGatewayNetworkId | ACDC |
+| Sender Gateway (G1) | gatewayCredential | ACDC |
+| G1 | senderGatewaySignaturePubkey | ACDC or other |
+| G1 | senderGatewayId | SAID |
+| G1 | implied device credential | ACDC |
+| G1 | senderGatewayDeviceIdentityPubkey | ACDC or other |
+| Gateway Owner (G1) | implied credential | ACDC |
+| Gateway Owner (G1) | senderGatewayOwnerID | SAID |
+| Receiver Gateway (G2) | gatewayCredential | ACDC |
+| G2 | receiverGatewaySignaturePubkey | ACDC or other |
+| G2 | receiverGatewayId | SAID |
+| G2 | implied device credential | ACDC |
+| G2 | receiverGatewayDeviceIdentityPubkey | ACDC or other |
+| Gateway Owner (G2) | implied credential | ACDC |
+| Gateway Owner (G2) | senderGatewayOwnerID | SAID |
+|===
+{: #tbl-satp-entity title="SATP Entity to Credential Type Mapping" align=left}
+
+<cref anchor="ids-note2" source="Ned Smith">
+Note2: Need to describe how this draft approaches protocol binding where focus is on top-down, but not ignoring buttom up eg tls.
+</cref>
+
+# vLEI Binding Architecture {#sec-arch}
 
 The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
 To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON format. See {{sec-iana}}.
 
+The vLEI ecosystem defines roles-specific credentials.
+Version 1.0 of vLEI defines six ecosystem roles.
+
+| vLEI Role | Abbreviation |
+|===
+| QualifiedvLEIIssuervLEICredential | QVI |
+| LegalEntityvLEICredential | LEID |
+| OORAuthorizationvLEICredential | OORA |
+| LegalEntityOfficialOrganizationalRolevLEICredential | OOR |
+| ECRAuthorizationvLEICredential | ECRA |
+| LegalEntityEngagementContextRolevLEICredential | ECR |
+|===
+{: #tbl-vlei-roles title="vLEI Ecosystem Roles" align=left}
+
+<cref anchor="ids-note3" source="Ned Smith">
+Note3: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
+Gateway Credential type isn't used in any of the stages afaik.
+There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
+</cref>
+
 ## SATP Messages Containing vLEI Credentials
 
-The following SATP messages are extended to contain vLEI credentials:
+The SATP protocol {{-satp-core}} defines a set of SATP flows that are divided into stages.
 
-| # | SATP Message | Credential Type |
+
+The following SATP messages correspond to specific vLEI credential types:
+
+| # | SATP Messages | Credential Type |
 |===
-| 1 | verifiedOriginatorEntityId, verifiedBeneficiaryEntityId, senderGatewayOwnerId, receiverGatewayOwnerId | LegalEntityvLEICredential |
-| 2 | senderGatewayId, recipientGatewayId, senderGatewayNetworkId, recipientGatewayNetworkId | LegalEntityEngagementContextRolevLEICredential |
-| 3 | assetControllerCredential, lockEvidenceIssuerCredential, commitAuthorizingCredential | LegalEntityvLEICredential, OfficialOrganizationalRolevLEICredential, LegalEntityEngagementContextRolevLEICredential |
-| 4 | originatorPubkey, beneficiaryPubkey, senderGatewaySignaturePublicKey, receiverGatewaySignaturePublicKey, senderGatewayDeviceIdentityPubkey, receiverGatewayDeviceIdentityPubkey, lockEvidenceVerificationKey, commitVerificationKey, postCommitSecureChannelKey | JOSE or COSE Key |
+| 1 | verifiedOriginatorEntityId, originatorPubkey, verifiedBeneficiaryEntityId, beneficiaryPubkey, senderGatewayOwnerId, receiverGatewayOwnerId | LEID |
+| 2 | senderGatewayId, senderGatewaySignaturePubkey, recipientGatewayId, receiverGatewaySignaturePubkey, senderGatewayNetworkId, senderGatewayDeviceIdentityPubkey, recipientGatewayNetworkId receiverGatewayDeviceIdentityPubkey| ECR |
 |===
-{: #tbl-satp-msgs title="SATP messages containing vLEI and other credentials" align=left}
+{: #tbl-satp-msgs title="SATP messages containing vLEI credential type" align=left}
 
-
-
-
-
-
-
-The SATP Messages in row 4 of {{tbl-satp-msgs}} SHALL be a JSON Web Key as defined by {{-jwk}} or a COSE Key as defined by {{-cose-key}}.
+<cref anchor="ids-note4" source="Ned Smith">
+Note4: The various xxxID messages are tstr values - the stringified representation of the vLEI credential identifer should be used here.
+This is probably an SAID.
+For a SATP-JSON binding, the SAID MUST use the text form of the CESR derivation code.
+For a SATP-CBOR or other binary binding the SAID MUST use the binary form of the CESR derivation code.
+</cref>
 
 ### LegalEntityIdentityvLEICredential Credentials
 
@@ -215,29 +303,15 @@ Gateway owner identities area form of legal entity as they identify the owner of
 
 The SATP Messages in row 2 of {{tbl-satp-msgs}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
 
-These messages are realized using a Legal Entity Engagement Context Role vLEI Credential (LEECRvLEIC) because these message identify the gateways and hosts within the respective networks involved in transferring digital assets.
-
-### OfficialOrganizationalRolevLEICredential Credentials
-
-The SATP Messages in row 3 of {{tbl-satp-msgs}} SHALL be one of a LegalEntityvLEICredential, LegalEntityEngagementContextRolevLEICredential, or OfficialOrganizationalRolevLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json), [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json), and [LEOORvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json) schemas.
-
-These messages are realized using various vLEI credentials depending on use case context.
-
-Examples:
-
- * LEvLEIC is used if an asset controller, lock evidence issuer, or commit authority are legal entities.
-
- * LEECRvLEIC is used if an asset controller, lock evidence issuer, or commit authority are machine hosts facilitating SATP gateways or network hosts.
-
- * Official Organizational Role vLEI Credential (OORvLEIC) is used if an asset controller, lock evidence issuer, or commit authority are organizational roles.
+These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.
 
 ### Key Structures
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
-The SATP messages in row 4 of {{tbl-satp-msgs}} SHALL be encoded using JSON Web Key (JWK) {{-jwk}} or COSE key {{-cose-key}} formats.
+The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK) {{-jwk}}, COSE key {{-cose-key}}, PKIX key in PEM or DER, or as ACDC {{-acdc}} credentials.
 
-The key structure SHOULD be extensible to support additional key formats.
+Other key formats SHOULD be allowed but are out of scope for {{&SELF}}.
 
 ## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
@@ -251,8 +325,9 @@ The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) {{-acdc}}.
 Section {{sec-iana}} request IANA assignment of ACDC media types {{-media-type}}.
 
-SATP messages as JSON can contain JSON wrapped ACDCs, but other ACDC formats are possible.
-The follwing media types MAY be used when supplying ACDC credential payloads:
+SATP messages, as JSON, contain JSON wrapped vLEI credentials.
+However, vLEI credentials can be formatted with other wire formats that include CBOR, MSGPK, and CESR.
+The follwing media types MAY be used when building credential payloads for SATP:
 
 | Media Types |
 |===
@@ -264,18 +339,22 @@ The follwing media types MAY be used when supplying ACDC credential payloads:
 |===
 {: #tbl-vlei-media-types title="vLEI media types" align=left}
 
+<cref anchor="ids-note5" source="Ned Smith">
+Note5: vLEI v1.0.0 defines JSON structure containing SAID. There should be a way to encode the ACDC directly to avoid backend lookup of the ACDC. ACDCs can be in binary/text.
+</cref>
+
 ### Profile Optonal Parameter
 
 The media type assignments have an optional parameter named "profile=" that can be used to identify the vLEI credential type. It is expressed in URI format.
 
-| Profile name                               | Profile ID                        |
-|===                                         |                                   |
-| Legal Entity Identity (LEID)             | profile=urn:vlei:leid          |
-| Engagement Context Role (ECR)              | profile=urn:vlei:ecr             |
-| Official Organizational Role (OOR)         | profile=urn:vlei:oor             |
-| Legal Entity Authorizing Role (LAR)        | profile=urn:vlei:lar             |
-| Qualified vLEI Issuer (QVI)                | profile=urn:vlei:qvi             |
-| vLEI Root Authority (vRA)                  | profile=urn:vlei:vra             |
+| Profile name | Profile ID |
+|=== | |
+| QualifiedvLEIIssuervLEICredential (QVI) | profile=urn:vlei:qvi |
+| LegalEntityvLEICredential (LEID) | profile=urn:vlei:leid |
+| ECRAuthorizationvLEICredential (ECRA) | profile=urn:vlei:ecra |
+| LegalEntityEngagementContextRolevLEICredential (ECR) | profile=urn:vlei:ecr |
+| OORAuthorizationvLEICredential (OORA) | profile=urn:vlei:oora |
+| LegalEntityOfficialOrganizationalRolevLEICredential (OOR) | profile=urn:vlei:oor |
 |===
 {: #tbl-vlei-profiles title="vLEI profiles" align=left}
 
@@ -286,14 +365,6 @@ A comprehensive listing of vLEI profiles is provided even though some of the vLE
 ### Charset Optonal Parameter
 
 The media type assignments have an optional parameter named "charset=" that can be used to identify the character encoding scheme when payload is a text encoding. By default "utf-8" is assumed. Alternative character set encodings MUST populate "charset=".
-
-# Identities {#sec-ids}
-
-TODO
-
-## Identity Binding {#sec-bind}
-
-TODO
 
 # Verification of vLEI Payloads {#sec-verify}
 
@@ -316,6 +387,8 @@ registry {{!IANA.media-types}}.
 
 ### application/acdc+json
 
+This media type indicates the payload is a JSON formatted vLEI.
+
 *Type name:*
 
 - application
@@ -331,25 +404,25 @@ registry {{!IANA.media-types}}.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `base64=true` — Indicates the ACDC stream is binary and base64-encoded for use in text transports.
-- `base64=false` — Indicates the ACDC stream is text encoded. By defaualt `base64=false`.
+- `encoding=true` — Indicates the ACDC stream is binary and base64-encoded for use in text transports.
+- `encoding=false` — Indicates the ACDC stream is text encoded. By defaualt `encoding=false`.
 - `charset` — Indicates character set for text encodings, default is UTF-8.
 
 *Encoding considerations:*
 
 - 8-bit; JSON text encoding defaults to UTF-8.
-- When `base64=true`, the ACDC stream is base64-encoded for safe embedding in JSON.
+- When `encoding=true`, the ACDC stream is base64-encoded for safe embedding in JSON.
 
 *Security considerations:*
 
 - ACDC payloads are cryptographically signed.
 - Signature verification is required to ensure authenticity and integrity.
 - Credential provenance must be anchored. For example, the GLEIF Root AID via ACDC edges.
-- See {{sec-iana}}.
+- See {{sec-sec}}.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
 
 *Published specification:*
 
@@ -410,13 +483,13 @@ registry {{!IANA.media-types}}.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `base64=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
-- `base64=false` — Indicates the ACDC stream is binary for use in binary transports. By default `base64=false`.
+- `encoding=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
+- `encoding=false` — Indicates the ACDC stream is binary for use in binary transports. By default `encoding=false`.
 
 *Encoding considerations:*
 
 - ACDC streams are CBOR encoded for use with binary transports.
-If the transport is a text stream the `base64=true` option should be used.
+If the transport is a text stream the `encoding=true` option should be used.
 
 *Security considerations:*
 
@@ -428,7 +501,7 @@ If the transport is a text stream the `base64=true` option should be used.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
 
 *Published specification:*
 
@@ -489,13 +562,13 @@ If the transport is a text stream the `base64=true` option should be used.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `base64=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
-- `base64=false` — Indicates the ACDC stream is binary for use in binary transports. By default `base64=false`.
+- `encoding=true` — Indicates the ACDC stream is base64-encoded for use in text transports.
+- `encoding=false` — Indicates the ACDC stream is binary for use in binary transports. By default `encoding=false`.
 
 *Encoding considerations:*
 
 - ACDC streams are MSGPK encoded for use with binary transports.
-If the transport is a text stream the `base64=true` option should be used.
+If the transport is a text stream the `encoding=true` option should be used.
 
 *Security considerations:*
 
@@ -507,7 +580,7 @@ If the transport is a text stream the `base64=true` option should be used.
 
 *Interoperability considerations:*
 
-- Binary payloads must be base64 encoded (e.g., `base64=true`) to make payloads compatible with text streams.
+- Binary payloads must be base64 encoded (e.g., `encoding=true`) to make payloads compatible with text streams.
 
 *Published specification:*
 
@@ -568,14 +641,14 @@ If the transport is a text stream the `base64=true` option should be used.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `base64=true` — Indicates the CESR stream is text encoded. By default `base64=true`.
-- `base64=false` — Indicates the CESR stream is binary encoded.
+- `encoding=true` — Indicates the CESR stream is text encoded. By default `encoding=true`.
+- `encoding=false` — Indicates the CESR stream is binary encoded.
 - `charset` — Optional; default is UTF-8
 
 *Encoding considerations:*
 
 - 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
-- When `base64=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+- When `encoding=true`, the CESR stream is base64-encoded for safe embedding in text streams.
 
 *Security considerations:*
 
@@ -588,7 +661,7 @@ If the transport is a text stream the `base64=true` option should be used.
 *Interoperability considerations:*
 
 - CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the `base64=` parameter must be set to `false`.
+If CESR is binary encoded, the `encoding=` parameter must be set to `false`.
 
 *Published specification:*
 
@@ -649,14 +722,14 @@ If CESR is binary encoded, the `base64=` parameter must be set to `false`.
 *Optional parameters:*
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type
-- `base64=true` — Indicates the CESR stream is text encoded. By default `base64=true`.
-- `base64=false` — Indicates the CESR stream is binary encoded.
+- `encoding=true` — Indicates the CESR stream is text encoded. By default `encoding=true`.
+- `encoding=false` — Indicates the CESR stream is binary encoded.
 - `charset` — Optional; default is UTF-8
 
 *Encoding considerations:*
 
 - 8-bit; CESR text encoding is UTF-8 compatible and self-framing.
-- When `base64=true`, the CESR stream is base64-encoded for safe embedding in text streams.
+- When `encoding=true`, the CESR stream is base64-encoded for safe embedding in text streams.
 
 *Security considerations:*
 
@@ -669,7 +742,7 @@ If CESR is binary encoded, the `base64=` parameter must be set to `false`.
 *Interoperability considerations:*
 
 - CESR supports dual text-binary encoding, this media type assumes CESR text encoding.
-If CESR is binary encoded, the `base64=` parameter must be set to `false`.
+If CESR is binary encoded, the `encoding=` parameter must be set to `false`.
 
 *Published specification:*
 

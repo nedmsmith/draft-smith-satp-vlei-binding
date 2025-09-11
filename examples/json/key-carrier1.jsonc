@@ -26,19 +26,6 @@
     "content": "application/pkix-cert",
     "encoding": "DER",
     "payload": "MIIB..." // base64 DER
-  },
-  "lockEvidenceVerificationKey": {
-    "content": "application/jwk+json",
-    "payload": "{ \"kty\": \"OKP\", \"crv\": \"Ed25519\", \"x\": \"...\" }"
-  },
-  "commitVerificationKey": {
-    "content": "application/cose;cose-type=cose-key",
-    "encoding": "base64",
-    "payload": "aEtNQ3BBLi4u"
-  },
-  "postCommitSecureChannelKey": {
-    "content": "application/jwk+json",
-    "payload": "{ \"kty\": \"EC\", \"crv\": \"P-384\", \"x\": \"...\", \"y\": \"...\" }"
   }
 }
 
