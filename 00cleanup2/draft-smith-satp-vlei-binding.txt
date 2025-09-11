@@ -1,0 +1,1581 @@
+
+
+
+
+Secure Asset Transfer Protocol                                  N. Smith
+Internet-Draft                                               Independent
+Intended status: Standards Track                       11 September 2025
+Expires: 15 March 2026
+
+
+                A SATP Core Binding for vLEI Identities
+                  draft-smith-satp-vlei-binding-latest
+
+Abstract
+
+   The verifiable Legal Entity Identifier (vLEI) is a cryptographically
+   verifiable extension of the LEI standard, designed to automate trust
+   in organizational identity.  Governed by the Global Legal Entity
+   Identifier Foundation (GLEIF), the vLEI system uses Authentic Chained
+   Data Containers (ACDCs), Self-Addressing Identifiers (SAIDs), and Key
+   Event Receipt Infrastructure (KERI) to issue and verify credentials
+   for legal entities and their authorized representatives.  It enables
+   secure, machine-readable identity assertions across financial,
+   regulatory, and supply chain ecosystems, supporting role-based
+   delegation and interoperability with decentralized trust frameworks.
+
+   This specification defines vLEI for verifiable gateway operator
+   identities and cryptographically links the gateway operator identity
+   to the gateway identity.  Thus SATP core lock assertions are
+   cryptographically linked to gateway operator identities.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://nedmsmith.github.io/draft-smith-satp-vlei-binding/draft-
+   smith-satp-vlei-binding.html.  Status information for this document
+   may be found at https://datatracker.ietf.org/doc/draft-smith-satp-
+   vlei-binding/.
+
+   Discussion of this document takes place on the Secure Asset Transfer
+   Protocol Working Group mailing list (mailto:sat@ietf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/sat/.  Subscribe
+   at https://www.ietf.org/mailman/listinfo/sat/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/nedmsmith/draft-smith-satp-vlei-binding.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 15 March 2026.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  Identities
+     3.1.  Identity Binding
+   4.  vLEI Binding Architecture
+     4.1.  SATP Messages Containing vLEI Credentials
+       4.1.1.  LegalEntityIdentityvLEICredential Credentials
+       4.1.2.  LegalEntityEngagementContextRolevLEICredential
+               Credentials
+       4.1.3.  Key Structures
+     4.2.  SATP Message Wrapper Schema
+     4.3.  vLEI Media Types
+       4.3.1.  Profile Optonal Parameter
+       4.3.2.  Encoding Optonal Parameter
+       4.3.3.  Charset Optonal Parameter
+   5.  Verification of vLEI Payloads
+   6.  Implementation Status
+   7.  Security Considerations
+   8.  IANA Considerations
+     8.1.  Media Type Assignment
+       8.1.1.  application/acdc+json
+       8.1.2.  application/acdc+cbor
+       8.1.3.  application/acdc+msgpk
+       8.1.4.  application/acdc+cesr
+       8.1.5.  application/said+cesr
+     8.2.  CoAP Content-Format ID Assignments
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
+   Appendix A.  Full CDDL
+   Appendix B.  Examples in JSON
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   The SATP architecture [I-D.ietf-satp-architecture] defines an
+   interoperability architecture for interconnection between networks or
+   systems that anticipates a secure asset transfer protocol that
+   satisfies security, privacy, atomicity and liveliness requirements in
+   the transfer of assets.  The SATP core protocol [I-D.ietf-satp-core]
+   is a protocol for exchanging digital assets that ensures the state of
+   the asset is preserved across inter-domain transfers.  It is an
+   extensible protocol where fields containing identity and payload
+   values that are not defined by SATP core may be defined by companion
+   specifications.  This specification defines a SATP core protocol
+   binding for Verifiable Legal Entity Identifiers (vLEI) [ISO17442-3]
+   used to identify SATP gateways and the organizations that operate
+   them.  In some use cases, the assets being transferred have legal
+   considerations such that officers of the organization are expected to
+   authorize digital asset transfers.  This specification details the
+   various vLEI credentials needed and how to integrate them with SATP
+   core messages.  SATP core message binding anticipates use of a
+   message wrapper that uses media type [STD91] and content format
+   [RFC7252] identifiers to facilitate interoperability with vLEI and
+   other credential types.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Identities
+
+   The SATP core protocol [I-D.ietf-satp-core] defines a set of entities
+   that participate in an asset transfer.  These entities are
+   represented in differennt ways including identifiers, credentials and
+   public keys.  SATP entities are presumed to have been issued
+   cryptographically relevant identities prior to stage 1 and subsequent
+   exchanges.  An entity with an issued identity is a principal.
+
+   vLEIs [ISO17442-3] use Autonomic Identifiers (AID) to name principals
+   in a system.  AIDs are contained within an Authentic Chained Data
+   Contain (ACDC) [ACDC-Spec] credential.  ACDCs may also contain Key
+   Event Logs (KEL) that are form of key attestation.  KELs change
+   periodically as key event receipts are added to the log.  The state
+   of the credential is therfore changing with use of the key.  The
+   state of an ACDC can be fixed by taking a cryptographic hash of an
+   ACDC at some point in time.  The digest value is a Self-Addressing
+   Identifier (SAID) [CESR-Spec].
+
+   When applying vLEI to SATP, the ACID properties expect the state of
+   the exchanged asset and protocol endpoints are unchanging during the
+   exchange.  In relation to SATP messages, entity identifiers (e.g.,
+   verifiedOriginatorEntityID, senderGatewayID) use SAIDs to ensure the
+   identity as represented by key state doesn't change during the SATP
+   exchange.
+
+   SATP messages referennce directly public keys (e.g.,
+   senderGatewaySignaturePublicKey) that refers to the key used to sign
+   SATP messages or for use with device attestation.  These keys might
+   use a non-vLEI credental, consequently the representation supports a
+   variety of key types.  Nevertheless, use of a Key Event Recipt
+   Infrastructure (KERI) [KERI-Spec] key means these keys can benefit
+   from KEL-based key attestation.
+
+   SATP defines credentials (e.g., gatewayCredential) that binds the
+   entity identivier(s) to public key(s) which is the normal function of
+   ACDCs.  Normally, the identifier, public key and credential are
+   representations of the same entity.  However, the
+   GatewayDeviceIdentityPublicKey could be associated with a different
+   credential from the GatewaySignaturePublicKey.  Consequently, there
+   MAY be additional credentials issued to SATP principals that require
+   additional verifier processing.  The association between multiple
+   credentials for the same entity SHOULD be established during SATP
+   Stage 0.
+
+
+   // Note1: Need to check if there is a KERI key encoding other than
+   // ACDC.
+   //
+   // -- Ned Smith
+
+3.1.  Identity Binding
+
+   The following table shows SATP entity bindings according to the
+   various SATP message types and credential structure.
+
+    +==============+=====================================+===========+
+    | SATP Entity  | SATP Message                        | Structure |
+    +==============+=====================================+===========+
+    | Originator   | implied credential                  | ACDC      |
+    +--------------+-------------------------------------+-----------+
+    | Originator   | OriginatorPubkey                    | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | Originator   | verifiedOriginatorEntityID          | SAID      |
+    +--------------+-------------------------------------+-----------+
+    | Beneficiary  | implied credential                  | ACDC      |
+    +--------------+-------------------------------------+-----------+
+    | Beneficiary  | verifiedBeneficiaryEntityID         | SAID      |
+    +--------------+-------------------------------------+-----------+
+    | Beneficiary  | OriginatorPubkey                    | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | Origin Asset | implied credential                  | ACDC      |
+    | Network      |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Origin Asset | senderGatewayNetworkId              | ACDC      |
+    | Network      |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Dest.  Asset | implied credential                  | ACDC      |
+    | Network      |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Dest.  Asset | recipientGatewayNetworkId           | ACDC      |
+    | Network      |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Sender       | gatewayCredential                   | ACDC      |
+    | Gateway (G1) |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | G1           | senderGatewaySignaturePubkey        | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | G1           | senderGatewayId                     | SAID      |
+    +--------------+-------------------------------------+-----------+
+    | G1           | implied device credential           | ACDC      |
+    +--------------+-------------------------------------+-----------+
+    | G1           | senderGatewayDeviceIdentityPubkey   | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | Gateway      | implied credential                  | ACDC      |
+    | Owner (G1)   |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Gateway      | senderGatewayOwnerID                | SAID      |
+    | Owner (G1)   |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Receiver     | gatewayCredential                   | ACDC      |
+    | Gateway (G2) |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | G2           | receiverGatewaySignaturePubkey      | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | G2           | receiverGatewayId                   | SAID      |
+    +--------------+-------------------------------------+-----------+
+    | G2           | implied device credential           | ACDC      |
+    +--------------+-------------------------------------+-----------+
+    | G2           | receiverGatewayDeviceIdentityPubkey | ACDC or   |
+    |              |                                     | other     |
+    +--------------+-------------------------------------+-----------+
+    | Gateway      | implied credential                  | ACDC      |
+    | Owner (G2)   |                                     |           |
+    +--------------+-------------------------------------+-----------+
+    | Gateway      | senderGatewayOwnerID                | SAID      |
+    | Owner (G2)   |                                     |           |
+    +--------------+-------------------------------------+-----------+
+
+             Table 1: SATP Entity to Credential Type Mapping
+
+
+   // Note2: Need to describe how this draft approaches protocol binding
+   // where focus is on top-down, but not ignoring buttom up eg tls.
+   //
+   // -- Ned Smith
+
+4.  vLEI Binding Architecture
+
+   The SATP core protocol [I-D.ietf-satp-core] defines several
+   extensible protocol fields that contain identity and other values not
+   defined by SATP core.  To facilitate interoperability these fields
+   SHOULD contain a media type [STD91] or content format [RFC7252]
+   wrapper.  This specation requests IANA assignment of media type and
+   content format identifiers for vLEIs which are serialized as
+   Composable Event Streaming Representation (CESR) [CESR-Spec] objects
+   in JSON format.  See Section 8.
+
+   The vLEI ecosystem defines roles-specific credentials.  Version 1.0
+   of vLEI defines six ecosystem roles.
+
+   +=====================================================+============+
+   | vLEI Role                                           |Abbreviation|
+   +=====================================================+============+
+   | QualifiedvLEIIssuervLEICredential                   |QVI         |
+   +-----------------------------------------------------+------------+
+   | LegalEntityvLEICredential                           |LEID        |
+   +-----------------------------------------------------+------------+
+   | OORAuthorizationvLEICredential                      |OORA        |
+   +-----------------------------------------------------+------------+
+   | LegalEntityOfficialOrganizationalRolevLEICredential |OOR         |
+   +-----------------------------------------------------+------------+
+   | ECRAuthorizationvLEICredential                      |ECRA        |
+   +-----------------------------------------------------+------------+
+   | LegalEntityEngagementContextRolevLEICredential      |ECR         |
+   +-----------------------------------------------------+------------+
+
+                      Table 2: vLEI Ecosystem Roles
+
+
+   // Note3: SATP describes Gateway secure channel establishment public
+   // key-pair but this isn't represented in the list of message
+   // publickey message types.  Gateway Credential type isn't used in
+   // any of the stages afaik.  There should be an IANA registry for the
+   // allowed credential types (vLEI, SAML, OAuth, X.509).
+   //
+   // -- Ned Smith
+
+4.1.  SATP Messages Containing vLEI Credentials
+
+   The SATP protocol [I-D.ietf-satp-core] defines a set of SATP flows
+   that are divided into stages.
+
+   The following SATP messages correspond to specific vLEI credential
+   types:
+
+    +===+================================================+============+
+    | # | SATP Messages                                  | Credential |
+    |   |                                                | Type       |
+    +===+================================================+============+
+    | 1 | verifiedOriginatorEntityId, originatorPubkey,  | LEID       |
+    |   | verifiedBeneficiaryEntityId,                   |            |
+    |   | beneficiaryPubkey, senderGatewayOwnerId,       |            |
+    |   | receiverGatewayOwnerId                         |            |
+    +---+------------------------------------------------+------------+
+    | 2 | senderGatewayId, senderGatewaySignaturePubkey, | ECR        |
+    |   | recipientGatewayId,                            |            |
+    |   | receiverGatewaySignaturePubkey,                |            |
+    |   | senderGatewayNetworkId,                        |            |
+    |   | senderGatewayDeviceIdentityPubkey,             |            |
+    |   | recipientGatewayNetworkId                      |            |
+    |   | receiverGatewayDeviceIdentityPubkey            |            |
+    +---+------------------------------------------------+------------+
+
+           Table 3: SATP messages containing vLEI credential type
+
+
+   // Note4: The various xxxID messages are tstr values - the
+   // stringified representation of the vLEI credential identifer should
+   // be used here.  This is probably an SAID.  For a SATP-JSON binding,
+   // the SAID MUST use the text form of the CESR derivation code.  For
+   // a SATP-CBOR or other binary binding the SAID MUST use the binary
+   // form of the CESR derivation code.
+   //
+   // -- Ned Smith
+
+4.1.1.  LegalEntityIdentityvLEICredential Credentials
+
+   The SATP Messages in row 1 of Table 3 SHALL be a
+   LegalEntityvLEICredential as defined by the LEvLEIC
+   (https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-
+   credential.json) schema.
+
+   These messages are realized using a Legal Entity vLEI Credential
+   (LEvLEIC) because these message identify legal entities.  Gateway
+   owner identities area form of legal entity as they identify the owner
+   of a gateway rather than the gateway itself.
+
+4.1.2.  LegalEntityEngagementContextRolevLEICredential Credentials
+
+   The SATP Messages in row 2 of Table 3 SHALL be a
+   LegalEntityEngagementContextRolevLEICredential as defined by the
+   LEECRvLEIC (https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-
+   entity-engagement-context-role-vLEI-credential.json) schema.
+
+   These messages are realized using a LEECRvLEIC because they identify
+   the gateways and hosts within the respective networks involved in
+   transferring digital assets.
+
+4.1.3.  Key Structures
+
+   Keys embedded in hardware or firmware may not easily be converted to
+   an interoperablel format, hence support for multiple key formats
+   ensures the SATP protocols can be implemented by a wide variety of
+   systems.
+
+   The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK)
+   [RFC7517], COSE key [STD96], PKIX key in PEM or DER, or as ACDC
+   [ACDC-Spec] credentials.
+
+   Other key formats SHOULD be allowed but are out of scope for RFCthis.
+
+4.2.  SATP Message Wrapper Schema
+
+   The following CDDL [RFC8610] defines the wrapper and application to
+   SATP fields.
+
+   ; =====================================================================
+   ; --- SATP Message (Entry Point) ---
+   ; =====================================================================
+
+   satp-message = {
+     ? verifiedOriginatorEntityId: wrapped-vlei
+     ? verifiedBeneficiaryEntityId: wrapped-vlei
+     ? senderGatewayOwnerId: wrapped-vlei
+     ? receiverGatewayOwnerId: wrapped-vlei
+
+     ? senderGatewayId: wrapped-vlei
+     ? recipientGatewayId: wrapped-vlei
+     ? senderGatewayNetworkId: wrapped-vlei
+     ? recipientGatewayNetworkId: wrapped-vlei
+
+     ? originatorPubkey: wrapped-vlei / wrapped-key
+     ? beneficiaryPubkey: wrapped-vlei / wrapped-key
+     ? senderGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+     ? receiverGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+     ? senderGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+     ? receiverGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+   }
+
+   ; =====================================================================
+   ; --- Wrapped vLEI Payloads ---
+   ; =====================================================================
+
+   wrapped-vlei = {
+    content: content-ref
+    payload: bstr / tstr
+   }
+
+   content-ref = non-empty<{
+    ? mt: vlei-media-type ; TBA
+    ? cf: uint ; TBA content format id
+    ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true, if false not cbor tagged and "mt" is required
+    ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
+   }>
+
+   ; =====================================================================
+   ; --- Wrapped Key Definitions ---
+   ; =====================================================================
+
+   wrapped-key = $key-type
+   $key-type /= cose-key
+   $key-type /= jwk-key
+   $key-type /= pkix-key
+
+   cose-key = {
+    content: "application/cose;cose-type=cose-key" / uint,
+    encoding: "cbor" / "base64",
+    payload: bstr / tstr
+   }
+
+   jwk-key = {
+     content: "application/jwk+json" / uint,
+     payload: tstr
+   }
+
+   pkix-key = {
+     content: "application/pkix-cert" / uint,
+     encoding: "PEM" / "DER",
+     payload: tstr / bstr
+   }
+
+   non-empty<M> = (M) .and ({ + any => any })
+
+4.3.  vLEI Media Types
+
+   vLEI credentials are expressed as Authentic Chained Data Containers
+   (ACDC) [ACDC-Spec].  Section Section 8 request IANA assignment of
+   ACDC media types [STD91].
+
+   SATP messages, as JSON, contain JSON wrapped vLEI credentials.
+   However, vLEI credentials can be formatted with other wire formats
+   that include CBOR, MSGPK, and CESR.  The follwing media types MAY be
+   used when building credential payloads for SATP:
+
+                        +========================+
+                        | Media Types            |
+                        +========================+
+                        | application/acdc+json  |
+                        +------------------------+
+                        | application/acdc+cbor  |
+                        +------------------------+
+                        | application/acdc+msgpk |
+                        +------------------------+
+                        | application/acdc+cesr  |
+                        +------------------------+
+                        | application/said+cesr  |
+                        +------------------------+
+
+                        Table 4: vLEI media types
+
+
+   // Note5: vLEI v1.0.0 defines JSON structure containing SAID.  There
+   // should be a way to encode the ACDC directly to avoid backend
+   // lookup of the ACDC.  ACDCs can be in binary/text.
+   //
+   // -- Ned Smith
+
+4.3.1.  Profile Optonal Parameter
+
+   The media type assignments have an optional parameter named
+   "profile=" that MAY be any value.  It can be used to identify a vLEI
+   profile such as vLEI credential type.  It SHOULD be expressed in URI
+   format as illustrated in Table 5.
+
+   +===================================================+=====================+
+   |Profile name                                       |Profile ID           |
+   +===================================================+=====================+
+   |QualifiedvLEIIssuervLEICredential (QVI)            |profile=urn:vlei:qvi |
+   +---------------------------------------------------+---------------------+
+   |LegalEntityvLEICredential (LEID)                   |profile=urn:vlei:leid|
+   +---------------------------------------------------+---------------------+
+   |ECRAuthorizationvLEICredential (ECRA)              |profile=urn:vlei:ecra|
+   +---------------------------------------------------+---------------------+
+   |LegalEntityEngagementContextRolevLEICredential     |profile=urn:vlei:ecr |
+   |(ECR)                                              |                     |
+   +---------------------------------------------------+---------------------+
+   |OORAuthorizationvLEICredential (OORA)              |profile=urn:vlei:oora|
+   +---------------------------------------------------+---------------------+
+   |LegalEntityOfficialOrganizationalRolevLEICredential|profile=urn:vlei:oor |
+   |(OOR)                                              |                     |
+   +---------------------------------------------------+---------------------+
+
+                           Table 5: vLEI profiles
+
+   The various vLEI credential types can be specified in a media type
+   using the profile option.  Table 5 summarizes the profile identifiers
+   for the various vLEI credential types.  A comprehensive listing of
+   vLEI profiles is provided even though some of the vLEI credential
+   types are not anticipated by the vLEI binding to SATP at this time.
+
+4.3.2.  Encoding Optonal Parameter
+
+   The media type assignments have an optional encoding ("encoding=")
+   parameter that can be used to tunnel an alternative encoding.
+   Typically, encodings fall into two broad categories; text or binary.
+   An encoding MAY be any value, but RFCthis anticipates the following:
+
+   *  "base64uri" -- the payload is binary, as indicated by the media-
+      type, but base64 encoded when the bounding protocol is a text
+      stream.  See Section 5, [RFC4648].
+
+4.3.3.  Charset Optonal Parameter
+
+   The media type assignments have an optional character set
+   ("charset=") parameter that can be used to identify the character
+   encoding scheme when the payload is a text encoding.  By default
+   "utf-8" is assumed.  Alternative character set encodings MUST
+   populate "charset=".
+
+5.  Verification of vLEI Payloads
+
+   TODO
+
+6.  Implementation Status
+
+   TODO
+
+7.  Security Considerations
+
+   The following security properties are assumed for all payloads
+   identified by media types defined in RFCthis:
+
+   *  ACDC payloads are cryptographically signed.
+
+   *  CESR payloads are cryptographically signed and self-framing.
+
+   *  Signature verification is required to ensure authenticity and
+      integrity.
+
+   *  Credential provenance must be anchored to a trusted root.  For
+      example, the GLEIF Root AID via ACDC edges (see [GLEIF-vLEI-EGF]).
+
+   *  vLEIs must be validated against the vLEI schema.  See
+      [GLEIF-vLEI-TechReq-Part3].
+
+8.  IANA Considerations
+
+8.1.  Media Type Assignment
+
+   IANA is requested to add the following media types to the "Media
+   Types" registry [IANA.media-types].
+
+8.1.1.  application/acdc+json
+
+   This media type indicates the payload is a JSON formatted vLEI.
+
+   _Type name:_
+
+   *  application
+
+   _Subtype name:_
+
+   *  acdc+json
+
+   _Required parameters:_
+
+   *  None
+
+   _Optional parameters:_
+
+   *  profile — Indicates the payload conforms to a specific vLEI
+      credential type.
+
+   *  encoding — Indicates the ACDC stream is text or binary.  If
+      binary, encoding MUST make the payload text-safe (e.g.,
+      encoding=base64uri.  Defaults to text.
+
+   *  charset — Indicates character set for text encodings.  Defaults to
+      UTF-8.
+
+   _Encoding considerations:_
+
+   *  8-bit; JSON text encoding defaults to UTF-8.
+
+   *  Binary payloads are text-safe encoded for use in JSON streams.
+
+   _Security considerations:_
+
+   *  See Section 7.
+
+   _Interoperability considerations:_
+
+   *  Binary payloads must be base64 encoded to make payloads compatible
+      with text streams.
+
+   _Published specification:_
+
+   *  RFCthis
+
+   *  Key Event Receipt Infrastructure (KERI) — [KERI-Spec]
+
+   *  Authentictic Chained Data Containers (ACDC) — [ACDC-Spec]
+
+   *  Composable Event Streaming Representation (CESR) — [CESR-Spec]
+
+   *  GLEIF vLEI Credential Schema Registry — [GLEIF-vLEI-TechReq-Part3]
+
+   _Applications that use this media type:_
+
+   *  GLEIF vLEI issuance and verification systems.
+
+   *  SATP-compliant credential exchange platforms.
+
+   *  Forensic credential chaining and audit systems.
+
+   _Fragment identifier considerations:_
+
+   *  None
+
+   _Additional information:_
+
+   *  _Magic number(s):_ None
+
+   *  _File extension(s):_ .acdcjson
+
+   *  _Macintosh file type code(s):_ None
+
+   _Person & email address to contact for further information:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Intended usage:_
+
+   *  COMMON
+
+   _Author:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Change controller:_
+
+   *  IETF / GLEIF
+
+8.1.2.  application/acdc+cbor
+
+   _Type name:_
+
+   *  application
+
+   _Subtype name:_
+
+   *  acdc+cbor
+
+   _Required parameters:_
+
+   *  None
+
+   _Optional parameters:_
+
+   *  profile — Indicates the payload conforms to a specific vLEI
+      credential type.
+
+   *  encoding — Indicates the ACDC stream is text or binary.  Defaults
+      to cbor.
+
+   *  charset — Indicates character set for text encodings.  Defaults to
+      UTF-8.
+
+   _Encoding considerations:_
+
+   *  ACDC streams are CBOR encoded for use with binary transports.  If
+      the transport is a text stream the encoding option should be
+      specified.
+
+   _Security considerations:_
+
+   *  See Section 7.
+
+   _Interoperability considerations:_
+
+   None.
+
+   _Published specification:_
+
+   *  RFCthis
+
+   *  Key Event Receipt Infrastructure (KERI) — [KERI-Spec]
+
+   *  Authentictic Chained Data Containers (ACDC) — [ACDC-Spec]
+
+   *  Composable Event Streaming Representation (CESR) — [CESR-Spec]
+
+   *  GLEIF vLEI Credential Schema Registry — [GLEIF-vLEI-TechReq-Part3]
+
+   _Applications that use this media type:_
+
+   *  GLEIF vLEI issuance and verification systems
+
+   *  SATP-compliant credential exchange platforms
+
+   *  Forensic credential chaining and audit systems
+
+   _Fragment identifier considerations:_
+
+   *  None
+
+   _Additional information:_
+
+   *  Magic number(s): None
+
+   *  File extension(s): .acdcbor
+
+   *  Macintosh file type code(s): None
+
+   _Person & email address to contact for further information:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Intended usage:_
+
+   *  COMMON
+
+   _Author:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Change controller:_
+
+   *  IETF / GLEIF
+
+8.1.3.  application/acdc+msgpk
+
+   _Type name:_
+
+   *  application
+
+   _Subtype name:_
+
+   *  acdc+msgpk
+
+   _Required parameters:_
+
+   *  None
+
+   _Optional parameters:_
+
+   *  profile — Indicates the payload conforms to a specific vLEI
+      credential type.
+
+   *  encoding — Indicates the ACDC stream is text or binary.  Defaults
+      to msgpk.
+
+   *  charset — Indicates character set for text encodings.  Defaults to
+      UTF-8.
+
+   _Encoding considerations:_
+
+   *  ACDC streams are MSGPK encoded for use with binary transports.  If
+      the transport is a text stream the encoding option should be
+      specified.
+
+   _Security considerations:_
+
+   *  See Section 7.
+
+   _Interoperability considerations:_
+
+   None.
+
+   _Published specification:_
+
+   *  RFCthis
+
+   *  Key Event Receipt Infrastructure (KERI) — [KERI-Spec]
+
+   *  Authentictic Chained Data Containers (ACDC) — [ACDC-Spec]
+
+   *  Composable Event Streaming Representation (CESR) — [CESR-Spec]
+
+   *  GLEIF vLEI Credential Schema Registry — [GLEIF-vLEI-TechReq-Part3]
+
+   _Applications that use this media type:_
+
+   *  GLEIF vLEI issuance and verification systems
+
+   *  SATP-compliant credential exchange platforms
+
+   *  Forensic credential chaining and audit systems
+
+   _Fragment identifier considerations:_
+
+   *  None
+
+   _Additional information:_
+
+   *  Magic number(s): None
+
+   *  File extension(s): .acdcmsgpk
+
+   *  Macintosh file type code(s): None
+
+   _Person & email address to contact for further information:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Intended usage:_
+
+   *  COMMON
+
+   _Author:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Change controller:_
+
+   *  IETF / GLEIF
+
+8.1.4.  application/acdc+cesr
+
+   _Type name:_
+
+   *  application
+
+   _Subtype name:_
+
+   *  acdc+cesr
+
+   _Required parameters:_
+
+   *  None
+
+   _Optional parameters:_
+
+   *  profile — Indicates the payload conforms to a specific vLEI
+      credential type.
+
+   *  encoding — Indicates the CESR stream is text or binary.  Defaults
+      to text. encoding=binary indicates the CESR stream is binary
+      encoded.
+
+   *  charset — Indicates character set for text encodings.  Defaults to
+      UTF-8.
+
+   _Encoding considerations:_
+
+   *  CESR defaults to UTF-8 text encoding and is self-framing.
+
+   *  CESR can also be a binary stream.  When used in binary mode the
+      encoding option MUST be specified (e.g., encoding=binary).
+
+   _Security considerations:_
+
+   *  See Section 8.
+
+   _Interoperability considerations:_
+
+   None.
+
+   _Published specification:_
+
+   *  RFCthis
+
+   *  Key Event Receipt Infrastructure (KERI) — [KERI-Spec]
+
+   *  Authentictic Chained Data Containers (ACDC) — [ACDC-Spec]
+
+   *  Composable Event Streaming Representation (CESR) — [CESR-Spec]
+
+   *  GLEIF vLEI Credential Schema Registry — [GLEIF-vLEI-TechReq-Part3]
+
+   _Applications that use this media type:_
+
+   *  GLEIF vLEI issuance and verification systems
+
+   *  SATP-compliant credential exchange platforms
+
+   *  Forensic credential chaining and audit systems
+
+   _Fragment identifier considerations:_
+
+   *  None
+
+   _Additional information:_
+
+   *  Magic number(s): None
+
+   *  File extension(s): .acdccesr
+
+   *  Macintosh file type code(s): None
+
+   _Person & email address to contact for further information:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Intended usage:_
+
+   *  COMMON
+
+   _Author:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Change controller:_
+
+   *  IETF / GLEIF
+
+8.1.5.  application/said+cesr
+
+   _Type name:_
+
+   *  application
+
+   _Subtype name:_
+
+   *  said+cesr
+
+   _Required parameters:_
+
+   *  None
+
+   _Optional parameters:_
+
+   *  profile — Indicates the payload conforms to a specific vLEI
+      credential type.
+
+   *  encoding — Indicates the CESR stream is text or binary.  Defaults
+      to text. encoding=binary indicates the CESR stream is binary
+      encoded.
+
+   *  charset — Indicates character set for text encodings.  Defaults to
+      UTF-8.
+
+   _Encoding considerations:_
+
+   *  CESR defaults to UTF-8 text encoding and is self-framing.
+
+   *  CESR can also be a binary stream.  When used in binary mode the
+      encoding option MUST be specified (e.g., encoding=binary).
+
+   _Security considerations:_
+
+   *  See Section 7.
+
+   _Interoperability considerations:_
+
+   None.
+
+   _Published specification:_
+
+   *  RFCthis
+
+   *  Key Event Receipt Infrastructure (KERI) — [KERI-Spec]
+
+   *  Authentictic Chained Data Containers (ACDC) — [ACDC-Spec]
+
+   *  Composable Event Streaming Representation (CESR) — [CESR-Spec]
+
+   *  GLEIF vLEI Credential Schema Registry — [GLEIF-vLEI-TechReq-Part3]
+
+   _Applications that use this media type:_
+
+   *  GLEIF vLEI issuance and verification systems
+
+   *  SATP-compliant credential exchange platforms
+
+   *  Forensic credential chaining and audit systems
+
+   _Fragment identifier considerations:_
+
+   *  None
+
+   _Additional information:_
+
+   *  Magic number(s): None
+
+   *  File extension(s): .saidcesr
+
+   *  Macintosh file type code(s): None
+
+   _Person & email address to contact for further information:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Intended usage:_
+
+   *  COMMON
+
+   _Author:_
+
+   *  N.  Smith ned.smith.ietf@outlook.com
+      (mailto:ned.smith.ietf@outlook.com)
+
+   *  GLEIF IT Team vlei-support@gleif.org (mailto:vlei-
+      support@gleif.org)
+
+   _Change controller:_
+
+   *  IETF / GLEIF
+
+8.2.  CoAP Content-Format ID Assignments
+
+   IANA is requested to assign the following Content-Format numbers in
+   the "CoAP Content-Formats" sub-registry, within the "Constrained
+   RESTful Environments (CoRE) Parameters" Registry
+   [IANA.core-parameters]:
+
+   +==================================+=========+=======+===========+
+   | Content-Type                     | Content | ID    | Reference |
+   |                                  | Coding  |       |           |
+   +==================================+=========+=======+===========+
+   | application/acdc+json            | -       | TBA1  | RFCthis   |
+   +----------------------------------+---------+-------+-----------+
+   | application/acdc+cbor            | -       | TBD2  | RFCthis   |
+   +----------------------------------+---------+-------+-----------+
+   | application/acdc+msgpk           | -       | TBD3  | RFCthis   |
+   +----------------------------------+---------+-------+-----------+
+   | application/acdc+cesr            | -       | TBD4  | RFCthis   |
+   +----------------------------------+---------+-------+-----------+
+   | application/said+cesr            | -       | TBD5  | RFCthis   |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA10 | RFCthis   |
+   | acdc+json;profile=urn:vlei:leid  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA11 | RFCthis   |
+   | acdc+json;profile=urn:vlei:ecr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA12 | RFCthis   |
+   | acdc+json;profile=urn:vlei:oor   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA13 | RFCthis   |
+   | acdc+json;profile=urn:vlei:lar   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA14 | RFCthis   |
+   | acdc+json;profile=urn:vlei:qvi   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA15 | RFCthis   |
+   | acdc+json;profile=urn:vlei:vra   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA20 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:leid  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA21 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:ecr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA22 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:oor   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA23 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:lar   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA24 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:qvi   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA25 | RFCthis   |
+   | acdc+cbor;profile=urn:vlei:vra   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA30 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:leid |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA31 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:ecr  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA32 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:oor  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA33 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:lar  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA34 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:qvr  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA35 | RFCthis   |
+   | acdc+msgpk;profile=urn:vlei:vra  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA40 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:leid  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA41 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:ecr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA42 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:oor   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA43 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:lar   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA44 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:qvr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA45 | RFCthis   |
+   | acdc+cesr;profile=urn:vlei:vra   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA50 | RFCthis   |
+   | said+cesr;profile=urn:vlei:leid  |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA51 | RFCthis   |
+   | said+cesr;profile=urn:vlei:ecr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA52 | RFCthis   |
+   | said+cesr;profile=urn:vlei:oor   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA53 | RFCthis   |
+   | said+cesr;profile=urn:vlei:lar   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA54 | RFCthis   |
+   | said+cesr;profile=urn:vlei:qvr   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+   | application/                     | -       | TBA55 | RFCthis   |
+   | said+cesr;profile=urn:vlei:vra   |         |       |           |
+   +----------------------------------+---------+-------+-----------+
+
+                      Table 6: New Content-Formats
+
+9.  References
+
+9.1.  Normative References
+
+   [REQ-LEVEL]
+              Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [I-D.ietf-satp-core]
+              Hargreaves, M., Hardjono, T., Belchior, R., Ramakrishna,
+              V., and A. Chiriac, "Secure Asset Transfer Protocol (SATP)
+              Core", Work in Progress, Internet-Draft, draft-ietf-satp-
+              core-11, 7 August 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
+              core-11>.
+
+   [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
+              2014, <https://www.rfc-editor.org/rfc/rfc7159>.
+
+   [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
+              DOI 10.17487/RFC7517, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7517>.
+
+   [RFC2585]  Housley, R. and P. Hoffman, "Internet X.509 Public Key
+              Infrastructure Operational Protocols: FTP and HTTP",
+              RFC 2585, DOI 10.17487/RFC2585, May 1999,
+              <https://www.rfc-editor.org/rfc/rfc2585>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+   [STD91]    Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, DOI 10.17487/RFC6838, January 2013,
+              <https://www.rfc-editor.org/rfc/rfc6838>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [GLEIF-vLEI-TechReq-Part1]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 1: KERI Infrastructure", GLEIF vLEI-EGF-
+              TechReq-Part1-v1.3, 16 April 2025, <https://www.gleif.org/
+              organizational-identity/introducing-the-verifiable-lei-
+              vlei/introducing-the-vlei-ecosystem-governance-
+              framework/2025-04-16_vlei-egf-v3.0-technical-requirements-
+              part-1-keri-infrastructure-2024_v1.3_final.pdf>.
+
+   [GLEIF-vLEI-TechReq-Part2]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 2: vLEI Credentials", GLEIF vLEI-EGF-
+              TechReq-Part2-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [GLEIF-vLEI-TechReq-Part3]
+              Global Legal Entity Identifier Foundation, "Technical
+              Requirements Part 3: vLEI Credential Schema Registry",
+              GLEIF vLEI-EGF-TechReq-Part3-v1.1, 15 December 2023,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+   [ISO17442-3]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 3:
+              Verifiable LEIs (vLEIs)", ISO 17442-3:2024, 2024,
+              <https://www.iso.org/standard/85628.html>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [IANA.media-types]
+              IANA, "Media Types",
+              <https://www.iana.org/assignments/media-types>.
+
+   [IANA.core-parameters]
+              IANA, "Constrained RESTful Environments (CoRE)
+              Parameters",
+              <https://www.iana.org/assignments/core-parameters>.
+
+9.2.  Informative References
+
+   [I-D.ietf-satp-architecture]
+              Hardjono, T., Hargreaves, M., Smith, N., and V.
+              Ramakrishna, "Secure Asset Transfer (SAT) Interoperability
+              Architecture", Work in Progress, Internet-Draft, draft-
+              ietf-satp-architecture-08, 31 July 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-satp-
+              architecture-08>.
+
+   [ISO17442-1]
+              International Organization for Standardization, "Financial
+              services — Legal entity identifier (LEI) — Part 1:
+              Assignment", ISO 17442-1:2020, 2020,
+              <https://www.iso.org/standard/59771.html>.
+
+   [KERI-Spec]
+              Trust Over IP Foundation, "Key Event Receipt
+              Infrastructure (KERI) Specification, v0.9, Draft", TOIP 
+              TSWG-KERI-2023, 2023,
+              <https://trustoverip.github.io/tswg-keri-specification/>.
+
+   [ACDC-Spec]
+              Trust Over IP Foundation, "Authentic Chained Data
+              Containers (ACDC) Specification, v0.9, Draft", TOIP TSWG-
+              ACDC-2023, 2023,
+              <https://trustoverip.github.io/tswg-acdc-specification>.
+
+   [CESR-Spec]
+              Trust Over IP Foundation, "Composable Event Streaming
+              Representation (CESR) Proof Format Specification, v0.9,
+              Draft", TOIP TSWG-CESR-2023, 2023,
+              <https://trustoverip.github.io/tswg-cesr-specification/>.
+
+   [GLEIF-vLEI-EGF]
+              Global Legal Entity Identifier Foundation, "Verifiable LEI
+              (vLEI) Ecosystem Governance Framework: Primary and
+              Controlled Documents", GLEIF vLEI-EGF-v3.0, 16 April 2025,
+              <https://www.gleif.org/en/vlei/introducing-the-vlei-
+              ecosystem-governance-framework>.
+
+Appendix A.  Full CDDL
+
+   satp-message = {
+     ? verifiedOriginatorEntityId: wrapped-vlei
+     ? verifiedBeneficiaryEntityId: wrapped-vlei
+     ? senderGatewayOwnerId: wrapped-vlei
+     ? receiverGatewayOwnerId: wrapped-vlei
+
+     ? senderGatewayId: wrapped-vlei
+     ? recipientGatewayId: wrapped-vlei
+     ? senderGatewayNetworkId: wrapped-vlei
+     ? recipientGatewayNetworkId: wrapped-vlei
+
+     ? originatorPubkey: wrapped-vlei / wrapped-key
+     ? beneficiaryPubkey: wrapped-vlei / wrapped-key
+     ? senderGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+     ? receiverGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+     ? senderGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+     ? receiverGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+   }
+
+
+   wrapped-vlei = {
+    content: content-ref
+    payload: bstr / tstr
+   }
+
+   content-ref = non-empty<{
+    ? mt: vlei-media-type ; TBA
+    ? cf: uint ; TBA content format id
+    ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true, if false not cbor tagged and "mt" is required
+    ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
+   }>
+
+
+   wrapped-key = $key-type
+   $key-type /= cose-key
+   $key-type /= jwk-key
+   $key-type /= pkix-key
+
+   cose-key = {
+    content: "application/cose;cose-type=cose-key" / uint,
+    encoding: "cbor" / "base64",
+    payload: bstr / tstr
+   }
+
+   jwk-key = {
+     content: "application/jwk+json" / uint,
+     payload: tstr
+   }
+
+   pkix-key = {
+     content: "application/pkix-cert" / uint,
+     encoding: "PEM" / "DER",
+     payload: tstr / bstr
+   }
+
+   non-empty<M> = (M) .and ({ + any => any })
+
+   vlei-media-type =
+     "application/acdc+json;profile=urn:vlei:leid" /
+     "application/acdc+json;profile=urn:vlei:ecr" /
+     "application/acdc+json;profile=urn:vlei:ecr;charset=utf-16le" /
+     "application/acdc+json;profile=urn:vlei:oor" /
+     "application/acdc+json;profile=urn:vlei:ecra" /
+     "application/acdc+json;profile=urn:vlei:qvi" /
+     "application/acdc+json;profile=urn:vlei:oora" /
+     "application/acdc+json;profile=urn:vlei:oora;encoding=base64uri" /
+     "application/acdc+cbor;profile=urn:vlei:leid" /
+     "application/acdc+cbor;profile=urn:vlei:leid;encoding=text" /
+     "application/acdc+cbor;profile=urn:vlei:ecr" /
+     "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri" /
+     "application/acdc+cbor;profile=urn:vlei:ecr;encoding=text" /
+     "application/acdc+cbor;profile=urn:vlei:oor" /
+     "application/acdc+cbor;profile=urn:vlei:oor;encoding=text" /
+     "application/acdc+cbor;profile=urn:vlei:ecra" /
+     "application/acdc+cbor;profile=urn:vlei:ecra;encoding=text" /
+     "application/acdc+cbor;profile=urn:vlei:qvi" /
+     "application/acdc+cbor;profile=urn:vlei:qvi;encoding=text" /
+     "application/acdc+cbor;profile=urn:vlei:oora" /
+     "application/acdc+cbor;profile=urn:vlei:oora;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:leid" /
+     "application/acdc+msgpk;profile=urn:vlei:leid;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:ecr" /
+     "application/acdc+msgpk;profile=urn:vlei:ecr;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:oor" /
+     "application/acdc+msgpk;profile=urn:vlei:oor;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:ecra" /
+     "application/acdc+msgpk;profile=urn:vlei:ecra;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:qvi" /
+     "application/acdc+msgpk;profile=urn:vlei:qvi;encoding=text" /
+     "application/acdc+msgpk;profile=urn:vlei:oora" /
+     "application/acdc+msgpk;profile=urn:vlei:oora;encoding=text" /
+     "application/acdc+cesr;profile=urn:vlei:leid" /
+     "application/acdc+cesr;profile=urn:vlei:leid;encoding=binary" /
+     "application/acdc+cesr;profile=urn:vlei:leid;charset=utf-16le" /
+     "application/acdc+cesr;profile=urn:vlei:ecr" /
+     "application/acdc+cesr;profile=urn:vlei:ecr;encoding=binary" /
+     "application/acdc+cesr;profile=urn:vlei:oor" /
+     "application/acdc+cesr;profile=urn:vlei:oor;encoding=binary" /
+     "application/acdc+cesr;profile=urn:vlei:ecra" /
+     "application/acdc+cesr;profile=urn:vlei:ecra;encoding=binary" /
+     "application/acdc+cesr;profile=urn:vlei:qvi" /
+     "application/acdc+cesr;profile=urn:vlei:qvi;bencoding=binary" /
+     "application/acdc+cesr;profile=urn:vlei:oora" /
+     "application/acdc+cesr;profile=urn:vlei:oora;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:leid" /
+     "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri" /
+     "application/said+cesr;profile=urn:vlei:leid;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:leid;charset=utf-16le" /
+     "application/said+cesr;profile=urn:vlei:ecr" /
+     "application/said+cesr;profile=urn:vlei:ecr;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:oor" /
+     "application/said+cesr;profile=urn:vlei:oor;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:ecra" /
+     "application/said+cesr;profile=urn:vlei:ecra;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:qvi" /
+     "application/said+cesr;profile=urn:vlei:qvi;encoding=binary" /
+     "application/said+cesr;profile=urn:vlei:oora" /
+     "application/said+cesr;profile=urn:vlei:oora;encoding=binary"
+
+Appendix B.  Examples in JSON
+
+   The following SATP wrapper examples show synthetic vLEI data:
+
+   {
+     "verifiedOriginatorEntityId": {
+       "content": {
+         "mt": "application/acdc+json;profile=urn:vlei:leid"
+         // JSON serialization of an ACDC credential (LEID profile)
+       },
+       "payload": "ACDC10JSON...SAID...i:did:keri:..."
+       // literal ACDC JSON text, not base64
+     }
+   }
+
+   {
+     "verifiedBeneficiaryEntityId": {
+       "content": {
+         "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=binary"
+       },
+       "payload": "QUNEQzEwQ0JPUkJhc2U2NEVuY29kZWQvLi4u"
+       // base64 of binary CESR serialization of SAID credential (LEID profile)
+     }
+   }
+
+   {
+     "senderGatewayOwnerId": {
+       "content": {
+         "mt": "application/acdc+msgpk;profile=urn:vlei:leid"
+         // cf, cbt, oid omitted here — optional in schema
+       },
+       "payload": "ACDC10MSGP...SAID...i:did:keri:..."
+       // MessagePack serialization of an ACDC credential (LEID profile)
+     }
+   }
+
+   {
+     "receiverGatewayOwnerId": {
+       "content": {
+         "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri"
+         // could also include cf, cbt, oid if known
+       },
+       "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
+       // ⟶ Base64 of binary CESR stream encoding of SAID credential
+     }
+   }
+
+   {
+     "senderGatewayId": {
+       "content": {
+         "mt": "application/acdc+cesr;profile=urn:vlei:ecr"
+         // cf, cbt, oid omitted — optional in schema
+       },
+       "payload": "ACDC10CESR...SAID...i:did:keri:..."
+       // CESR-encoded ACDC credential (ECR profile) as plain text
+     }
+   }
+
+   {
+     "recipientGatewayId": {
+       "content": {
+         "mt": "application/acdc+cbor;profile=urn:vlei:ecr", // from vlei-media-type enum
+         "cf": 0,
+         "oid": "1.2.3.4.6" // actual OID for this credential type
+       },
+       "payload": "ACDC10CBORTESTSAIDi:did:keri:EXAMPLERGWNETID"
+       // raw CBOR bytes or base64/base64url string, but not CBOR-tagged
+     }
+   }
+
+   {
+     "senderGatewayNetworkId": {
+       "content": {
+         "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
+         "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
+       },
+       "payload": "oWJ0ZXN0LWVjci1jcmVkZW50aWFs..."
+       // base64 of the CBOR-encoded ACDC (ECR profile)
+     }
+   }
+
+   {
+     "senderGatewayNetworkId": {
+       "content": {
+         "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
+         "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
+       },
+       "payload": "gEEBAQ..."
+       // base64 of CBOR-encoded ACDC (ECR profile)
+     }
+   }
+
+   The following SATP wrapper examples show synthetic key data:
+
+   {
+     "originatorPubkey": {
+       "content": "application/jwk+json",
+       "payload": "{ \"kty\": \"EC\", \"crv\": \"P-256\", \"x\": \"...\", \"y\": \"...\" }"
+     },
+     "beneficiaryPubkey": {
+       "content": "application/cose;cose-type=cose-key",
+       "encoding": "base64", // explicitly flagging representation
+       "payload": "aEtNQnBRLi4u" // base64 of CBOR COSE_Key bytes
+     },
+     "senderGatewaySignaturePublicKey": {
+       "content": "application/jwk+json",
+       "payload": "{ \"kty\": \"RSA\", \"n\": \"...\", \"e\": \"AQAB\" }"
+     },
+     "receiverGatewaySignaturePublicKey": {
+       "content": "application/cose;cose-type=cose-key",
+       "encoding": "base64",
+       "payload": "aEtNQ3BBLi4u"
+     },
+     "senderGatewayDeviceIdentityPubkey": {
+       "content": "application/pkix-cert",
+       "encoding": "PEM",
+       "payload": "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----"
+     },
+     "receiverGatewayDeviceIdentityPubkey": {
+       "content": "application/pkix-cert",
+       "encoding": "DER",
+       "payload": "MIIB..." // base64 DER
+     }
+   }
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Ned Smith
+   Independent
+   Email: ned.smith.ietf@outlook.com
