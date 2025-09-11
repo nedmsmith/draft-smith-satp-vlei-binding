@@ -1,7 +1,7 @@
 {
   "verifiedBeneficiaryEntityId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;base64=true"
+      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=binary"
     },
     "payload": "QUNEQzEwQ0JPUkJhc2U2NEVuY29kZWQvLi4u"
     // base64 of binary CESR serialization of SAID credential (LEID profile)
