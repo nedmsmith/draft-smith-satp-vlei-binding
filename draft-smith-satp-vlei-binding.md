@@ -425,7 +425,7 @@ This media type indicates the payload is a JSON formatted vLEI.
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
 - `encoding` — Indicates the ACDC stream is text or binary.
-If binary, encoding MUST make the payload text-safe (e.g., `encoding=base64uri`.
+If binary, encoding MUST make the payload text-safe (e.g., `encoding=base64uri`).
 Defaults to `text`.
 - `charset` — Indicates character set for text encodings.
 Defaults to UTF-8.
