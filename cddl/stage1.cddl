@@ -1,0 +1,18 @@
+satp-message = {
+  ? verifiedOriginatorEntityId: wrapped-vlei
+  ? verifiedBeneficiaryEntityId: wrapped-vlei
+  ? senderGatewayOwnerId: wrapped-vlei
+  ? receiverGatewayOwnerId: wrapped-vlei
+
+  ? senderGatewayId: wrapped-vlei
+  ? recipientGatewayId: wrapped-vlei
+  ? senderGatewayNetworkId: wrapped-vlei
+  ? recipientGatewayNetworkId: wrapped-vlei
+
+  ? originatorPubkey: wrapped-vlei / wrapped-key
+  ? beneficiaryPubkey: wrapped-vlei / wrapped-key
+  ? senderGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+  ? receiverGatewaySignaturePublicKey: wrapped-vlei / wrapped-key
+  ? senderGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+  ? receiverGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
+}

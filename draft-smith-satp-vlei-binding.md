@@ -149,6 +149,28 @@ informative:
       GLEIF: vLEI-EGF-v3.0
     target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
 
+  ACM-Calculus:
+    -: cacds
+    title: >
+      A Calculus for Access Control in Distributed Systems
+    author:
+      -
+        ins: M. Abadi
+        name: Martín Abadi
+      -
+        ins: M. Burrows
+        name: Michael Burrows
+      -
+        ins: B. Lampson
+        name: Butler Lampson
+      -
+        ins: G. Plotkin
+        name: Gordon Plotkin
+    date: 1993-10
+    seriesinfo:
+      ACM: TOPLAS 15(4), pp. 706–734
+    target: https://dl.acm.org/doi/10.1145/155183.155225
+
 entity:
   SELF: "RFCthis"
 
@@ -181,7 +203,7 @@ SATP core message binding anticipates use of a message wrapper that uses media t
 
 The SATP core protocol {{-satp-core}} defines a set of entities that participate in an asset transfer.
 These entities are represented in differennt ways including identifiers, credentials and public keys.
-SATP entities are presumed to have been issued cryptographically relevant identities prior to stage 1 and subsequent exchanges.
+SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
 An entity with an issued identity is a principal.
 
 vLEIs {{-iso-vlei}} use Autonomic Identifiers (AID) to name principals in a system.
@@ -199,46 +221,50 @@ SATP messages referennce directly public keys (e.g., senderGatewaySignaturePubli
 These keys might use a non-vLEI credental, consequently the representation supports a variety of key types.
 Nevertheless, use of a Key Event Recipt Infrastructure (KERI) {{-keri}} key means these keys can benefit from KEL-based key attestation.
 
-SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s) which is the normal function of ACDCs.
-Normally, the identifier, public key and credential are representations of the same entity.
-However, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the GatewaySignaturePublicKey.
-Consequently, there MAY be additional credentials issued to SATP principals that require additional verifier processing.
-The association between multiple credentials for the same entity SHOULD be established during SATP Stage 0.
+SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s).
+{{&SELF}} uses **principal** to refer to SATP entities that have been issued vLEI credentials (see {{-cacds}}).
+
+{{&SELF}} assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
+Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
+Consequently, there MAY be additional credentials issued to SATP principals  that require additional verifier processing.
 
 <cref anchor="ids-note1" source="Ned Smith">
-Note1: Need to check if there is a KERI key encoding other than ACDC.
+Note1: Need to check if there is a KERI key encoding other than CESR and if ACDC is sufficient to describe the key.
 </cref>
 
 ## Identity Binding {#sec-id-bind}
 
-The following table shows SATP entity bindings according to the various SATP message types and credential structure.
+{{tbl-satp-entity}} shows SATP entity bindings according to the various SATP message types and credential structure.
+Stage 1 defines uses credential artifacts (i.e., identifiers and public keys) implying credential issuance occurred earlier, possibly during Stage 0.
+{{&SELF}} assumes all credentials issued are (or can be) ACDCs.
+Some credentials take on vLEI-specific roles (see {{sec-satp-vlei-creds}}).
 
 | SATP Entity | SATP Message | Structure |
 |===
-| Originator | implied credential | ACDC |
-| Originator | OriginatorPubkey | ACDC or other |
-| Originator | verifiedOriginatorEntityID | SAID |
-| Beneficiary | implied credential | ACDC |
-| Beneficiary | verifiedBeneficiaryEntityID | SAID |
-| Beneficiary | OriginatorPubkey | ACDC or other |
-| Origin Asset Network | implied credential | ACDC |
-| Origin Asset Network | senderGatewayNetworkId | ACDC |
-| Dest. Asset Network | implied credential | ACDC |
-| Dest. Asset Network | recipientGatewayNetworkId | ACDC |
-| Sender Gateway (G1) | gatewayCredential | ACDC |
-| G1 | senderGatewaySignaturePubkey | ACDC or other |
-| G1 | senderGatewayId | SAID |
-| G1 | implied device credential | ACDC |
-| G1 | senderGatewayDeviceIdentityPubkey | ACDC or other |
-| Gateway Owner (G1) | implied credential | ACDC |
-| Gateway Owner (G1) | senderGatewayOwnerID | SAID |
-| Receiver Gateway (G2) | gatewayCredential | ACDC |
-| G2 | receiverGatewaySignaturePubkey | ACDC or other |
-| G2 | receiverGatewayId | SAID |
-| G2 | implied device credential | ACDC |
-| G2 | receiverGatewayDeviceIdentityPubkey | ACDC or other |
-| Gateway Owner (G2) | implied credential | ACDC |
-| Gateway Owner (G2) | senderGatewayOwnerID | SAID |
+| Originator | OriginatorCredential -implied- | ACDC |
+|  | originatorPubkey | ACDC or other |
+|  | verifiedOriginatorEntityID | SAID |
+| Beneficiary | BeneficiaryCredential -implied- | ACDC |
+|  | verifiedBeneficiaryEntityID | SAID |
+|  | beneficiaryPubkey | ACDC or other |
+| Sender Network | senderNetworkCredential -implied- | ACDC |
+|  | senderGatewayNetworkId | SAID |
+| Recipient Network | recipientNetworkCredential -implied- | ACDC |
+|  | recipientGatewayNetworkId | SAID |
+| Sender Gateway (G1) | senderGatewayCredential -implied- | ACDC |
+|  | senderGatewaySignaturePublicKey | ACDC or other |
+|  | senderGatewayId | SAID |
+|  | implied device credential | ACDC |
+|  | senderGatewayDeviceIdentityPubkey | ACDC or other |
+| Sender Gateway Owner | senderGatewayOwnerCredential -implied- | ACDC |
+|  | senderGatewayOwnerID | SAID |
+| Receiver Gateway (G2) | receiverGatewayCredential -implied- | ACDC |
+|  | receiverGatewaySignaturePublicKey | ACDC or other |
+|  | receiverGatewayId | SAID |
+|  | implied device credential | ACDC |
+|  | receiverGatewayDeviceIdentityPubkey | ACDC or other |
+| Receiver Gateway Owner | receiverGatewayOwnerCredential -implied- | ACDC |
+|  | senderGatewayOwnerID | SAID |
 |===
 {: #tbl-satp-entity title="SATP Entity to Credential Type Mapping" align=left}
 
@@ -272,19 +298,19 @@ Gateway Credential type isn't used in any of the stages afaik.
 There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
 </cref>
 
-## SATP Messages Containing vLEI Credentials
+## SATP Messages Containing vLEI Credentials {#sec-satp-vlei-creds}
 
 The SATP protocol {{-satp-core}} defines a set of SATP flows that are divided into stages.
 
 
 The following SATP messages correspond to specific vLEI credential types:
 
-| # | SATP Messages | Credential Type |
+| # | SATP Messages | vLEI Role |
 |===
 | 1 | verifiedOriginatorEntityId, originatorPubkey, verifiedBeneficiaryEntityId, beneficiaryPubkey, senderGatewayOwnerId, receiverGatewayOwnerId | LEID |
 | 2 | senderGatewayId, senderGatewaySignaturePubkey, recipientGatewayId, receiverGatewaySignaturePubkey, senderGatewayNetworkId, senderGatewayDeviceIdentityPubkey, recipientGatewayNetworkId receiverGatewayDeviceIdentityPubkey| ECR |
 |===
-{: #tbl-satp-msgs title="SATP messages containing vLEI credential type" align=left}
+{: #tbl-satp-vlei-roles title="SATP messages containing vLEI credential type" align=left}
 
 <cref anchor="ids-note4" source="Ned Smith">
 Note4: The various xxxID messages are tstr values - the stringified representation of the vLEI credential identifer should be used here.
@@ -295,14 +321,14 @@ For a SATP-CBOR or other binary binding the SAID MUST use the binary form of the
 
 ### LegalEntityIdentityvLEICredential Credentials
 
-The SATP Messages in row 1 of {{tbl-satp-msgs}} SHALL be a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
+The SATP Messages in row 1 of {{tbl-satp-vlei-roles}} SHALL be a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
 
 These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
 Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
 
 ### LegalEntityEngagementContextRolevLEICredential Credentials
 
-The SATP Messages in row 2 of {{tbl-satp-msgs}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
+The SATP Messages in row 2 of {{tbl-satp-vlei-roles}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
 
 These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.
 
@@ -317,8 +343,31 @@ Other key formats SHOULD be allowed but are out of scope for {{&SELF}}.
 ## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 
+### SATP Transfer Initiation (Stage 1) Message Binding {#sec-stage1}
+
+The SATP stage 1 messages containing identifiers use a vLEI wrapper that contains a payload and payload content identifier.
+Other stage 1 messages are public key values that use a key wrapper that disambiguates the key type and format or can be expressed as a wrapped vLEI.
+
 ~~~ cddl
-{::include cddl/msg-wrapper.cddl}
+{::include cddl/stage1.cddl}
+~~~
+
+### vLEI Wrapper {#sec-vlei-wrapper}
+
+~~~ cddl
+{::include cddl/wrapped-vlei.cddl}
+~~~
+
+### Content References {#sec-content-ref}
+
+~~~ cddl
+{::include cddl/content-ref.cddl}
+~~~
+
+### Key Wrappers {#sec-wrapped-key}
+
+~~~ cddl
+{::include cddl/wrapped-key.cddl}
 ~~~
 
 ## vLEI Media Types
