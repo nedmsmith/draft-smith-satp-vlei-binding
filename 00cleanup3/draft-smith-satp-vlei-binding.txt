@@ -4,8 +4,8 @@
 
 Secure Asset Transfer Protocol                                  N. Smith
 Internet-Draft                                               Independent
-Intended status: Standards Track                       11 September 2025
-Expires: 15 March 2026
+Intended status: Standards Track                       12 September 2025
+Expires: 16 March 2026
 
 
                 A SATP Core Binding for vLEI Identities
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 March 2026.
+   This Internet-Draft will expire on 16 March 2026.
 
 Copyright Notice
 
@@ -91,6 +91,10 @@ Table of Contents
                Credentials
        4.1.3.  Key Structures
      4.2.  SATP Message Wrapper Schema
+       4.2.1.  SATP Transfer Initiation (Stage 1) Message Binding
+       4.2.2.  vLEI Wrapper
+       4.2.3.  Content References
+       4.2.4.  Key Wrappers
      4.3.  vLEI Media Types
        4.3.1.  Profile Optonal Parameter
        4.3.2.  Encoding Optonal Parameter
@@ -151,8 +155,9 @@ Table of Contents
    that participate in an asset transfer.  These entities are
    represented in differennt ways including identifiers, credentials and
    public keys.  SATP entities are presumed to have been issued
-   cryptographically relevant identities prior to stage 1 and subsequent
-   exchanges.  An entity with an issued identity is a principal.
+   cryptographically relevant identities prior to the SATP Transfer
+   Initiation Stage (Stage 1) and subsequent exchanges.  An entity with
+   an issued identity is a principal.
 
    vLEIs [ISO17442-3] use Autonomic Identifiers (AID) to name principals
    in a system.  AIDs are contained within an Authentic Chained Data
@@ -180,96 +185,97 @@ Table of Contents
    from KEL-based key attestation.
 
    SATP defines credentials (e.g., gatewayCredential) that binds the
-   entity identivier(s) to public key(s) which is the normal function of
-   ACDCs.  Normally, the identifier, public key and credential are
-   representations of the same entity.  However, the
+   entity identivier(s) to public key(s).  RFCthis uses *principal* to
+   refer to SATP entities that have been issued vLEI credentials (see
+   [ACM-Calculus]).
+
+   RFCthis assumes SATP identifiers and public keys are artifacts of a
+   credential issued to a common entity.  Nevertheless, the
    GatewayDeviceIdentityPublicKey could be associated with a different
-   credential from the GatewaySignaturePublicKey.  Consequently, there
-   MAY be additional credentials issued to SATP principals that require
-   additional verifier processing.  The association between multiple
-   credentials for the same entity SHOULD be established during SATP
-   Stage 0.
+   credential from the one belongin to the GatewaySignaturePublicKey.
+   Consequently, there MAY be additional credentials issued to SATP
+   principals that require additional verifier processing.
 
 
    // Note1: Need to check if there is a KERI key encoding other than
-   // ACDC.
+   // CESR and if ACDC is sufficient to describe the key.
    //
    // -- Ned Smith
 
 3.1.  Identity Binding
 
-   The following table shows SATP entity bindings according to the
-   various SATP message types and credential structure.
+   Table 1 shows SATP entity bindings according to the various SATP
+   message types and credential structure.  Stage 1 defines uses
+   credential artifacts (i.e., identifiers and public keys) implying
+   credential issuance occurred earlier, possibly during Stage 0.
+   RFCthis assumes all credentials issued are (or can be) ACDCs.  Some
+   credentials take on vLEI-specific roles (see Section 4.1).
 
-    +==============+=====================================+===========+
-    | SATP Entity  | SATP Message                        | Structure |
-    +==============+=====================================+===========+
-    | Originator   | implied credential                  | ACDC      |
-    +--------------+-------------------------------------+-----------+
-    | Originator   | OriginatorPubkey                    | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | Originator   | verifiedOriginatorEntityID          | SAID      |
-    +--------------+-------------------------------------+-----------+
-    | Beneficiary  | implied credential                  | ACDC      |
-    +--------------+-------------------------------------+-----------+
-    | Beneficiary  | verifiedBeneficiaryEntityID         | SAID      |
-    +--------------+-------------------------------------+-----------+
-    | Beneficiary  | OriginatorPubkey                    | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | Origin Asset | implied credential                  | ACDC      |
-    | Network      |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Origin Asset | senderGatewayNetworkId              | ACDC      |
-    | Network      |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Dest.  Asset | implied credential                  | ACDC      |
-    | Network      |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Dest.  Asset | recipientGatewayNetworkId           | ACDC      |
-    | Network      |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Sender       | gatewayCredential                   | ACDC      |
-    | Gateway (G1) |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | G1           | senderGatewaySignaturePubkey        | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | G1           | senderGatewayId                     | SAID      |
-    +--------------+-------------------------------------+-----------+
-    | G1           | implied device credential           | ACDC      |
-    +--------------+-------------------------------------+-----------+
-    | G1           | senderGatewayDeviceIdentityPubkey   | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | Gateway      | implied credential                  | ACDC      |
-    | Owner (G1)   |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Gateway      | senderGatewayOwnerID                | SAID      |
-    | Owner (G1)   |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Receiver     | gatewayCredential                   | ACDC      |
-    | Gateway (G2) |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | G2           | receiverGatewaySignaturePubkey      | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | G2           | receiverGatewayId                   | SAID      |
-    +--------------+-------------------------------------+-----------+
-    | G2           | implied device credential           | ACDC      |
-    +--------------+-------------------------------------+-----------+
-    | G2           | receiverGatewayDeviceIdentityPubkey | ACDC or   |
-    |              |                                     | other     |
-    +--------------+-------------------------------------+-----------+
-    | Gateway      | implied credential                  | ACDC      |
-    | Owner (G2)   |                                     |           |
-    +--------------+-------------------------------------+-----------+
-    | Gateway      | senderGatewayOwnerID                | SAID      |
-    | Owner (G2)   |                                     |           |
-    +--------------+-------------------------------------+-----------+
+    +===============+=====================================+===========+
+    | SATP Entity   | SATP Message                        | Structure |
+    +===============+=====================================+===========+
+    | Originator    | OriginatorCredential -implied-      | ACDC      |
+    +---------------+-------------------------------------+-----------+
+    |               | originatorPubkey                    | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    |               | verifiedOriginatorEntityID          | SAID      |
+    +---------------+-------------------------------------+-----------+
+    | Beneficiary   | BeneficiaryCredential -implied-     | ACDC      |
+    +---------------+-------------------------------------+-----------+
+    |               | verifiedBeneficiaryEntityID         | SAID      |
+    +---------------+-------------------------------------+-----------+
+    |               | beneficiaryPubkey                   | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    | Sender        | senderNetworkCredential -implied-   | ACDC      |
+    | Network       |                                     |           |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewayNetworkId              | SAID      |
+    +---------------+-------------------------------------+-----------+
+    | Recipient     | recipientNetworkCredential          | ACDC      |
+    | Network       | -implied-                           |           |
+    +---------------+-------------------------------------+-----------+
+    |               | recipientGatewayNetworkId           | SAID      |
+    +---------------+-------------------------------------+-----------+
+    | Sender        | senderGatewayCredential -implied-   | ACDC      |
+    | Gateway (G1)  |                                     |           |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewaySignaturePublicKey     | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewayId                     | SAID      |
+    +---------------+-------------------------------------+-----------+
+    |               | implied device credential           | ACDC      |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewayDeviceIdentityPubkey   | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    | Sender        | senderGatewayOwnerCredential        | ACDC      |
+    | Gateway Owner | -implied-                           |           |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewayOwnerID                | SAID      |
+    +---------------+-------------------------------------+-----------+
+    | Receiver      | receiverGatewayCredential -implied- | ACDC      |
+    | Gateway (G2)  |                                     |           |
+    +---------------+-------------------------------------+-----------+
+    |               | receiverGatewaySignaturePublicKey   | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    |               | receiverGatewayId                   | SAID      |
+    +---------------+-------------------------------------+-----------+
+    |               | implied device credential           | ACDC      |
+    +---------------+-------------------------------------+-----------+
+    |               | receiverGatewayDeviceIdentityPubkey | ACDC or   |
+    |               |                                     | other     |
+    +---------------+-------------------------------------+-----------+
+    | Receiver      | receiverGatewayOwnerCredential      | ACDC      |
+    | Gateway Owner | -implied-                           |           |
+    +---------------+-------------------------------------+-----------+
+    |               | senderGatewayOwnerID                | SAID      |
+    +---------------+-------------------------------------+-----------+
 
-             Table 1: SATP Entity to Credential Type Mapping
+              Table 1: SATP Entity to Credential Type Mapping
 
 
    // Note2: Need to describe how this draft approaches protocol binding
@@ -326,25 +332,23 @@ Table of Contents
    The following SATP messages correspond to specific vLEI credential
    types:
 
-    +===+================================================+============+
-    | # | SATP Messages                                  | Credential |
-    |   |                                                | Type       |
-    +===+================================================+============+
-    | 1 | verifiedOriginatorEntityId, originatorPubkey,  | LEID       |
-    |   | verifiedBeneficiaryEntityId,                   |            |
-    |   | beneficiaryPubkey, senderGatewayOwnerId,       |            |
-    |   | receiverGatewayOwnerId                         |            |
-    +---+------------------------------------------------+------------+
-    | 2 | senderGatewayId, senderGatewaySignaturePubkey, | ECR        |
-    |   | recipientGatewayId,                            |            |
-    |   | receiverGatewaySignaturePubkey,                |            |
-    |   | senderGatewayNetworkId,                        |            |
-    |   | senderGatewayDeviceIdentityPubkey,             |            |
-    |   | recipientGatewayNetworkId                      |            |
-    |   | receiverGatewayDeviceIdentityPubkey            |            |
-    +---+------------------------------------------------+------------+
+    +===+=====================================================+======+
+    | # | SATP Messages                                       | vLEI |
+    |   |                                                     | Role |
+    +===+=====================================================+======+
+    | 1 | verifiedOriginatorEntityId, originatorPubkey,       | LEID |
+    |   | verifiedBeneficiaryEntityId, beneficiaryPubkey,     |      |
+    |   | senderGatewayOwnerId, receiverGatewayOwnerId        |      |
+    +---+-----------------------------------------------------+------+
+    | 2 | senderGatewayId, senderGatewaySignaturePubkey,      | ECR  |
+    |   | recipientGatewayId, receiverGatewaySignaturePubkey, |      |
+    |   | senderGatewayNetworkId,                             |      |
+    |   | senderGatewayDeviceIdentityPubkey,                  |      |
+    |   | recipientGatewayNetworkId                           |      |
+    |   | receiverGatewayDeviceIdentityPubkey                 |      |
+    +---+-----------------------------------------------------+------+
 
-           Table 3: SATP messages containing vLEI credential type
+          Table 3: SATP messages containing vLEI credential type
 
 
    // Note4: The various xxxID messages are tstr values - the
@@ -397,9 +401,13 @@ Table of Contents
    The following CDDL [RFC8610] defines the wrapper and application to
    SATP fields.
 
-   ; =====================================================================
-   ; --- SATP Message (Entry Point) ---
-   ; =====================================================================
+4.2.1.  SATP Transfer Initiation (Stage 1) Message Binding
+
+   The SATP stage 1 messages containing identifiers use a vLEI wrapper
+   that contains a payload and payload content identifier.  Other stage
+   1 messages are public key values that use a key wrapper that
+   disambiguates the key type and format or can be expressed as a
+   wrapped vLEI.
 
    satp-message = {
      ? verifiedOriginatorEntityId: wrapped-vlei
@@ -420,6 +428,8 @@ Table of Contents
      ? receiverGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
    }
 
+4.2.2.  vLEI Wrapper
+
    ; =====================================================================
    ; --- Wrapped vLEI Payloads ---
    ; =====================================================================
@@ -429,12 +439,16 @@ Table of Contents
     payload: bstr / tstr
    }
 
+4.2.3.  Content References
+
    content-ref = non-empty<{
     ? mt: vlei-media-type ; TBA
     ? cf: uint ; TBA content format id
     ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true, if false not cbor tagged and "mt" is required
     ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
    }>
+
+4.2.4.  Key Wrappers
 
    ; =====================================================================
    ; --- Wrapped Key Definitions ---
@@ -461,8 +475,6 @@ Table of Contents
      encoding: "PEM" / "DER",
      payload: tstr / bstr
    }
-
-   non-empty<M> = (M) .and ({ + any => any })
 
 4.3.  vLEI Media Types
 
@@ -1324,7 +1336,17 @@ Table of Contents
               <https://www.gleif.org/en/vlei/introducing-the-vlei-
               ecosystem-governance-framework>.
 
+   [ACM-Calculus]
+              Abadi, M., Burrows, M., Lampson, B., and G. Plotkin, "A
+              Calculus for Access Control in Distributed Systems",
+              ACM TOPLAS 15(4), pp. 706–734, October 1993,
+              <https://dl.acm.org/doi/10.1145/155183.155225>.
+
 Appendix A.  Full CDDL
+
+   start = satp-message
+
+   non-empty<M> = (M) .and ({ + any => any })
 
    satp-message = {
      ? verifiedOriginatorEntityId: wrapped-vlei
@@ -1380,8 +1402,6 @@ Appendix A.  Full CDDL
      encoding: "PEM" / "DER",
      payload: tstr / bstr
    }
-
-   non-empty<M> = (M) .and ({ + any => any })
 
    vlei-media-type =
      "application/acdc+json;profile=urn:vlei:leid" /

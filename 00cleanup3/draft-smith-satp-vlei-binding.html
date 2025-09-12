@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Smith</td>
-<td class="center">Expires 15 March 2026</td>
+<td class="center">Expires 16 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-smith-satp-vlei-binding-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-11" class="published">11 September 2025</time>
+<time datetime="2025-09-12" class="published">12 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-15">15 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-03-16">16 March 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1187,6 +1187,20 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-satp-message-wrapper-schema" class="internal xref">SATP Message Wrapper Schema</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-satp-transfer-initiation-st" class="internal xref">SATP Transfer Initiation (Stage 1) Message Binding</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-vlei-wrapper" class="internal xref">vLEI Wrapper</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-content-references" class="internal xref">Content References</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.4">
+                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="auto internal xref">4.2.4</a>.  <a href="#name-key-wrappers" class="internal xref">Key Wrappers</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-vlei-media-types" class="internal xref">vLEI Media Types</a></p>
@@ -1299,7 +1313,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines a set of entities that participate in an asset transfer.
 These entities are represented in differennt ways including identifiers, credentials and public keys.
-SATP entities are presumed to have been issued cryptographically relevant identities prior to stage 1 and subsequent exchanges.
+SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
 An entity with an issued identity is a principal.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">vLEIs <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span> use Autonomic Identifiers (AID) to name principals in a system.
 AIDs are contained within an Authentic Chained Data Contain (ACDC) <span>[<a href="#ACDC-Spec" class="cite xref">ACDC-Spec</a>]</span> credential.
@@ -1313,20 +1327,23 @@ In relation to SATP messages, entity identifiers (e.g., verifiedOriginatorEntity
 <p id="section-3-4">SATP messages referennce directly public keys (e.g., senderGatewaySignaturePublicKey) that refers to the key used to sign SATP messages or for use with device attestation.
 These keys might use a non-vLEI credental, consequently the representation supports a variety of key types.
 Nevertheless, use of a Key Event Recipt Infrastructure (KERI) <span>[<a href="#KERI-Spec" class="cite xref">KERI-Spec</a>]</span> key means these keys can benefit from KEL-based key attestation.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s) which is the normal function of ACDCs.
-Normally, the identifier, public key and credential are representations of the same entity.
-However, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the GatewaySignaturePublicKey.
-Consequently, there <span class="bcp14">MAY</span> be additional credentials issued to SATP principals that require additional verifier processing.
-The association between multiple credentials for the same entity <span class="bcp14">SHOULD</span> be established during SATP Stage 0.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6"><span class="cref" id="ids-note1">
-Note1: Need to check if there is a KERI key encoding other than ACDC.
-<span class="crefSource">Ned Smith</span></span><a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-5">SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s).
+RFCthis uses <strong>principal</strong> to refer to SATP entities that have been issued vLEI credentials (see <span>[<a href="#ACM-Calculus" class="cite xref">ACM-Calculus</a>]</span>).<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">RFCthis assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
+Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
+Consequently, there <span class="bcp14">MAY</span> be additional credentials issued to SATP principals  that require additional verifier processing.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7"><span class="cref" id="ids-note1">
+Note1: Need to check if there is a KERI key encoding other than CESR and if ACDC is sufficient to describe the key.
+<span class="crefSource">Ned Smith</span></span><a href="#section-3-7" class="pilcrow">¶</a></p>
 <div id="sec-id-bind">
 <section id="section-3.1">
         <h3 id="name-identity-binding">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-identity-binding" class="section-name selfRef">Identity Binding</a>
         </h3>
-<p id="section-3.1-1">The following table shows SATP entity bindings according to the various SATP message types and credential structure.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1"><a href="#tbl-satp-entity" class="auto internal xref">Table 1</a> shows SATP entity bindings according to the various SATP message types and credential structure.
+Stage 1 defines uses credential artifacts (i.e., identifiers and public keys) implying credential issuance occurred earlier, possibly during Stage 0.
+RFCthis assumes all credentials issued are (or can be) ACDCs.
+Some credentials take on vLEI-specific roles (see <a href="#sec-satp-vlei-creds" class="auto internal xref">Section 4.1</a>).<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <span id="name-satp-entity-to-credential-t"></span><div id="tbl-satp-entity">
 <table class="center" id="table-1">
           <caption>
@@ -1343,121 +1360,121 @@ Note1: Need to check if there is a KERI key encoding other than ACDC.
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Originator</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
+              <td class="text-left" rowspan="1" colspan="1">OriginatorCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Originator</td>
-              <td class="text-left" rowspan="1" colspan="1">OriginatorPubkey</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">originatorPubkey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Originator</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">verifiedOriginatorEntityID</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Beneficiary</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
+              <td class="text-left" rowspan="1" colspan="1">BeneficiaryCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Beneficiary</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">verifiedBeneficiaryEntityID</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Beneficiary</td>
-              <td class="text-left" rowspan="1" colspan="1">OriginatorPubkey</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">beneficiaryPubkey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Origin Asset Network</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
+              <td class="text-left" rowspan="1" colspan="1">Sender Network</td>
+              <td class="text-left" rowspan="1" colspan="1">senderNetworkCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Origin Asset Network</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">senderGatewayNetworkId</td>
+              <td class="text-left" rowspan="1" colspan="1">SAID</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Recipient Network</td>
+              <td class="text-left" rowspan="1" colspan="1">recipientNetworkCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Dest. Asset Network</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
-              <td class="text-left" rowspan="1" colspan="1">ACDC</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">Dest. Asset Network</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">recipientGatewayNetworkId</td>
-              <td class="text-left" rowspan="1" colspan="1">ACDC</td>
+              <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Sender Gateway (G1)</td>
-              <td class="text-left" rowspan="1" colspan="1">gatewayCredential</td>
+              <td class="text-left" rowspan="1" colspan="1">senderGatewayCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G1</td>
-              <td class="text-left" rowspan="1" colspan="1">senderGatewaySignaturePubkey</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">senderGatewaySignaturePublicKey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G1</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">senderGatewayId</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G1</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">implied device credential</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G1</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">senderGatewayDeviceIdentityPubkey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Gateway Owner (G1)</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
+              <td class="text-left" rowspan="1" colspan="1">Sender Gateway Owner</td>
+              <td class="text-left" rowspan="1" colspan="1">senderGatewayOwnerCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Gateway Owner (G1)</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">senderGatewayOwnerID</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Receiver Gateway (G2)</td>
-              <td class="text-left" rowspan="1" colspan="1">gatewayCredential</td>
+              <td class="text-left" rowspan="1" colspan="1">receiverGatewayCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G2</td>
-              <td class="text-left" rowspan="1" colspan="1">receiverGatewaySignaturePubkey</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">receiverGatewaySignaturePublicKey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G2</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">receiverGatewayId</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G2</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">implied device credential</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">G2</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">receiverGatewayDeviceIdentityPubkey</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC or other</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Gateway Owner (G2)</td>
-              <td class="text-left" rowspan="1" colspan="1">implied credential</td>
+              <td class="text-left" rowspan="1" colspan="1">Receiver Gateway Owner</td>
+              <td class="text-left" rowspan="1" colspan="1">receiverGatewayOwnerCredential -implied-</td>
               <td class="text-left" rowspan="1" colspan="1">ACDC</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">Gateway Owner (G2)</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">senderGatewayOwnerID</td>
               <td class="text-left" rowspan="1" colspan="1">SAID</td>
             </tr>
@@ -1526,14 +1543,14 @@ Note3: SATP describes Gateway secure channel establishment public key-pair but t
 Gateway Credential type isn't used in any of the stages afaik.
 There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
 <span class="crefSource">Ned Smith</span></span><a href="#section-4-4" class="pilcrow">¶</a></p>
-<div id="satp-messages-containing-vlei-credentials">
+<div id="sec-satp-vlei-creds">
 <section id="section-4.1">
         <h3 id="name-satp-messages-containing-vl">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-satp-messages-containing-vl" class="section-name selfRef">SATP Messages Containing vLEI Credentials</a>
         </h3>
 <p id="section-4.1-1">The SATP protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines a set of SATP flows that are divided into stages.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">The following SATP messages correspond to specific vLEI credential types:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<span id="name-satp-messages-containing-vle"></span><div id="tbl-satp-msgs">
+<span id="name-satp-messages-containing-vle"></span><div id="tbl-satp-vlei-roles">
 <table class="center" id="table-3">
           <caption>
 <a href="#table-3" class="selfRef">Table 3</a>:
@@ -1543,7 +1560,7 @@ There should be an IANA registry for the allowed credential types (vLEI, SAML, O
             <tr>
               <th class="text-left" rowspan="1" colspan="1">#</th>
               <th class="text-left" rowspan="1" colspan="1">SATP Messages</th>
-              <th class="text-left" rowspan="1" colspan="1">Credential Type</th>
+              <th class="text-left" rowspan="1" colspan="1">vLEI Role</th>
             </tr>
           </thead>
           <tbody>
@@ -1571,7 +1588,7 @@ For a SATP-CBOR or other binary binding the SAID MUST use the binary form of the
           <h4 id="name-legalentityidentityvleicred">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-legalentityidentityvleicred" class="section-name selfRef">LegalEntityIdentityvLEICredential Credentials</a>
           </h4>
-<p id="section-4.1.1-1">The SATP Messages in row 1 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 3</a> <span class="bcp14">SHALL</span> be a LegalEntityvLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEvLEIC</a> schema.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">The SATP Messages in row 1 of <a href="#tbl-satp-vlei-roles" class="auto internal xref">Table 3</a> <span class="bcp14">SHALL</span> be a LegalEntityvLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEvLEIC</a> schema.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-2">These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
 Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 </section>
@@ -1581,7 +1598,7 @@ Gateway owner identities area form of legal entity as they identify the owner of
           <h4 id="name-legalentityengagementcontex">
 <a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-legalentityengagementcontex" class="section-name selfRef">LegalEntityEngagementContextRolevLEICredential Credentials</a>
           </h4>
-<p id="section-4.1.2-1">The SATP Messages in row 2 of <a href="#tbl-satp-msgs" class="auto internal xref">Table 3</a> <span class="bcp14">SHALL</span> be a LegalEntityEngagementContextRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a> schema.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-1">The SATP Messages in row 2 of <a href="#tbl-satp-vlei-roles" class="auto internal xref">Table 3</a> <span class="bcp14">SHALL</span> be a LegalEntityEngagementContextRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a> schema.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.2-2">These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1603,12 +1620,15 @@ Gateway owner identities area form of legal entity as they identify the owner of
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-satp-message-wrapper-schema" class="section-name selfRef">SATP Message Wrapper Schema</a>
         </h3>
 <p id="section-4.2-1">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> defines the wrapper and application to SATP fields.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-cddl sourcecode" id="section-4.2-2">
+<div id="sec-stage1">
+<section id="section-4.2.1">
+          <h4 id="name-satp-transfer-initiation-st">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-satp-transfer-initiation-st" class="section-name selfRef">SATP Transfer Initiation (Stage 1) Message Binding</a>
+          </h4>
+<p id="section-4.2.1-1">The SATP stage 1 messages containing identifiers use a vLEI wrapper that contains a payload and payload content identifier.
+Other stage 1 messages are public key values that use a key wrapper that disambiguates the key type and format or can be expressed as a wrapped vLEI.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-4.2.1-2">
 <pre>
-; =====================================================================
-; --- SATP Message (Entry Point) ---
-; =====================================================================
-
 satp-message = {
   ? verifiedOriginatorEntityId: wrapped-vlei
   ? verifiedBeneficiaryEntityId: wrapped-vlei
@@ -1627,7 +1647,17 @@ satp-message = {
   ? senderGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
   ? receiverGatewayDeviceIdentityPubkey: wrapped-vlei / wrapped-key
 }
-
+</pre><a href="#section-4.2.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sec-vlei-wrapper">
+<section id="section-4.2.2">
+          <h4 id="name-vlei-wrapper">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-vlei-wrapper" class="section-name selfRef">vLEI Wrapper</a>
+          </h4>
+<div class="lang-cddl sourcecode" id="section-4.2.2-1">
+<pre>
 ; =====================================================================
 ; --- Wrapped vLEI Payloads ---
 ; =====================================================================
@@ -1636,14 +1666,34 @@ wrapped-vlei = {
  content: content-ref
  payload: bstr / tstr
 }
-
+</pre><a href="#section-4.2.2-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sec-content-ref">
+<section id="section-4.2.3">
+          <h4 id="name-content-references">
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-content-references" class="section-name selfRef">Content References</a>
+          </h4>
+<div class="lang-cddl sourcecode" id="section-4.2.3-1">
+<pre>
 content-ref = non-empty&lt;{
  ? mt: vlei-media-type ; TBA
  ? cf: uint ; TBA content format id
  ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true, if false not cbor tagged and "mt" is required
  ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
 }&gt;
-
+</pre><a href="#section-4.2.3-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sec-wrapped-key">
+<section id="section-4.2.4">
+          <h4 id="name-key-wrappers">
+<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-key-wrappers" class="section-name selfRef">Key Wrappers</a>
+          </h4>
+<div class="lang-cddl sourcecode" id="section-4.2.4-1">
+<pre>
 ; =====================================================================
 ; --- Wrapped Key Definitions ---
 ; =====================================================================
@@ -1669,9 +1719,9 @@ pkix-key = {
   encoding: "PEM" / "DER",
   payload: tstr / bstr
 }
-
-non-empty&lt;M&gt; = (M) .and ({ + any =&gt; any })
-</pre><a href="#section-4.2-2" class="pilcrow">¶</a>
+</pre><a href="#section-4.2.4-1" class="pilcrow">¶</a>
+</div>
+</section>
 </div>
 </section>
 </div>
@@ -2883,8 +2933,12 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
 <span class="refAuthor">Trust Over IP Foundation</span>, <span class="refTitle">"Composable Event Streaming Representation (CESR) Proof Format Specification, v0.9, Draft"</span>, <span class="seriesInfo">TOIP TSWG-CESR-2023</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://trustoverip.github.io/tswg-cesr-specification/">https://trustoverip.github.io/tswg-cesr-specification/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="GLEIF-vLEI-EGF">[GLEIF-vLEI-EGF]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Global Legal Entity Identifier Foundation</span>, <span class="refTitle">"Verifiable LEI (vLEI) Ecosystem Governance Framework: Primary and Controlled Documents"</span>, <span class="seriesInfo">GLEIF vLEI-EGF-v3.0</span>, <time datetime="2025-04-16" class="refDate">16 April 2025</time>, <span>&lt;<a href="https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework">https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ACM-Calculus">[ACM-Calculus]</dt>
+      <dd>
+<span class="refAuthor">Abadi, M.</span>, <span class="refAuthor">Burrows, M.</span>, <span class="refAuthor">Lampson, B.</span>, and <span class="refAuthor">G. Plotkin</span>, <span class="refTitle">"A Calculus for Access Control in Distributed Systems"</span>, <span class="seriesInfo">ACM TOPLAS 15(4), pp. 706–734</span>, <time datetime="1993-10" class="refDate">October 1993</time>, <span>&lt;<a href="https://dl.acm.org/doi/10.1145/155183.155225">https://dl.acm.org/doi/10.1145/155183.155225</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2898,6 +2952,9 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
       </h2>
 <div class="breakable lang-cddl sourcecode" id="appendix-A-1">
 <pre>
+start = satp-message
+
+non-empty&lt;M&gt; = (M) .and ({ + any =&gt; any })
 
 satp-message = {
   ? verifiedOriginatorEntityId: wrapped-vlei
@@ -2953,8 +3010,6 @@ pkix-key = {
   encoding: "PEM" / "DER",
   payload: tstr / bstr
 }
-
-non-empty&lt;M&gt; = (M) .and ({ + any =&gt; any })
 
 vlei-media-type =
   "application/acdc+json;profile=urn:vlei:leid" /
