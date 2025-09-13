@@ -1,7 +1,7 @@
 {
   "receiverGatewayOwnerId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri"
+      "mt": "application/cesr;profile=urn:vlei:leid;encoding=base64uri"
       // could also include cf, cbt, oid if known
     },
     "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
