@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Smith</td>
-<td class="center">Expires 16 March 2026</td>
+<td class="center">Expires 17 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-smith-satp-vlei-binding-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-12" class="published">12 September 2025</time>
+<time datetime="2025-09-13" class="published">13 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-16">16 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-03-17">17 March 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3012,66 +3012,53 @@ pkix-key = {
 }
 
 vlei-media-type =
-  "application/acdc+json;profile=urn:vlei:leid" /
-  "application/acdc+json;profile=urn:vlei:ecr" /
-  "application/acdc+json;profile=urn:vlei:ecr;charset=utf-16le" /
-  "application/acdc+json;profile=urn:vlei:oor" /
-  "application/acdc+json;profile=urn:vlei:ecra" /
-  "application/acdc+json;profile=urn:vlei:qvi" /
-  "application/acdc+json;profile=urn:vlei:oora" /
-  "application/acdc+json;profile=urn:vlei:oora;encoding=base64uri" /
-  "application/acdc+cbor;profile=urn:vlei:leid" /
-  "application/acdc+cbor;profile=urn:vlei:leid;encoding=text" /
-  "application/acdc+cbor;profile=urn:vlei:ecr" /
-  "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri" /
-  "application/acdc+cbor;profile=urn:vlei:ecr;encoding=text" /
-  "application/acdc+cbor;profile=urn:vlei:oor" /
-  "application/acdc+cbor;profile=urn:vlei:oor;encoding=text" /
-  "application/acdc+cbor;profile=urn:vlei:ecra" /
-  "application/acdc+cbor;profile=urn:vlei:ecra;encoding=text" /
-  "application/acdc+cbor;profile=urn:vlei:qvi" /
-  "application/acdc+cbor;profile=urn:vlei:qvi;encoding=text" /
-  "application/acdc+cbor;profile=urn:vlei:oora" /
-  "application/acdc+cbor;profile=urn:vlei:oora;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:leid" /
-  "application/acdc+msgpk;profile=urn:vlei:leid;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:ecr" /
-  "application/acdc+msgpk;profile=urn:vlei:ecr;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:oor" /
-  "application/acdc+msgpk;profile=urn:vlei:oor;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:ecra" /
-  "application/acdc+msgpk;profile=urn:vlei:ecra;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:qvi" /
-  "application/acdc+msgpk;profile=urn:vlei:qvi;encoding=text" /
-  "application/acdc+msgpk;profile=urn:vlei:oora" /
-  "application/acdc+msgpk;profile=urn:vlei:oora;encoding=text" /
-  "application/acdc+cesr;profile=urn:vlei:leid" /
-  "application/acdc+cesr;profile=urn:vlei:leid;encoding=binary" /
-  "application/acdc+cesr;profile=urn:vlei:leid;charset=utf-16le" /
-  "application/acdc+cesr;profile=urn:vlei:ecr" /
-  "application/acdc+cesr;profile=urn:vlei:ecr;encoding=binary" /
-  "application/acdc+cesr;profile=urn:vlei:oor" /
-  "application/acdc+cesr;profile=urn:vlei:oor;encoding=binary" /
-  "application/acdc+cesr;profile=urn:vlei:ecra" /
-  "application/acdc+cesr;profile=urn:vlei:ecra;encoding=binary" /
-  "application/acdc+cesr;profile=urn:vlei:qvi" /
-  "application/acdc+cesr;profile=urn:vlei:qvi;bencoding=binary" /
-  "application/acdc+cesr;profile=urn:vlei:oora" /
-  "application/acdc+cesr;profile=urn:vlei:oora;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:leid" /
-  "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri" /
-  "application/said+cesr;profile=urn:vlei:leid;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:leid;charset=utf-16le" /
-  "application/said+cesr;profile=urn:vlei:ecr" /
-  "application/said+cesr;profile=urn:vlei:ecr;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:oor" /
-  "application/said+cesr;profile=urn:vlei:oor;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:ecra" /
-  "application/said+cesr;profile=urn:vlei:ecra;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:qvi" /
-  "application/said+cesr;profile=urn:vlei:qvi;encoding=binary" /
-  "application/said+cesr;profile=urn:vlei:oora" /
-  "application/said+cesr;profile=urn:vlei:oora;encoding=binary"
+  "application/cesr+json;profile=urn:vlei:leid" /
+  "application/cesr+json;profile=urn:vlei:ecr" /
+  "application/cesr+json;profile=urn:vlei:ecr;charset=utf-16le" /
+  "application/cesr+json;profile=urn:vlei:oor" /
+  "application/cesr+json;profile=urn:vlei:ecra" /
+  "application/cesr+json;profile=urn:vlei:qvi" /
+  "application/cesr+json;profile=urn:vlei:oora" /
+  "application/cesr+json;profile=urn:vlei:oora;encoding=base64uri" /
+  "application/cesr+cbor;profile=urn:vlei:leid" /
+  "application/cesr+cbor;profile=urn:vlei:leid;encoding=text" /
+  "application/cesr+cbor;profile=urn:vlei:ecr" /
+  "application/cesr+cbor;profile=urn:vlei:ecr;encoding=base64uri" /
+  "application/cesr+cbor;profile=urn:vlei:ecr;encoding=text" /
+  "application/cesr+cbor;profile=urn:vlei:oor" /
+  "application/cesr+cbor;profile=urn:vlei:oor;encoding=text" /
+  "application/cesr+cbor;profile=urn:vlei:ecra" /
+  "application/cesr+cbor;profile=urn:vlei:ecra;encoding=text" /
+  "application/cesr+cbor;profile=urn:vlei:qvi" /
+  "application/cesr+cbor;profile=urn:vlei:qvi;encoding=text" /
+  "application/cesr+cbor;profile=urn:vlei:oora" /
+  "application/cesr+cbor;profile=urn:vlei:oora;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:leid" /
+  "application/cesr+msgpk;profile=urn:vlei:leid;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:ecr" /
+  "application/cesr+msgpk;profile=urn:vlei:ecr;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:oor" /
+  "application/cesr+msgpk;profile=urn:vlei:oor;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:ecra" /
+  "application/cesr+msgpk;profile=urn:vlei:ecra;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:qvi" /
+  "application/cesr+msgpk;profile=urn:vlei:qvi;encoding=text" /
+  "application/cesr+msgpk;profile=urn:vlei:oora" /
+  "application/cesr+msgpk;profile=urn:vlei:oora;encoding=text" /
+  "application/cesr;profile=urn:vlei:leid" /
+  "application/cesr;profile=urn:vlei:leid;encoding=binary" /
+  "application/cesr;profile=urn:vlei:leid;encoding=base64uri" /
+  "application/cesr;profile=urn:vlei:leid;charset=utf-16le" /
+  "application/cesr;profile=urn:vlei:ecr" /
+  "application/cesr;profile=urn:vlei:ecr;encoding=binary" /
+  "application/cesr;profile=urn:vlei:oor" /
+  "application/cesr;profile=urn:vlei:oor;encoding=binary" /
+  "application/cesr;profile=urn:vlei:ecra" /
+  "application/cesr;profile=urn:vlei:ecra;encoding=binary" /
+  "application/cesr;profile=urn:vlei:qvi" /
+  "application/cesr;profile=urn:vlei:qvi;bencoding=binary" /
+  "application/cesr;profile=urn:vlei:oora" /
+  "application/cesr;profile=urn:vlei:oora;encoding=binary"
 
 
 </pre><a href="#appendix-A-1" class="pilcrow">¶</a>
@@ -3089,7 +3076,7 @@ vlei-media-type =
 {
   "verifiedOriginatorEntityId": {
     "content": {
-      "mt": "application/acdc+json;profile=urn:vlei:leid"
+      "mt": "application/cesr+json;profile=urn:vlei:leid"
       // JSON serialization of an ACDC credential (LEID profile)
     },
     "payload": "ACDC10JSON...SAID...i:did:keri:..."
@@ -3104,7 +3091,7 @@ vlei-media-type =
 {
   "verifiedBeneficiaryEntityId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=binary"
+      "mt": "application/cesr;profile=urn:vlei:leid;encoding=binary"
     },
     "payload": "QUNEQzEwQ0JPUkJhc2U2NEVuY29kZWQvLi4u"
     // base64 of binary CESR serialization of SAID credential (LEID profile)
@@ -3118,7 +3105,7 @@ vlei-media-type =
 {
   "senderGatewayOwnerId": {
     "content": {
-      "mt": "application/acdc+msgpk;profile=urn:vlei:leid"
+      "mt": "application/cesr+msgpk;profile=urn:vlei:leid"
       // cf, cbt, oid omitted here — optional in schema
     },
     "payload": "ACDC10MSGP...SAID...i:did:keri:..."
@@ -3132,7 +3119,7 @@ vlei-media-type =
 {
   "receiverGatewayOwnerId": {
     "content": {
-      "mt": "application/said+cesr;profile=urn:vlei:leid;encoding=base64uri"
+      "mt": "application/cesr;profile=urn:vlei:leid;encoding=base64uri"
       // could also include cf, cbt, oid if known
     },
     "payload": "QUNEQzEwQ0VTUkJhc2U2NEVuY29kZWQvLi4u"
@@ -3147,7 +3134,7 @@ vlei-media-type =
 {
   "senderGatewayId": {
     "content": {
-      "mt": "application/acdc+cesr;profile=urn:vlei:ecr"
+      "mt": "application/cesr;profile=urn:vlei:ecr"
       // cf, cbt, oid omitted — optional in schema
     },
     "payload": "ACDC10CESR...SAID...i:did:keri:..."
@@ -3163,7 +3150,7 @@ vlei-media-type =
 {
   "recipientGatewayId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr", // from vlei-media-type enum
+      "mt": "application/cesr+cbor;profile=urn:vlei:ecr", // from vlei-media-type enum
       "cf": 0,
       "oid": "1.2.3.4.6" // actual OID for this credential type
     },
@@ -3179,7 +3166,7 @@ vlei-media-type =
 {
   "senderGatewayNetworkId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
+      "mt": "application/cesr+cbor;profile=urn:vlei:ecr;encoding=base64uri",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
     },
     "payload": "oWJ0ZXN0LWVjci1jcmVkZW50aWFs..."
@@ -3194,7 +3181,7 @@ vlei-media-type =
 {
   "senderGatewayNetworkId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
+      "mt": "application/cesr+cbor;profile=urn:vlei:ecr;encoding=base64uri",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
     },
     "payload": "gEEBAQ..."
