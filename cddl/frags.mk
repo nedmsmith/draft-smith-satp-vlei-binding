@@ -1,8 +1,10 @@
 # frags.mk — ordered list of schema fragments
-CDDL_FRAGS := msg-wrapper.cddl
+CDDL_FRAGS := start.cddl
+CDDL_FRAGS += macros.cddl
+CDDL_FRAGS += stage1.cddl
+CDDL_FRAGS += wrapped-vlei.cddl
+CDDL_FRAGS += content-ref.cddl
+CDDL_FRAGS += wrapped-key.cddl
 CDDL_FRAGS += media-types.cddl
-# Later you can append more:
-# CDDL_FRAGS += numeric-expr.cddl
-# CDDL_FRAGS += tee-attributes-type.cddl
-# …
+
 export CDDL_FRAGS

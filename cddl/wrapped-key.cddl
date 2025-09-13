@@ -1,0 +1,25 @@
+; =====================================================================
+; --- Wrapped Key Definitions ---
+; =====================================================================
+
+wrapped-key = $key-type
+$key-type /= cose-key
+$key-type /= jwk-key
+$key-type /= pkix-key
+
+cose-key = {
+ content: "application/cose;cose-type=cose-key" / uint,
+ encoding: "cbor" / "base64uri" / "text",
+ payload: bstr / tstr
+}
+
+jwk-key = {
+  content: "application/jwk+json" / uint,
+  payload: tstr
+}
+
+pkix-key = {
+  content: "application/pkix-cert" / uint,
+  encoding: "PEM" / "DER",
+  payload: tstr / bstr
+}

@@ -149,6 +149,41 @@ informative:
       GLEIF: vLEI-EGF-v3.0
     target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
 
+  ACM-Calculus:
+    -: cacds
+    title: >
+      A Calculus for Access Control in Distributed Systems
+    author:
+      -
+        ins: M. Abadi
+        name: Martín Abadi
+      -
+        ins: M. Burrows
+        name: Michael Burrows
+      -
+        ins: B. Lampson
+        name: Butler Lampson
+      -
+        ins: G. Plotkin
+        name: Gordon Plotkin
+    date: 1993-10
+    seriesinfo:
+      ACM: TOPLAS 15(4), pp. 706–734
+    target: https://dl.acm.org/doi/10.1145/155183.155225
+  RFC4949: rfc4949
+
+  ISO17442-1:2020:
+    -: iso17442
+    title: >
+      Financial services — Legal entity identifier (LEI) — Part 1: Assignment
+    author:
+      org: International Organization for Standardization
+    date: 2020
+    seriesinfo:
+      ISO: 17442-1:2020
+    target: https://www.iso.org/standard/78829.html
+  RFC5280: pkix
+
 entity:
   SELF: "RFCthis"
 
@@ -181,76 +216,81 @@ SATP core message binding anticipates use of a message wrapper that uses media t
 
 The SATP core protocol {{-satp-core}} defines a set of entities that participate in an asset transfer.
 These entities are represented in differennt ways including identifiers, credentials and public keys.
-SATP entities are presumed to have been issued cryptographically relevant identities prior to stage 1 and subsequent exchanges.
-An entity with an issued identity is a principal.
+SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
+An entity (see Section 3 {{-rfc4949}} bound to a cryptographic key is also known as a principal {{-cacds}}.
 
-vLEIs {{-iso-vlei}} use Autonomic Identifiers (AID) to name principals in a system.
+A legal entity is defined by {{-iso17442}} section 1 (scope).
+
+vLEIs {{-iso-vlei}} use Autonomic Identifiers (AID) to name legal entities and to bind cryptographic keys, to form vLEI principals.
 AIDs are contained within an Authentic Chained Data Contain (ACDC) {{-acdc}} credential.
-ACDCs may also contain Key Event Logs (KEL) that are form of key attestation.
-KELs change periodically as key event receipts are added to the log.
-The state of the credential is therfore changing with use of the key.
-The state of an ACDC can be fixed by taking a cryptographic hash of an ACDC at some point in time.
-The digest value is a Self-Addressing Identifier (SAID) {{-cesr}}.
+AIDs link to Key Event Logs (KEL) that are form of key attestation.
+KELs change periodically as key event receipts are added to the log, thus key state could have security implications.
+The state of the vLEI credential may change between SATP stages or whenever a key is used.
+The state of an ACDC is locked to keystate at issuance.
+A cryptographic hash of an ACDC credential and its initial key state can be referenced using a Self-Addressing Identifier (SAID) {{-cesr}}.
 
-When applying vLEI to SATP, the ACID properties expect the state of the exchanged asset and protocol endpoints are unchanging during the exchange.
-In relation to SATP messages, entity identifiers (e.g., verifiedOriginatorEntityID, senderGatewayID) use SAIDs to ensure the identity as represented by key state doesn't change during the SATP exchange.
+When applying vLEI to SATP, ACID properties suggest that the state of the exchanged asset, the protocol state, and the key state play a role during asset exchange.
+Ideally, SATP principals (including key state) are unchanging during complete asset exchange (or full rollback).
+However, if key-state can't be locked as part of a SATP ACID exchange, key state verification at each SATP stage may be needed.
 
-SATP messages referennce directly public keys (e.g., senderGatewaySignaturePublicKey) that refers to the key used to sign SATP messages or for use with device attestation.
-These keys might use a non-vLEI credental, consequently the representation supports a variety of key types.
+SATP signing keys (e.g., senderGatewaySignaturePublicKey) that are based on ACDC credentials implicitly support key attestation as part of key verification.
+SATP device keys (e.g., senderGatewayDeviceIdentityPubKey) used for device authentication or device attestation can furthur strengthen trustworthiness claims of SATP endpoints.
+Some SATP keys do not use vLEI credentals, but could still be based on ACDC credentials.
+Still other credential types (e.g., X.509 {{-pkix}})) could be used for non-natural person entities.
 Nevertheless, use of a Key Event Recipt Infrastructure (KERI) {{-keri}} key means these keys can benefit from KEL-based key attestation.
 
-SATP defines credentials (e.g., gatewayCredential) that binds the entity identivier(s) to public key(s) which is the normal function of ACDCs.
-Normally, the identifier, public key and credential are representations of the same entity.
-However, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the GatewaySignaturePublicKey.
-Consequently, there MAY be additional credentials issued to SATP principals that require additional verifier processing.
-The association between multiple credentials for the same entity SHOULD be established during SATP Stage 0.
+{{&SELF}} assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
+Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
+Consequently, there MAY be additional credentials issued to SATP principals  that require additional verifier processing.
 
 <cref anchor="ids-note1" source="Ned Smith">
-Note1: Need to check if there is a KERI key encoding other than ACDC.
+Note1: Need to check if there is a KERI key encoding other than CESR and if ACDC is sufficient to describe the key.
 </cref>
 
-## Identity Binding {#sec-id-bind}
+## SATP Identity Binding {#sec-id-bind}
 
-The following table shows SATP entity bindings according to the various SATP message types and credential structure.
+{{tbl-satp-entity}} shows SATP entities with corresponding SATP message types mapped to a suitable credential structure.
+Stage 1 defines uses credential artifacts (i.e., identifiers and public keys) implying credential issuance occurred earlier, possibly during Stage 0.
+{{&SELF}} assumes all credentials issued are (or can be) ACDCs.
+The entity identifier within an ACDD is an autonomic identifer (AID), which is semantically aligned with SATP IDs.
 
 | SATP Entity | SATP Message | Structure |
 |===
-| Originator | implied credential | ACDC |
-| Originator | OriginatorPubkey | ACDC or other |
-| Originator | verifiedOriginatorEntityID | SAID |
-| Beneficiary | implied credential | ACDC |
-| Beneficiary | verifiedBeneficiaryEntityID | SAID |
-| Beneficiary | OriginatorPubkey | ACDC or other |
-| Origin Asset Network | implied credential | ACDC |
-| Origin Asset Network | senderGatewayNetworkId | ACDC |
-| Dest. Asset Network | implied credential | ACDC |
-| Dest. Asset Network | recipientGatewayNetworkId | ACDC |
-| Sender Gateway (G1) | gatewayCredential | ACDC |
-| G1 | senderGatewaySignaturePubkey | ACDC or other |
-| G1 | senderGatewayId | SAID |
-| G1 | implied device credential | ACDC |
-| G1 | senderGatewayDeviceIdentityPubkey | ACDC or other |
-| Gateway Owner (G1) | implied credential | ACDC |
-| Gateway Owner (G1) | senderGatewayOwnerID | SAID |
-| Receiver Gateway (G2) | gatewayCredential | ACDC |
-| G2 | receiverGatewaySignaturePubkey | ACDC or other |
-| G2 | receiverGatewayId | SAID |
-| G2 | implied device credential | ACDC |
-| G2 | receiverGatewayDeviceIdentityPubkey | ACDC or other |
-| Gateway Owner (G2) | implied credential | ACDC |
-| Gateway Owner (G2) | senderGatewayOwnerID | SAID |
+| Originator | OriginatorCredential -implied- | ACDC |
+|  | originatorPubkey | ACDC or other |
+|  | verifiedOriginatorEntityID | AID |
+| Sender Gateway Owner | senderGatewayOwnerCredential -implied- | ACDC |
+|  | senderGatewayOwnerID | AID |
+| Sender Gateway (G1) | senderGatewayCredential -implied- | ACDC |
+|  | senderGatewaySignaturePublicKey | ACDC or other |
+|  | senderGatewayId | AID |
+|  | senderGatewayDeviceIdentityCredential -implied- | ACDC |
+|  | senderGatewayDeviceIdentityPubkey | ACDC or other |
+|  | senderGatewayDeviceIdentityId -implied- | AID |
+| Sender Network | senderNetworkCredential -implied- | ACDC |
+|  | senderGatewayNetworkId | AID |
+|.............|.........................................|....|
+| Beneficiary | BeneficiaryCredential -implied- | ACDC |
+|  | beneficiaryPubkey | ACDC or other |
+|  | verifiedBeneficiaryEntityID | AID |
+| Receiver Gateway Owner | receiverGatewayOwnerCredential -implied- | ACDC |
+|  | senderGatewayOwnerID | AID |
+| Receiver Gateway (G2) | receiverGatewayCredential -implied- | ACDC |
+|  | receiverGatewaySignaturePublicKey | ACDC or other |
+|  | receiverGatewayId | AID |
+|  | receiverGatewayDeviceIdentityCredential -implied-  | ACDC |
+|  | receiverGatewayDeviceIdentityPubkey | ACDC or other |
+|  | receiverGatewayDeviceIdentityId -implied- | AID |
+| Recipient Network | recipientNetworkCredential -implied- | ACDC |
+|  | recipientGatewayNetworkId | AID |
 |===
-{: #tbl-satp-entity title="SATP Entity to Credential Type Mapping" align=left}
+{: #tbl-ent-msg-cred title="Mapping of SATP Entities and Messages to Credential Type" align=left}
 
 <cref anchor="ids-note2" source="Ned Smith">
 Note2: Need to describe how this draft approaches protocol binding where focus is on top-down, but not ignoring buttom up eg tls.
 </cref>
 
-# vLEI Binding Architecture {#sec-arch}
-
-The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
-To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
-This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON format. See {{sec-iana}}.
+## vLEI Roles
 
 The vLEI ecosystem defines roles-specific credentials.
 Version 1.0 of vLEI defines six ecosystem roles.
@@ -266,25 +306,37 @@ Version 1.0 of vLEI defines six ecosystem roles.
 |===
 {: #tbl-vlei-roles title="vLEI Ecosystem Roles" align=left}
 
+vLEI defines a role architecdture that is hierarchical.
+A QVI role oversees lifecycle of LEID, OORA, and ECRA roles.
+The OORA role oversees lifecycle of OOR roles and the ECRA role oversees the lifecycle of ECR roles.
+The LEID, OOR, and ECR roles could oversee lifecycle of non-vLEI credentials; which are classified as non-natural person credentials by {{-iso17442}}.
+
+# vLEI Binding Architecture {#sec-arch}
+
+The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
+To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
+This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON and other formats.
+See {{sec-iana}}.
+
 <cref anchor="ids-note3" source="Ned Smith">
 Note3: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
 Gateway Credential type isn't used in any of the stages afaik.
 There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
 </cref>
 
-## SATP Messages Containing vLEI Credentials
+## SATP vLEI Mapping {#sec-satp-vlei-mapping}
 
 The SATP protocol {{-satp-core}} defines a set of SATP flows that are divided into stages.
 
+{{tbl-satp-entity}} maps SATP entities to specific vLEI roles.
 
-The following SATP messages correspond to specific vLEI credential types:
-
-| # | SATP Messages | Credential Type |
+| # | SATP Entity | vLEI Role |
 |===
-| 1 | verifiedOriginatorEntityId, originatorPubkey, verifiedBeneficiaryEntityId, beneficiaryPubkey, senderGatewayOwnerId, receiverGatewayOwnerId | LEID |
-| 2 | senderGatewayId, senderGatewaySignaturePubkey, recipientGatewayId, receiverGatewaySignaturePubkey, senderGatewayNetworkId, senderGatewayDeviceIdentityPubkey, recipientGatewayNetworkId receiverGatewayDeviceIdentityPubkey| ECR |
+| 1 | Originator, Beneficiary, Gateway Owner | LEID |
+| 2 | GatewaySignature, GatewayNetwork, GatewayDeviceIdentity| non-natural person credential |
+| 3 | Gateway Admin, Network Admin, Gateway Operations Manager, Network Operations Manager | ECR |
 |===
-{: #tbl-satp-msgs title="SATP messages containing vLEI credential type" align=left}
+{: #tbl-satp-entity title="Mapping SATP Entity to vLEI Role" align=left}
 
 <cref anchor="ids-note4" source="Ned Smith">
 Note4: The various xxxID messages are tstr values - the stringified representation of the vLEI credential identifer should be used here.
@@ -295,18 +347,24 @@ For a SATP-CBOR or other binary binding the SAID MUST use the binary form of the
 
 ### LegalEntityIdentityvLEICredential Credentials
 
-The SATP Messages in row 1 of {{tbl-satp-msgs}} SHALL be a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
+The SATP Messages in row 1 of {{tbl-satp-entity}} is a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
 
 These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
 Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
 
 ### LegalEntityEngagementContextRolevLEICredential Credentials
 
-The SATP Messages in row 2 of {{tbl-satp-msgs}} SHALL be a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
+The SATP Messages in row 3 of {{tbl-satp-entity}} is a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
 
 These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.
 
-### Key Structures
+### Other vLEI Deployment Considerations
+
+SATP deployments could utilize other vLEI roles.
+For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 3 {{tbl-satp-entity}}.
+Although SATP Stage 1 messages don't directly refer to ECR credentials, the credentials referenced could link to ECR credentials which in turn link to ECRA credentials etc...
+
+## Key Structures
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
@@ -317,32 +375,56 @@ Other key formats SHOULD be allowed but are out of scope for {{&SELF}}.
 ## SATP Message Wrapper Schema
 The following CDDL {{-cddl}} defines the wrapper and application to SATP fields.
 
+### SATP Transfer Initiation (Stage 1) Message Binding {#sec-stage1}
+
+The SATP stage 1 messages containing identifiers use a vLEI wrapper that contains a payload and payload content identifier.
+Other stage 1 messages are public key values that use a key wrapper that disambiguates the key type and format or can be expressed as a wrapped vLEI.
+
 ~~~ cddl
-{::include cddl/msg-wrapper.cddl}
+{::include cddl/stage1.cddl}
+~~~
+
+### vLEI Wrapper {#sec-vlei-wrapper}
+
+~~~ cddl
+{::include cddl/wrapped-vlei.cddl}
+~~~
+
+### Content References {#sec-content-ref}
+
+~~~ cddl
+{::include cddl/content-ref.cddl}
+~~~
+
+### Key Wrappers {#sec-wrapped-key}
+
+~~~ cddl
+{::include cddl/wrapped-key.cddl}
 ~~~
 
 ## vLEI Media Types
 
 vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) {{-acdc}}.
-Section {{sec-iana}} request IANA assignment of ACDC media types {{-media-type}}.
+Section {{sec-iana}} request IANA assignment of media types {{-media-type}} and content format identifiers {{-content-format}}.
 
-SATP messages, as JSON, contain JSON wrapped vLEI credentials.
-However, vLEI credentials can be formatted with other wire formats that include CBOR, MSGPK, and CESR.
+SATP core {{-satp-core}} anticipates JSON encoded message.
+vLEI credentials can subsequently be JSON encoded while also being CESR {{-cesr}} compliant.
+CESR defines JSON, CBOR, MSGPK and native CESR variants.
 The follwing media types MAY be used when building credential payloads for SATP:
 
 | Media Types |
 |===
-| application/acdc+json |
-| application/acdc+cbor |
-| application/acdc+msgpk |
-| application/acdc+cesr |
-| application/said+cesr |
+| application/cesr+json |
+| application/cesr+cbor |
+| application/cesr+msgpk |
+| application/cesr |
 |===
-{: #tbl-vlei-media-types title="vLEI media types" align=left}
+{: #tbl-cesr-media-types title="vLEI media types" align=left}
 
-<cref anchor="ids-note5" source="Ned Smith">
-Note5: vLEI v1.0.0 defines JSON structure containing SAID. There should be a way to encode the ACDC directly to avoid backend lookup of the ACDC. ACDCs can be in binary/text.
-</cref>
+The media types in {{tbl-cesr-media-types}} have start codes that comply with the media type's structured syntax suffix, but require CESR-aware parsers that can detect them.
+The "cesr" subtype informs parsers that they have to do start code look-ahead processing.
+
+The "cesr" subtype also informs parsers that the CESR stream may contain a variety of objects including ACDCs, AIDs, and SAIDs (as mentioned in previous sections of {{&SELF}}).
 
 ### Profile Optonal Parameter
 
@@ -405,7 +487,7 @@ For example, the GLEIF Root AID via ACDC edges (see {{-gleif-fwk}}).
 IANA is requested to add the following media types to the "Media Types"
 registry {{!IANA.media-types}}.
 
-### application/acdc+json
+### application/cesr+json
 
 This media type indicates the payload is a JSON formatted vLEI.
 
@@ -415,7 +497,7 @@ This media type indicates the payload is a JSON formatted vLEI.
 
 *Subtype name:*
 
-- acdc+json
+- cesr+json
 
 *Required parameters:*
 
@@ -425,7 +507,7 @@ This media type indicates the payload is a JSON formatted vLEI.
 
 - `profile` — Indicates the payload conforms to a specific vLEI credential type.
 - `encoding` — Indicates the ACDC stream is text or binary.
-If binary, encoding MUST make the payload text-safe (e.g., `encoding=base64uri`.
+If binary, encoding MUST make the payload text-safe (e.g., `encoding=base64uri`).
 Defaults to `text`.
 - `charset` — Indicates character set for text encodings.
 Defaults to UTF-8.
@@ -442,6 +524,8 @@ Defaults to UTF-8.
 *Interoperability considerations:*
 
 - Binary payloads must be base64 encoded to make payloads compatible with text streams.
+- Section 9.4 and 9.5 in the CESR specification (cold start) in CESR
+- Section 11.5 Version String Field in CESR
 
 *Published specification:*
 
@@ -485,7 +569,7 @@ Defaults to UTF-8.
 
 - IETF / GLEIF
 
-### application/acdc+cbor
+### application/cesr+cbor
 
 *Type name:*
 
@@ -493,7 +577,7 @@ Defaults to UTF-8.
 
 *Subtype name:*
 
-- acdc+cbor
+- cesr+cbor
 
 *Required parameters:*
 
@@ -562,7 +646,7 @@ None.
 
 - IETF / GLEIF
 
-### application/acdc+msgpk
+### application/cesr+msgpk
 
 *Type name:*
 
@@ -570,7 +654,7 @@ None.
 
 *Subtype name:*
 
-- acdc+msgpk
+- cesr+msgpk
 
 *Required parameters:*
 
@@ -639,7 +723,7 @@ None.
 
 - IETF / GLEIF
 
-### application/acdc+cesr
+### application/cesr
 
 *Type name:*
 
@@ -647,7 +731,7 @@ None.
 
 *Subtype name:*
 
-- acdc+cesr
+- cesr
 
 *Required parameters:*
 
@@ -718,85 +802,6 @@ None.
 
 - IETF / GLEIF
 
-### application/said+cesr
-
-*Type name:*
-
-- application
-
-*Subtype name:*
-
-- said+cesr
-
-*Required parameters:*
-
-- None
-
-*Optional parameters:*
-
-- `profile` — Indicates the payload conforms to a specific vLEI credential type.
-- `encoding` — Indicates the CESR stream is text or binary.
-Defaults to `text`.
-`encoding=binary` indicates the CESR stream is binary encoded.
-- `charset` — Indicates character set for text encodings.
-Defaults to UTF-8.
-
-*Encoding considerations:*
-
-- CESR defaults to UTF-8 text encoding and is self-framing.
-- CESR can also be a binary stream.
-When used in binary mode the `encoding` option MUST be specified (e.g., `encoding=binary`).
-
-*Security considerations:*
-
-- See {{sec-sec}}.
-
-*Interoperability considerations:*
-
-None.
-
-*Published specification:*
-
-- {{&SELF}}
-- Key Event Receipt Infrastructure (KERI) — {{-keri}}
-- Authentictic Chained Data Containers (ACDC) — {{-acdc}}
-- Composable Event Streaming Representation (CESR) — {{-cesr}}
-- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
-
-*Applications that use this media type:*
-
-- GLEIF vLEI issuance and verification systems
-- SATP-compliant credential exchange platforms
-- Forensic credential chaining and audit systems
-
-*Fragment identifier considerations:*
-
-- None
-
-*Additional information:*
-
-- Magic number(s): None
-- File extension(s): `.saidcesr`
-- Macintosh file type code(s): None
-
-*Person & email address to contact for further information:*
-
-- N. Smith <ned.smith.ietf@outlook.com>
-- GLEIF IT Team <vlei-support@gleif.org>
-
-*Intended usage:*
-
-- COMMON
-
-*Author:*
-
-- N. Smith <ned.smith.ietf@outlook.com>
-- GLEIF IT Team <vlei-support@gleif.org>
-
-*Change controller:*
-
-- IETF / GLEIF
-
 ## CoAP Content-Format ID Assignments
 
 IANA is requested to assign the following Content-Format numbers in the
@@ -805,41 +810,34 @@ Environments (CoRE) Parameters" Registry {{!IANA.core-parameters}}:
 
 | Content-Type | Content Coding | ID | Reference |
 |---
-| application/acdc+json | - | TBA1 | {{&SELF}} |
-| application/acdc+cbor | - | TBD2 | {{&SELF}} |
-| application/acdc+msgpk | - | TBD3 | {{&SELF}} |
-| application/acdc+cesr | - | TBD4 | {{&SELF}} |
-| application/said+cesr | - | TBD5 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:leid | - | TBA10 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:ecr | - | TBA11 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:oor | - | TBA12 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:lar | - | TBA13 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:qvi | - | TBA14 | {{&SELF}} |
-| application/acdc+json;profile=urn:vlei:vra | - | TBA15 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:leid | - | TBA20 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:ecr | - | TBA21 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:oor | - | TBA22 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:lar | - | TBA23 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:qvi | - | TBA24 | {{&SELF}} |
-| application/acdc+cbor;profile=urn:vlei:vra | - | TBA25 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:leid | - | TBA30 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:ecr | - | TBA31 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:oor | - | TBA32 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:lar | - | TBA33 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:qvr | - | TBA34 | {{&SELF}} |
-| application/acdc+msgpk;profile=urn:vlei:vra | - | TBA35 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:leid | - | TBA40 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:ecr | - | TBA41 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:oor | - | TBA42 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:lar | - | TBA43 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:qvr | - | TBA44 | {{&SELF}} |
-| application/acdc+cesr;profile=urn:vlei:vra | - | TBA45 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:leid | - | TBA50 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:ecr | - | TBA51 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:oor | - | TBA52 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:lar | - | TBA53 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:qvr | - | TBA54 | {{&SELF}} |
-| application/said+cesr;profile=urn:vlei:vra | - | TBA55 | {{&SELF}} |
+| application/cesr+json | - | TBA1 | {{&SELF}} |
+| application/cesr+cbor | - | TBD2 | {{&SELF}} |
+| application/cesr+msgpk | - | TBD3 | {{&SELF}} |
+| application/cesr | - | TBD4 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:leid | - | TBA10 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:ecr | - | TBA11 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:oor | - | TBA12 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:lar | - | TBA13 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:qvi | - | TBA14 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:vra | - | TBA15 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:leid | - | TBA20 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:ecr | - | TBA21 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:oor | - | TBA22 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:lar | - | TBA23 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:qvi | - | TBA24 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:vra | - | TBA25 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:leid | - | TBA30 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:ecr | - | TBA31 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:oor | - | TBA32 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:lar | - | TBA33 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:qvr | - | TBA34 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:vra | - | TBA35 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:leid | - | TBA40 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:ecr | - | TBA41 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:oor | - | TBA42 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:lar | - | TBA43 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:qvr | - | TBA44 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:vra | - | TBA45 | {{&SELF}} |
 {: align="left" title="New Content-Formats"}
 
 --- back

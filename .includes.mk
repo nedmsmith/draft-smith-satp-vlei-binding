@@ -1,4 +1,7 @@
-draft-smith-satp-vlei-binding.xml: cddl/msg-wrapper.cddl
+draft-smith-satp-vlei-binding.xml: cddl/stage1.cddl
+draft-smith-satp-vlei-binding.xml: cddl/wrapped-vlei.cddl
+draft-smith-satp-vlei-binding.xml: cddl/content-ref.cddl
+draft-smith-satp-vlei-binding.xml: cddl/wrapped-key.cddl
 draft-smith-satp-vlei-binding.xml: cddl/satp-autogen.cddl
 draft-smith-satp-vlei-binding.xml: examples/json/voe-id1.jsonc
 draft-smith-satp-vlei-binding.xml: examples/json/vbe-id1.jsonc

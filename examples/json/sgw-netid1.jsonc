@@ -1,7 +1,7 @@
 {
   "senderGatewayNetworkId": {
     "content": {
-      "mt": "application/acdc+cbor;profile=urn:vlei:ecr;encoding=base64uri",
+      "mt": "application/cesr+cbor;profile=urn:vlei:ecr;encoding=base64uri",
       "cbt": false // no TN() CBOR tag; just base64 of raw CBOR
     },
     "payload": "oWJ0ZXN0LWVjci1jcmVkZW50aWFs..." 

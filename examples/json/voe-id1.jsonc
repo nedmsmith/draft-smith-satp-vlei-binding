@@ -1,7 +1,7 @@
 {
   "verifiedOriginatorEntityId": {
     "content": {
-      "mt": "application/acdc+json;profile=urn:vlei:leid"
+      "mt": "application/cesr+json;profile=urn:vlei:leid"
       // JSON serialization of an ACDC credential (LEID profile)
     },
     "payload": "ACDC10JSON...SAID...i:did:keri:..."

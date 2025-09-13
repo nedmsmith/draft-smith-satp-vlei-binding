@@ -1,0 +1,6 @@
+content-ref = non-empty<{ 
+ ? mt: vlei-media-type ; TBA 
+ ? cf: uint ; TBA content format id
+ ? cbt: bool ; payload contains CBOR tagged content in the TN() range if true, if false not cbor tagged and "mt" is required
+ ? oid: tstr ; generated from content-format-id e.g., "1.3.6.1.4.1.37476.2.1.5"
+}>
