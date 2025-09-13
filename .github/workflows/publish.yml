@@ -19,9 +19,13 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v4
 
-    # See https://github.com/actions/checkout/issues/290
+# See https://github.com/actions/checkout/issues/290
+# Original line caused fatal error due to force-fetching into checked-out branch
+# - name: "Get Tag Annotations"
+#   run: git fetch -f origin ${{ github.ref }}:${{ github.ref }}
+
     - name: "Get Tag Annotations"
-      run: git fetch -f origin ${{ github.ref }}:${{ github.ref }}
+      run: git fetch origin main
 
     - name: "Setup"
       id: setup
