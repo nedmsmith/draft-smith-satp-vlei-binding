@@ -257,29 +257,29 @@ The entity identifier within an ACDD is an autonomic identifer (AID), which is s
 | SATP Entity | SATP Message | Structure |
 |===
 | Originator | OriginatorCredential -implied- | ACDC |
-|  | originatorPubkey | ACDC or other |
+|  | originatorPubkey | KEL or other |
 |  | verifiedOriginatorEntityID | AID |
 | Sender Gateway Owner | senderGatewayOwnerCredential -implied- | ACDC |
 |  | senderGatewayOwnerID | AID |
 | Sender Gateway (G1) | senderGatewayCredential -implied- | ACDC |
-|  | senderGatewaySignaturePublicKey | ACDC or other |
+|  | senderGatewaySignaturePublicKey | KEL or other |
 |  | senderGatewayId | AID |
 |  | senderGatewayDeviceIdentityCredential -implied- | ACDC |
-|  | senderGatewayDeviceIdentityPubkey | ACDC or other |
+|  | senderGatewayDeviceIdentityPubkey | KEL or other |
 |  | senderGatewayDeviceIdentityId -implied- | AID |
 | Sender Network | senderNetworkCredential -implied- | ACDC |
 |  | senderGatewayNetworkId | AID |
 |.............|.........................................|....|
 | Beneficiary | BeneficiaryCredential -implied- | ACDC |
-|  | beneficiaryPubkey | ACDC or other |
+|  | beneficiaryPubkey | KEL or other |
 |  | verifiedBeneficiaryEntityID | AID |
 | Receiver Gateway Owner | receiverGatewayOwnerCredential -implied- | ACDC |
 |  | senderGatewayOwnerID | AID |
 | Receiver Gateway (G2) | receiverGatewayCredential -implied- | ACDC |
-|  | receiverGatewaySignaturePublicKey | ACDC or other |
+|  | receiverGatewaySignaturePublicKey | KEL or other |
 |  | receiverGatewayId | AID |
 |  | receiverGatewayDeviceIdentityCredential -implied-  | ACDC |
-|  | receiverGatewayDeviceIdentityPubkey | ACDC or other |
+|  | receiverGatewayDeviceIdentityPubkey | KEL or other |
 |  | receiverGatewayDeviceIdentityId -implied- | AID |
 | Recipient Network | recipientNetworkCredential -implied- | ACDC |
 |  | recipientGatewayNetworkId | AID |
