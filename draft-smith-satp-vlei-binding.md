@@ -45,8 +45,8 @@ normative:
     =: RFC6838
   RFC7252: content-format
   RFC8610: cddl
-  GLEIF-vLEI-TechReq-Part1:
-    -: gleif-req1
+  GLEIF-vLEI-Part1:
+    -: gleif-part1
     title: >
       Technical Requirements Part 1: KERI Infrastructure
     author:
@@ -56,8 +56,8 @@ normative:
       GLEIF: vLEI-EGF-TechReq-Part1-v1.3
     target: https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2025-04-16_vlei-egf-v3.0-technical-requirements-part-1-keri-infrastructure-2024_v1.3_final.pdf
 
-  GLEIF-vLEI-TechReq-Part2:
-    -: gleif-req2
+  GLEIF-vLEI-Part2:
+    -: gleif-part2
     title: >
       Technical Requirements Part 2: vLEI Credentials
     author:
@@ -65,10 +65,10 @@ normative:
     date: 2023-12-15
     seriesinfo:
       GLEIF: vLEI-EGF-TechReq-Part2-v1.1
-    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+    target: https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/7040021178-1759312105/2023-12-15_vlei-egf-v3.0-technical-requirements-part-2-vlei-credentials_v1.1-final.pdf
 
-  GLEIF-vLEI-TechReq-Part3:
-    -: gleif-req3
+  GLEIF-vLEI-Part3:
+    -: gleif-part3
     title: >
       Technical Requirements Part 3: vLEI Credential Schema Registry
     author:
@@ -76,7 +76,7 @@ normative:
     date: 2023-12-15
     seriesinfo:
       GLEIF: vLEI-EGF-TechReq-Part3-v1.1
-    target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+    target: https://www.gleif.org/media/pages/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/7040021178-1759312105/2023-12-15_vlei-egf-v3.0-technical-requirements-part-2-vlei-credentials_v1.1-final.pdf
 
   ISO17442-3:
     -: iso-vlei
@@ -115,6 +115,14 @@ informative:
       TOIP: TSWG-KERI-2023
     target: https://trustoverip.github.io/tswg-keri-specification/
 
+  KERI-glossary:
+    -: kgloss
+    title: >
+      KERI Suite Glossary, Draft 01
+    author:
+      org: Trust Over IP Foundation
+    target: https://trustoverip.github.io/kerisuite-glossary/
+
   ACDC-Spec:
     -: acdc
     title: >
@@ -140,7 +148,7 @@ informative:
   GLEIF-vLEI-EGF:
     -: gleif-fwk
     title: >
-      Verifiable LEI (vLEI) Ecosystem Governance Framework:
+      Verifiable LEI (vLEI) Ecosystem Governance Framework v3.0:
       Primary and Controlled Documents
     author:
       org: Global Legal Entity Identifier Foundation
@@ -148,6 +156,18 @@ informative:
     seriesinfo:
       GLEIF: vLEI-EGF-v3.0
     target: https://www.gleif.org/en/vlei/introducing-the-vlei-ecosystem-governance-framework
+
+  vLEI-glossary:
+    -: vgloss
+    title: >
+      Verifiable LEI (vLEI) Ecosystem Governance Framework 3.0:
+      Glossary
+    author:
+      org: Global Legal Entity Identifier Foundation
+    date: 2023-12-15
+    seriesinfo:
+      GLEIF: v1.3
+    target: https://www.gleif.org/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework/2023-12-15_vlei-egf-v3.0-glossary_v1.3-final.pdf
 
   ACM-Calculus:
     -: cacds
@@ -183,6 +203,16 @@ informative:
       ISO: 17442-1:2020
     target: https://www.iso.org/standard/78829.html
   RFC5280: pkix
+  STD94:
+    -: cbor
+    =: RFC8949
+  MSGPCK:
+    -: msg-pck
+    title: MessagePack Specification
+    author:
+      org: MessagePack Community
+    date: 2023
+    target: https://github.com/msgpack/msgpack/blob/master/spec.md
 
 entity:
   SELF: "RFCthis"
@@ -219,10 +249,16 @@ These entities are represented in differennt ways including identifiers, credent
 SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
 An entity (see Section 3 {{-rfc4949}} bound to a cryptographic key is also known as a principal {{-cacds}}.
 
-A legal entity is defined by {{-iso17442}} section 1 (scope).
+A legal entity identifier (LEI) is defined by {{-iso17442}} section 1 (scope) that contains legal entity identifiers.
+An LEI is essentially a globally unique value issued by a well-known issuer.
+A verifiable LEI (vLEI) {{-iso-vlei}} is an Authentic Chained Data Container (ACDC) {{-acdc}} credential containing Autonomic Identifiers ([AID](https://trustoverip.github.io/kerisuite-glossary#term:autonomic-identifier)) that has three attributes:
 
-vLEIs {{-iso-vlei}} use Autonomic Identifiers (AID) to name legal entities and to bind cryptographic keys, to form vLEI principals.
-AIDs are contained within an Authentic Chained Data Contain (ACDC) {{-acdc}} credential.
+* Legal Entity Identifier
+* Person Identifier
+* Organizational Role Identifier
+
+vLEI credentials are issued to *natural person* (see {{-gleif-part2}} and {{-iso-vlei}}).
+cryptographic keys, to form vLEI principals.
 AIDs link to Key Event Logs (KEL) that are form of key attestation.
 KELs change periodically as key event receipts are added to the log, thus key state could have security implications.
 The state of the vLEI credential may change between SATP stages or whenever a key is used.
@@ -236,16 +272,12 @@ However, if key-state can't be locked as part of a SATP ACID exchange, key state
 SATP signing keys (e.g., senderGatewaySignaturePublicKey) that are based on ACDC credentials implicitly support key attestation as part of key verification.
 SATP device keys (e.g., senderGatewayDeviceIdentityPubKey) used for device authentication or device attestation can furthur strengthen trustworthiness claims of SATP endpoints.
 Some SATP keys do not use vLEI credentals, but could still be based on ACDC credentials.
-Still other credential types (e.g., X.509 {{-pkix}})) could be used for non-natural person entities.
+Still other credential types (e.g., X.509 {{-pkix}}) could be used for non-natural person entities.
 Nevertheless, use of a Key Event Recipt Infrastructure (KERI) {{-keri}} key means these keys can benefit from KEL-based key attestation.
 
 {{&SELF}} assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
 Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
 Consequently, there MAY be additional credentials issued to SATP principals  that require additional verifier processing.
-
-<cref anchor="ids-note1" source="Ned Smith">
-Note1: Need to check if there is a KERI key encoding other than CESR and if ACDC is sufficient to describe the key.
-</cref>
 
 ## SATP Identity Binding {#sec-id-bind}
 
@@ -256,32 +288,32 @@ The entity identifier within an ACDD is an autonomic identifer (AID), which is s
 
 | SATP Entity | SATP Message | Structure |
 |===
-| Originator | OriginatorCredential -implied- | ACDC |
-|  | originatorPubkey | KEL or other |
+| Originator | OriginatorCredential *-implied-* | vLEI |
 |  | verifiedOriginatorEntityID | AID |
-| Sender Gateway Owner | senderGatewayOwnerCredential -implied- | ACDC |
+|  | originatorPubkey | KEL or other |
+| Sender Gateway Owner | senderGatewayOwnerCredential *-implied-* | vLEI |
 |  | senderGatewayOwnerID | AID |
-| Sender Gateway (G1) | senderGatewayCredential -implied- | ACDC |
-|  | senderGatewaySignaturePublicKey | KEL or other |
+| Sender Gateway (G1) | senderGatewayCredential *-implied-* | ACDC |
 |  | senderGatewayId | AID |
-|  | senderGatewayDeviceIdentityCredential -implied- | ACDC |
+|  | senderGatewaySignaturePublicKey | KEL or other |
+| Sender Gateway (G1) | senderGatewayDeviceIdentityCredential *-implied-* | ACDC |
+|  | senderGatewayDeviceIdentityId *-implied-* | AID |
 |  | senderGatewayDeviceIdentityPubkey | KEL or other |
-|  | senderGatewayDeviceIdentityId -implied- | AID |
-| Sender Network | senderNetworkCredential -implied- | ACDC |
+| Sender Network | senderNetworkCredential *-implied-* | ACDC |
 |  | senderGatewayNetworkId | AID |
 |.............|.........................................|....|
-| Beneficiary | BeneficiaryCredential -implied- | ACDC |
+| Beneficiary | BeneficiaryCredential *-implied-* | vLEI |
 |  | beneficiaryPubkey | KEL or other |
 |  | verifiedBeneficiaryEntityID | AID |
-| Receiver Gateway Owner | receiverGatewayOwnerCredential -implied- | ACDC |
+| Receiver Gateway Owner | receiverGatewayOwnerCredential *-implied-* | vLEI |
 |  | senderGatewayOwnerID | AID |
-| Receiver Gateway (G2) | receiverGatewayCredential -implied- | ACDC |
-|  | receiverGatewaySignaturePublicKey | KEL or other |
+| Receiver Gateway (G2) | receiverGatewayCredential *-implied-* | ACDC |
 |  | receiverGatewayId | AID |
-|  | receiverGatewayDeviceIdentityCredential -implied-  | ACDC |
+|  | receiverGatewaySignaturePublicKey | KEL or other |
+| Receiver Gateway (G2) | receiverGatewayDeviceIdentityCredential *-implied-*  | ACDC |
+|  | receiverGatewayDeviceIdentityId *-implied-* | AID |
 |  | receiverGatewayDeviceIdentityPubkey | KEL or other |
-|  | receiverGatewayDeviceIdentityId -implied- | AID |
-| Recipient Network | recipientNetworkCredential -implied- | ACDC |
+| Recipient Network | recipientNetworkCredential *-implied-* | ACDC |
 |  | recipientGatewayNetworkId | AID |
 |===
 {: #tbl-ent-msg-cred title="Mapping of SATP Entities and Messages to Credential Type" align=left}
@@ -306,10 +338,34 @@ Version 1.0 of vLEI defines six ecosystem roles.
 |===
 {: #tbl-vlei-roles title="vLEI Ecosystem Roles" align=left}
 
-vLEI defines a role architecdture that is hierarchical.
-A QVI role oversees lifecycle of LEID, OORA, and ECRA roles.
-The OORA role oversees lifecycle of OOR roles and the ECRA role oversees the lifecycle of ECR roles.
-The LEID, OOR, and ECR roles could oversee lifecycle of non-vLEI credentials; which are classified as non-natural person credentials by {{-iso17442}}.
+The vLEI role architecdture is a hierarchical namespace.
+The QVI role manages the top-level namespace.
+It oversees the lifecycle of subordinate namespaces (e.g., LEID, OORA, and ECRA) which are also characterized as roles.
+The LEID role manages the LEID namespace.
+The OORA role manages the OORA namespace and lifecycle of its subordinate OOR role.
+The ECRA role manages the ECR namespace and lifecycle of its subordinate ECR role.
+The LEID, OOR, and ECR are *non-natural persons* roles (see {{-iso17442}}).
+Non-vLEI credentials are used to identify and authenticate such entities.
+
+### vLEI Schemas
+
+The various vLEI ACDC objects conform to JSON Schemas:
+
+* [LEID](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json).
+* [QVI](https://github.com/GLEIF-IT/vLEI-schema/blob/main/qualified-vLEI-issuer-vLEI-credential.json).
+* [OORA](https://github.com/GLEIF-IT/vLEI-schema/blob/main/oor-authorization-vlei-credential.json).
+* [ECRA](https://github.com/GLEIF-IT/vLEI-schema/blob/main/ecr-authorization-vlei-credential.json).
+* [OOR](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json).
+* [ECR](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json).
+
+These schemas are used to validate JSON realizations of vLEI credentials.
+Other representations such as CBOR {{-cbor}} and message pack {{-msg-pck}} can be realized, but the schemas used to validate them are not available at the time of this writing.
+
+### LegalEntityEngagementContextRolevLEICredential Credentials
+
+The SATP Messages in row 3 of {{tbl-satp-entity}} is a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
+
+These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.
 
 # vLEI Binding Architecture {#sec-arch}
 
@@ -326,39 +382,50 @@ There should be an IANA registry for the allowed credential types (vLEI, SAML, O
 
 ## SATP vLEI Mapping {#sec-satp-vlei-mapping}
 
-The SATP protocol {{-satp-core}} defines a set of SATP flows that are divided into stages.
+The SATP protocol {{-satp-core}} defines a set of SATP flows that are divided into protocol message exchange blocks called stages.
+The stage-1 messages are illustrated in {{tbl-ent-msg-cred}}.
+The SATP entity that authors the various stage-1 messages is also depicted in {{tbl-ent-msg-cred}}.
+The authority used to assert SATP messages is based on a cryptographic credential that is used to authenticate the message.
+SATP asset transfers depend on properly established organizational authority contexts.
+{{tbl-satp-entity}} illustrates the relationships between the various SATP entities, some of which are implied, and the source of authority.
+The table is ordered according to an authority hierarchy with the root authority in the first row and leaf entitities on the 6th row.
+Authority is therefore cumulative from row to row.
+The type of credential used to represent authority is in column 3.
 
-{{tbl-satp-entity}} maps SATP entities to specific vLEI roles.
-
-| # | SATP Entity | vLEI Role |
+| # | SATP Entity | vLEI Type & Authority Chain | Credential | Notes |
 |===
-| 1 | Originator, Beneficiary, Gateway Owner | LEID |
-| 2 | GatewaySignature, GatewayNetwork, GatewayDeviceIdentity| non-natural person credential |
-| 3 | Gateway Admin, Network Admin, Gateway Operations Manager, Network Operations Manager | ECR |
+| 1 | Root vLEI Issuer *-implied-* | GLEIF | vLEI | Root namespace authority (e.g., GLEIF) |
+| 2 | Qualified vLEI Issuer *-implied-* | GLEIF>>QVI | vLEI | Inter organizational namespace authority |
+| 3 | Organizational vLEI Issuer *-implied-* | QVI>>LEID | vLEI | Organizational level namespace authority |
+| 4 | Originator, Beneficiary, Gateway Owner | LEID>>OOR, LEID>>ECR | vLEI | Person-in-role credential |
+| 5 | Gateway / Network Operations Manager / Admin *-implied-* | ECR>>ACDC | ACDC, other | Operational credentials (not defined by vLEI) |
+| 6 | Sender/Receiver Gateway, Sender/Recipient Network | ACDC>>AID | ACDC, other | Device or system identity |
 |===
 {: #tbl-satp-entity title="Mapping SATP Entity to vLEI Role" align=left}
 
-<cref anchor="ids-note4" source="Ned Smith">
-Note4: The various xxxID messages are tstr values - the stringified representation of the vLEI credential identifer should be used here.
-This is probably an SAID.
-For a SATP-JSON binding, the SAID MUST use the text form of the CESR derivation code.
-For a SATP-CBOR or other binary binding the SAID MUST use the binary form of the CESR derivation code.
-</cref>
+{:tbl-cntr1: counter="cntr1" style="format Row %d."}
 
-### LegalEntityIdentityvLEICredential Credentials
+{: tbl-cntr1}
+* GLEIF is a well-known root authority in the vLEI ecosystem.
+The GLEIF AID is public knowledge.
+* Second tier QVI authorities are credentialed by a root authority.
+Typically, second tier authorities are inter-organizational issuing credentials to multiple organizational entities.
+* Orgainzational entities use an LEID credential to manage intra-organizational namespaces.
+* SATP stage-1 messages imply the existence of oganization level entities such as Originator, Beneficiary, and Gateway Owners.
+vLEI defines two forms of person-in-role credentials for level 3 SATP entities.
+OOR for organizational officers and ECR for oganizational departments or functions.
+SATP use cases likely depend on ECR credentials.
+* There are likely to be intra-organizational entities that manage and adminster networks and servers.
+vLEI doesn't define such roles and SATP stage-1 messages don't explicitly mention the existence of such entities.
+However, the people responsible for administering and managing the systems that implement SATP message exchange have credentials that tie into the organizational accountability framework envisaged by vLEI.
+These credentials can be ACDC or other (e.g., X.509).
+* SATP stage-1 messages describe various services and networks that have been credentialed with device or system identities.
+These credentials can be ACDC or other.
+ACDC credentials contain a holder AID that links the identity of the holder entity to the key weilded by the holder.
+An X.509 device certificate associates the subject name to a public key.
+It is often assumed that the holder of the certificate also weilds the private corresponding to the public key in the certificate.
 
-The SATP Messages in row 1 of {{tbl-satp-entity}} is a LegalEntityvLEICredential as defined by the [LEvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json) schema.
-
-These messages are realized using a Legal Entity vLEI Credential (LEvLEIC) because these message identify legal entities.
-Gateway owner identities area form of legal entity as they identify the owner of a gateway rather than the gateway itself.
-
-### LegalEntityEngagementContextRolevLEICredential Credentials
-
-The SATP Messages in row 3 of {{tbl-satp-entity}} is a LegalEntityEngagementContextRolevLEICredential as defined by the [LEECRvLEIC](https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json) schema.
-
-These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.
-
-### Other vLEI Deployment Considerations
+### vLEI Deployment Considerations
 
 SATP deployments could utilize other vLEI roles.
 For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 3 {{tbl-satp-entity}}.
@@ -368,7 +435,7 @@ Although SATP Stage 1 messages don't directly refer to ECR credentials, the cred
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
-The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK) {{-jwk}}, COSE key {{-cose-key}}, PKIX key in PEM or DER, or as ACDC {{-acdc}} credentials.
+The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK) {{-jwk}}, COSE key {{-cose-key}}, PKIX key in PEM or DER, or as Key Event Logs (KEL) {{-keri}}.
 
 Other key formats SHOULD be allowed but are out of scope for {{&SELF}}.
 
@@ -478,7 +545,7 @@ The following security properties are assumed for all payloads identified by med
 - Signature verification is required to ensure authenticity and integrity.
 - Credential provenance must be anchored to a trusted root.
 For example, the GLEIF Root AID via ACDC edges (see {{-gleif-fwk}}).
-- vLEIs must be validated against the vLEI schema. See {{-gleif-req3}}.
+- vLEIs must be validated against the vLEI schema. See {{-gleif-part3}}.
 
 # IANA Considerations {#sec-iana}
 
@@ -533,7 +600,7 @@ Defaults to UTF-8.
 - Key Event Receipt Infrastructure (KERI) — {{-keri}}
 - Authentictic Chained Data Containers (ACDC) — {{-acdc}}
 - Composable Event Streaming Representation (CESR) — {{-cesr}}
-- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-part3}}
 
 *Applications that use this media type:*
 
@@ -610,7 +677,7 @@ None.
 - Key Event Receipt Infrastructure (KERI) — {{-keri}}
 - Authentictic Chained Data Containers (ACDC) — {{-acdc}}
 - Composable Event Streaming Representation (CESR) — {{-cesr}}
-- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-part3}}
 
 *Applications that use this media type:*
 
@@ -687,7 +754,7 @@ None.
 - Key Event Receipt Infrastructure (KERI) — {{-keri}}
 - Authentictic Chained Data Containers (ACDC) — {{-acdc}}
 - Composable Event Streaming Representation (CESR) — {{-cesr}}
-- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-part3}}
 
 *Applications that use this media type:*
 
@@ -766,7 +833,7 @@ None.
 - Key Event Receipt Infrastructure (KERI) — {{-keri}}
 - Authentictic Chained Data Containers (ACDC) — {{-acdc}}
 - Composable Event Streaming Representation (CESR) — {{-cesr}}
-- GLEIF vLEI Credential Schema Registry — {{-gleif-req3}}
+- GLEIF vLEI Credential Schema Registry — {{-gleif-part3}}
 
 *Applications that use this media type:*
 
