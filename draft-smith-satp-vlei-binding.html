@@ -30,7 +30,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
     PyYAML 6.0.2
     requests 2.32.5
     setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-smith-satp-vlei-binding.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Smith</td>
-<td class="center">Expires 5 April 2026</td>
+<td class="center">Expires 19 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-smith-satp-vlei-binding-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-02" class="published">2 October 2025</time>
+<time datetime="2025-10-16" class="published">16 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-05">5 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-19">19 April 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1159,21 +1159,35 @@ Thus SATP core lock assertions are cryptographically linked to gateway operator 
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-identities" class="internal xref">Identities</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-vlei-identities-and-credent" class="internal xref">vLEI Identities and Credentials</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-satp-identity-binding" class="internal xref">SATP Identity Binding</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-vlei-credential-attributes" class="internal xref">vLEI Credential Attributes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-vlei-roles" class="internal xref">vLEI Roles</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-vlei-schemas" class="internal xref">vLEI Schemas</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-keri-key-management" class="internal xref">KERI Key Management</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
-                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-legalentityengagementcontex" class="internal xref">LegalEntityEngagementContextRolevLEICredential Credentials</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-satp-credentialing-assumpti" class="internal xref">SATP Credentialing Assumptions</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-satp-identity-binding" class="internal xref">SATP Identity Binding</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-vlei-roles" class="internal xref">vLEI Roles</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.1">
+                    <p id="section-toc.1-1.3.2.5.2.1.1"><a href="#section-3.5.1" class="auto internal xref">3.5.1</a>.  <a href="#name-vlei-schemas" class="internal xref">vLEI Schemas</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.2">
+                    <p id="section-toc.1-1.3.2.5.2.2.1"><a href="#section-3.5.2" class="auto internal xref">3.5.2</a>.  <a href="#name-legalentityengagementcontex" class="internal xref">LegalEntityEngagementContextRolevLEICredential Credentials</a></p>
 </li>
                 </ul>
 </li>
@@ -1309,58 +1323,101 @@ SATP core message binding anticipates use of a message wrapper that uses media t
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="terminology">
+<section id="section-2.1">
+        <h3 id="name-terminology">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-2.1-1.1">
+            <p id="section-2.1-1.1.1">Legal Entity : any organization or structure that is legally or financially responsible for its actions and can enter into financial transactions, explicitly excluding natural persons except where they act as sole proprietors recognized as legal entities <span>[<a href="#ISO17442-1_2020" class="cite xref">ISO17442-1_2020</a>]</span>.<a href="#section-2.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.1-1.2">
+            <p id="section-2.1-1.2.1">Natural person : a living human being (<a href="https://www.law.cornell.edu/wex/natural_person">LLI</a>).<a href="#section-2.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-ids">
 <section id="section-3">
-      <h2 id="name-identities">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-identities" class="section-name selfRef">Identities</a>
+      <h2 id="name-vlei-identities-and-credent">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-vlei-identities-and-credent" class="section-name selfRef">vLEI Identities and Credentials</a>
       </h2>
 <p id="section-3-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines a set of entities that participate in an asset transfer.
 These entities are represented in differennt ways including identifiers, credentials and public keys.
 SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
-An entity (see Section 3 <span>[<a href="#RFC4949" class="cite xref">RFC4949</a>]</span> bound to a cryptographic key is also known as a principal <span>[<a href="#ACM-Calculus" class="cite xref">ACM-Calculus</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">A legal entity identifier (LEI) is defined by <span>[<a href="#ISO17442-1_2020" class="cite xref">ISO17442-1_2020</a>]</span> section 1 (scope) that contains legal entity identifiers.
-An LEI is essentially a globally unique value issued by a well-known issuer.
-A verifiable LEI (vLEI) <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span> is an Authentic Chained Data Container (ACDC) <span>[<a href="#ACDC-Spec" class="cite xref">ACDC-Spec</a>]</span> credential containing Autonomic Identifiers (<a href="https://trustoverip.github.io/kerisuite-glossary#term:autonomic-identifier">AID</a>) that has three attributes:<a href="#section-3-2" class="pilcrow">¶</a></p>
+An entity (see Section 3 <span>[<a href="#RFC4949" class="cite xref">RFC4949</a>]</span> that weilds a cryptographic key pair can be described as a <em>principal</em> <span>[<a href="#ACM-Calculus" class="cite xref">ACM-Calculus</a>]</span>.
+SATP Gateways and Networks as well as the key management infrastructure that authorizes these keys are all principals.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="vlei-credential-attributes">
+<section id="section-3.1">
+        <h3 id="name-vlei-credential-attributes">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-vlei-credential-attributes" class="section-name selfRef">vLEI Credential Attributes</a>
+        </h3>
+<p id="section-3.1-1">A legal entity identifier (LEI) is essentially a globally unique value issued by a well-known entity trusted to manage the LEI namespace correctly.
+A verifiable LEI (vLEI) <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span> is an Authentic Chained Data Container (ACDC) <span>[<a href="#ACDC-Spec" class="cite xref">ACDC-Spec</a>]</span> credential that contains three attributes:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">Legal Entity Identifier<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1-2.1">
+            <p id="section-3.1-2.1.1">Legal Entity Identifier (LEI)<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Person Identifier<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.1-2.2">
+            <p id="section-3.1-2.2.1">Person Identifier - human friendly name<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.3">
-          <p id="section-3-3.3.1">Organizational Role Identifier<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.1-2.3">
+            <p id="section-3.1-2.3.1">Organizational Role Identifier - defined by a namespace controller such as GLEIF <span>[<a href="#GLEIF-vLEI-EGF" class="cite xref">GLEIF-vLEI-EGF</a>]</span>.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
-      </ul>
-<p id="section-3-4">vLEI credentials are issued to <em>natural person</em> (see <span>[<a href="#GLEIF-vLEI-Part2" class="cite xref">GLEIF-vLEI-Part2</a>]</span> and <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span>).
-cryptographic keys, to form vLEI principals.
-AIDs link to Key Event Logs (KEL) that are form of key attestation.
-KELs change periodically as key event receipts are added to the log, thus key state could have security implications.
-The state of the vLEI credential may change between SATP stages or whenever a key is used.
-The state of an ACDC is locked to keystate at issuance.
-A cryptographic hash of an ACDC credential and its initial key state can be referenced using a Self-Addressing Identifier (SAID) <span>[<a href="#CESR-Spec" class="cite xref">CESR-Spec</a>]</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">When applying vLEI to SATP, ACID properties suggest that the state of the exchanged asset, the protocol state, and the key state play a role during asset exchange.
-Ideally, SATP principals (including key state) are unchanging during complete asset exchange (or full rollback).
-However, if key-state can't be locked as part of a SATP ACID exchange, key state verification at each SATP stage may be needed.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">SATP signing keys (e.g., senderGatewaySignaturePublicKey) that are based on ACDC credentials implicitly support key attestation as part of key verification.
+        </ul>
+<p id="section-3.1-3">A vLEI ACDC attributes also contain an Autonomic Identifier (<a href="https://trustoverip.github.io/kerisuite-glossary#term:autonomic-identifier">AID</a>) that identifies the principal to which the other vLEI attributes are bound.
+In PKIX terminology, this AID identifies the <em>subject</em>.
+A vLEI ACDC also contains an issuer AID that identifies the issuing principal.
+vLEI credentials are issued to non-natural person legal entities (see <span>[<a href="#GLEIF-vLEI-Part2" class="cite xref">GLEIF-vLEI-Part2</a>]</span> and <span>[<a href="#ISO17442-3" class="cite xref">ISO17442-3</a>]</span>).
+Nevertheless, these credentials contain <code>personLegalName</code> and <code>engagementContextRole</code> attributes that are typically associated with natural persons.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="keri-key-management">
+<section id="section-3.2">
+        <h3 id="name-keri-key-management">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-keri-key-management" class="section-name selfRef">KERI Key Management</a>
+        </h3>
+<p id="section-3.2-1">AIDs reference Key Event Log (KEL) events that can be verified by outside entities; as such is a form of key attestation.
+An ACDC issuer is anchored to a key inception event which is a digest of the current and pre-rotated keys and other key management context.
+The digest becomes the issuer's autonomic identifier (AID).
+An ACDC credential can be identified by hashing its contents.
+The resulting digest is called a Self-Addressing Identifier (SAID) <span>[<a href="#KERI-Spec" class="cite xref">KERI-Spec</a>]</span>.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Periodically, key events are appended to the KEL resulting in a different key state.
+However, the key inception event (the first event) remains unchanged.
+Anchoring AIDs to inception events means the identifier is relatively long lived as even key rotation events are anticipated at inception.
+Key rotation events that exceed the number of pre-rotated keys results in a new key inception event that conseqently invalidates its previous AID.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">When applying vLEI to SATP, ACID properties suggest that the state of the exchanged asset, the protocol state, and the key state play a role in determining the overall state of the asset exchange.
+Ideally, SATP principals (including key state) is locked down as part of reliable asset exchange where the complete state can be rolled back to a known-good state.
+However, if key state can't be locked as part of a SATP asset exchange, key state verification at each SATP stage may be needed to verify the subsequent key state changes occuring during SATP stages does not present a security relevant condition.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="satp-credentialing-assumptions">
+<section id="section-3.3">
+        <h3 id="name-satp-credentialing-assumpti">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-satp-credentialing-assumpti" class="section-name selfRef">SATP Credentialing Assumptions</a>
+        </h3>
+<p id="section-3.3-1">SATP signing keys (e.g., senderGatewaySignaturePublicKey) that are based on ACDC credentials implicitly support key attestation as part of key verification.
 SATP device keys (e.g., senderGatewayDeviceIdentityPubKey) used for device authentication or device attestation can furthur strengthen trustworthiness claims of SATP endpoints.
 Some SATP keys do not use vLEI credentals, but could still be based on ACDC credentials.
-Still other credential types (e.g., X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>) could be used for non-natural person entities.
-Nevertheless, use of a Key Event Recipt Infrastructure (KERI) <span>[<a href="#KERI-Spec" class="cite xref">KERI-Spec</a>]</span> key means these keys can benefit from KEL-based key attestation.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">RFCthis assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
-Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
-Consequently, there <span class="bcp14">MAY</span> be additional credentials issued to SATP principals  that require additional verifier processing.<a href="#section-3-7" class="pilcrow">¶</a></p>
+Still other credential types (e.g., PKIX <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>) could be leveraged, but complicates key and trust management.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">RFCthis assumes SATP stage 1 messages that contain identifiers and public keys are artifacts of credentials that have been issued to SATP defined entities.
+In addition, SATP entities are authorized by vLEI hierarchy that supplies a legal context for asset exchange
+Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from that belonging to the GatewaySignaturePublicKey.
+Consequently, there <span class="bcp14">MAY</span> be additional credentials issued to SATP principals that require additional verifier processing that ensures the asset transfer legal context is in force despite bifurcated credential formats and infrastructure.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="sec-id-bind">
-<section id="section-3.1">
+<section id="section-3.4">
         <h3 id="name-satp-identity-binding">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-satp-identity-binding" class="section-name selfRef">SATP Identity Binding</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-satp-identity-binding" class="section-name selfRef">SATP Identity Binding</a>
         </h3>
-<p id="section-3.1-1"><a href="#tbl-satp-entity" class="auto internal xref">Table 3</a> shows SATP entities with corresponding SATP message types mapped to a suitable credential structure.
+<p id="section-3.4-1"><a href="#tbl-satp-entity" class="auto internal xref">Table 3</a> shows SATP entities with corresponding SATP message types mapped to a suitable credential structure.
 Stage 1 defines uses credential artifacts (i.e., identifiers and public keys) implying credential issuance occurred earlier, possibly during Stage 0.
 RFCthis assumes all credentials issued are (or can be) ACDCs.
-The entity identifier within an ACDD is an autonomic identifer (AID), which is semantically aligned with SATP IDs.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+The entity identifier within an ACDD is an autonomic identifer (AID), which is semantically aligned with SATP IDs.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <span id="name-mapping-of-satp-entities-an"></span><div id="tbl-ent-msg-cred">
 <table class="center" id="table-1">
           <caption>
@@ -1525,18 +1582,15 @@ The entity identifier within an ACDD is an autonomic identifer (AID), which is s
           </tbody>
         </table>
 </div>
-<p id="section-3.1-3"><span class="cref" id="ids-note2">
-Note2: Need to describe how this draft approaches protocol binding where focus is on top-down, but not ignoring buttom up eg tls.
-<span class="crefSource">Ned Smith</span></span><a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="vlei-roles">
-<section id="section-3.2">
+<section id="section-3.5">
         <h3 id="name-vlei-roles">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-vlei-roles" class="section-name selfRef">vLEI Roles</a>
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-vlei-roles" class="section-name selfRef">vLEI Roles</a>
         </h3>
-<p id="section-3.2-1">The vLEI ecosystem defines roles-specific credentials.
-Version 1.0 of vLEI defines six ecosystem roles.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The vLEI ecosystem defines roles-specific credentials.
+Version 1.0 of vLEI defines six ecosystem roles.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <span id="name-vlei-ecosystem-roles"></span><div id="tbl-vlei-roles">
 <table class="center" id="table-2">
           <caption>
@@ -1577,51 +1631,51 @@ Version 1.0 of vLEI defines six ecosystem roles.<a href="#section-3.2-1" class="
           </tbody>
         </table>
 </div>
-<p id="section-3.2-3">The vLEI role architecdture is a hierarchical namespace.
+<p id="section-3.5-3">The vLEI role architecdture is a hierarchical namespace.
 The QVI role manages the top-level namespace.
 It oversees the lifecycle of subordinate namespaces (e.g., LEID, OORA, and ECRA) which are also characterized as roles.
 The LEID role manages the LEID namespace.
 The OORA role manages the OORA namespace and lifecycle of its subordinate OOR role.
 The ECRA role manages the ECR namespace and lifecycle of its subordinate ECR role.
-The LEID, OOR, and ECR are <em>non-natural persons</em> roles (see <span>[<a href="#ISO17442-1_2020" class="cite xref">ISO17442-1_2020</a>]</span>).
-Non-vLEI credentials are used to identify and authenticate such entities.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+The LEID, OOR, and ECR are <em>non-natural person</em> roles (see <span>[<a href="#ISO17442-1_2020" class="cite xref">ISO17442-1_2020</a>]</span>).
+Non-vLEI credentials are used to identify and authenticate such entities.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 <div id="vlei-schemas">
-<section id="section-3.2.1">
+<section id="section-3.5.1">
           <h4 id="name-vlei-schemas">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-vlei-schemas" class="section-name selfRef">vLEI Schemas</a>
+<a href="#section-3.5.1" class="section-number selfRef">3.5.1. </a><a href="#name-vlei-schemas" class="section-name selfRef">vLEI Schemas</a>
           </h4>
-<p id="section-3.2.1-1">The various vLEI ACDC objects conform to JSON Schemas:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.1-1">The various vLEI ACDC objects conform to JSON Schemas:<a href="#section-3.5.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2.1-2.1">
-              <p id="section-3.2.1-2.1.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEID</a>.<a href="#section-3.2.1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.5.1-2.1">
+              <p id="section-3.5.1-2.1.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-vLEI-credential.json">LEID</a>.<a href="#section-3.5.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.2.1-2.2">
-              <p id="section-3.2.1-2.2.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/qualified-vLEI-issuer-vLEI-credential.json">QVI</a>.<a href="#section-3.2.1-2.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.5.1-2.2">
+              <p id="section-3.5.1-2.2.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/qualified-vLEI-issuer-vLEI-credential.json">QVI</a>.<a href="#section-3.5.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.2.1-2.3">
-              <p id="section-3.2.1-2.3.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/oor-authorization-vlei-credential.json">OORA</a>.<a href="#section-3.2.1-2.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.5.1-2.3">
+              <p id="section-3.5.1-2.3.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/oor-authorization-vlei-credential.json">OORA</a>.<a href="#section-3.5.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.2.1-2.4">
-              <p id="section-3.2.1-2.4.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/ecr-authorization-vlei-credential.json">ECRA</a>.<a href="#section-3.2.1-2.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.5.1-2.4">
+              <p id="section-3.5.1-2.4.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/ecr-authorization-vlei-credential.json">ECRA</a>.<a href="#section-3.5.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.2.1-2.5">
-              <p id="section-3.2.1-2.5.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json">OOR</a>.<a href="#section-3.2.1-2.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.5.1-2.5">
+              <p id="section-3.5.1-2.5.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-official-organizational-role-vLEI-credential.json">OOR</a>.<a href="#section-3.5.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.2.1-2.6">
-              <p id="section-3.2.1-2.6.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">ECR</a>.<a href="#section-3.2.1-2.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.5.1-2.6">
+              <p id="section-3.5.1-2.6.1"><a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">ECR</a>.<a href="#section-3.5.1-2.6.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.2.1-3">These schemas are used to validate JSON realizations of vLEI credentials.
-Other representations such as CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> and message pack <span>[<a href="#MSGPCK" class="cite xref">MSGPCK</a>]</span> can be realized, but the schemas used to validate them are not available at the time of this writing.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.5.1-3">These schemas are used to validate JSON realizations of vLEI credentials.
+Other representations such as CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> and message pack <span>[<a href="#MSGPCK" class="cite xref">MSGPCK</a>]</span> can be realized, but the schemas used to validate them are not available at the time of this writing.<a href="#section-3.5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="legalentityengagementcontextrolevleicredential-credentials">
-<section id="section-3.2.2">
+<section id="section-3.5.2">
           <h4 id="name-legalentityengagementcontex">
-<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-legalentityengagementcontex" class="section-name selfRef">LegalEntityEngagementContextRolevLEICredential Credentials</a>
+<a href="#section-3.5.2" class="section-number selfRef">3.5.2. </a><a href="#name-legalentityengagementcontex" class="section-name selfRef">LegalEntityEngagementContextRolevLEICredential Credentials</a>
           </h4>
-<p id="section-3.2.2-1">The SATP Messages in row 3 of <a href="#tbl-satp-entity" class="auto internal xref">Table 3</a> is a LegalEntityEngagementContextRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a> schema.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2.2-2">These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.<a href="#section-3.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.5.2-1">The SATP Messages in row 3 of <a href="#tbl-satp-entity" class="auto internal xref">Table 3</a> is a LegalEntityEngagementContextRolevLEICredential as defined by the <a href="https://github.com/GLEIF-IT/vLEI-schema/blob/main/legal-entity-engagement-context-role-vLEI-credential.json">LEECRvLEIC</a> schema.<a href="#section-3.5.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.2-2">These messages are realized using a LEECRvLEIC because they identify the gateways and hosts within the respective networks involved in transferring digital assets.<a href="#section-3.5.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1636,11 +1690,11 @@ Other representations such as CBOR <span>[<a href="#STD94" class="cite xref">STD
 <p id="section-4-1">The SATP core protocol <span>[<a href="#I-D.ietf-satp-core" class="cite xref">I-D.ietf-satp-core</a>]</span> defines several extensible protocol fields that contain identity and other values not defined by SATP core.
 To facilitate interoperability these fields <span class="bcp14">SHOULD</span> contain a media type <span>[<a href="#STD91" class="cite xref">STD91</a>]</span> or content format <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) <span>[<a href="#CESR-Spec" class="cite xref">CESR-Spec</a>]</span> objects in JSON and other formats.
-See <a href="#sec-iana" class="auto internal xref">Section 8</a>.<a href="#section-4-1" class="pilcrow">¶</a></p>
+See <a href="#sec-media-types" class="auto internal xref">Section 4.4</a>.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2"><span class="cref" id="ids-note3">
-Note3: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
+Note: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
 Gateway Credential type isn't used in any of the stages afaik.
-There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
+There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, PKIX).
 <span class="crefSource">Ned Smith</span></span><a href="#section-4-2" class="pilcrow">¶</a></p>
 <div id="sec-satp-vlei-mapping">
 <section id="section-4.1">
@@ -1667,7 +1721,7 @@ The type of credential used to represent authority is in column 3.<a href="#sect
               <th class="text-left" rowspan="1" colspan="1">#</th>
               <th class="text-left" rowspan="1" colspan="1">SATP Entity</th>
               <th class="text-left" rowspan="1" colspan="1">vLEI Type &amp; Authority Chain</th>
-              <th class="text-left" rowspan="1" colspan="1">Credential</th>
+              <th class="text-left" rowspan="1" colspan="1">Credential Type</th>
               <th class="text-left" rowspan="1" colspan="1">Notes</th>
             </tr>
           </thead>
@@ -1699,7 +1753,7 @@ The type of credential used to represent authority is in column 3.<a href="#sect
             <tr>
               <td class="text-left" rowspan="1" colspan="1">4</td>
               <td class="text-left" rowspan="1" colspan="1">Originator, Beneficiary, Gateway Owner</td>
-              <td class="text-left" rowspan="1" colspan="1">LEID&gt;&gt;OOR, LEID&gt;&gt;ECR</td>
+              <td class="text-left" rowspan="1" colspan="1">LEID&gt;&gt;OORA, LEID&gt;&gt;ECRA, LEID&gt;&gt;OORA&gt;&gt;OOR, LEID&gt;&gt;ECRA&gt;&gt;ECR</td>
               <td class="text-left" rowspan="1" colspan="1">vLEI</td>
               <td class="text-left" rowspan="1" colspan="1">Person-in-role credential</td>
             </tr>
@@ -1707,15 +1761,15 @@ The type of credential used to represent authority is in column 3.<a href="#sect
               <td class="text-left" rowspan="1" colspan="1">5</td>
               <td class="text-left" rowspan="1" colspan="1">Gateway / Network Operations Manager / Admin <em>-implied-</em>
 </td>
-              <td class="text-left" rowspan="1" colspan="1">ECR&gt;&gt;ACDC</td>
-              <td class="text-left" rowspan="1" colspan="1">ACDC, other</td>
+              <td class="text-left" rowspan="1" colspan="1">ECR&gt;&gt;ACDC&gt;&gt;KEL, ECR&gt;&gt;KEL, ECR(as other issuer)&gt;&gt;other</td>
+              <td class="text-left" rowspan="1" colspan="1">ACDC, KEL, other</td>
               <td class="text-left" rowspan="1" colspan="1">Operational credentials (not defined by vLEI)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">6</td>
               <td class="text-left" rowspan="1" colspan="1">Sender/Receiver Gateway, Sender/Recipient Network</td>
-              <td class="text-left" rowspan="1" colspan="1">ACDC&gt;&gt;AID</td>
-              <td class="text-left" rowspan="1" colspan="1">ACDC, other</td>
+              <td class="text-left" rowspan="1" colspan="1">n/a</td>
+              <td class="text-left" rowspan="1" colspan="1">KEL, other</td>
               <td class="text-left" rowspan="1" colspan="1">Device or system identity</td>
             </tr>
           </tbody>
@@ -1742,26 +1796,27 @@ Typically, second tier authorities are inter-organizational issuing credentials 
 <dt>Row 4.</dt>
 <dd id="section-4.1-3.4">
             <p id="section-4.1-3.4.1">SATP stage-1 messages imply the existence of oganization level entities such as Originator, Beneficiary, and Gateway Owners.
-vLEI defines two forms of person-in-role credentials for level 3 SATP entities.
+vLEI defines two forms of person-in-role credentials that map to these SATP entities.
 OOR for organizational officers and ECR for oganizational departments or functions.
-SATP use cases likely depend on ECR credentials.<a href="#section-4.1-3.4.1" class="pilcrow">¶</a></p>
+SATP use cases likely depend on ECR credentials.
+A legal entity may delegate credential issuance by naming an alternate legal entity using OOR Authority (OORA) or ECR Authority (ECRA) delegation credentials.<a href="#section-4.1-3.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt>Row 5.</dt>
 <dd id="section-4.1-3.5">
-            <p id="section-4.1-3.5.1">There are likely to be intra-organizational entities that manage and adminster networks and servers.
+            <p id="section-4.1-3.5.1">SATP architecture assumes the existence of intra-organizational entities that manage and adminster networks and servers.
 vLEI doesn't define such roles and SATP stage-1 messages don't explicitly mention the existence of such entities.
 However, the people responsible for administering and managing the systems that implement SATP message exchange have credentials that tie into the organizational accountability framework envisaged by vLEI.
-These credentials can be ACDC or other (e.g., X.509).<a href="#section-4.1-3.5.1" class="pilcrow">¶</a></p>
+These credentials can be KERI based (e.g., KEL, ACDC) or other (e.g., PKIX).<a href="#section-4.1-3.5.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt>Row 6.</dt>
 <dd id="section-4.1-3.6">
             <p id="section-4.1-3.6.1">SATP stage-1 messages describe various services and networks that have been credentialed with device or system identities.
-These credentials can be ACDC or other.
-ACDC credentials contain a holder AID that links the identity of the holder entity to the key weilded by the holder.
-An X.509 device certificate associates the subject name to a public key.
-It is often assumed that the holder of the certificate also weilds the private corresponding to the public key in the certificate.<a href="#section-4.1-3.6.1" class="pilcrow">¶</a></p>
+These credentials can be KERI based or other.
+KERI based credentials reference the key holders AID that is the identity of the gateway or network principal that weilds the corresponding private key.
+An PKIX device certificate associates a <em>subject name</em> to the public key of the gateway or network principal that weilds the corresponding private key.
+A SATP gateway or network can be a principal that has multiple key management subsystems (e.g., KERI and PKIX).<a href="#section-4.1-3.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1771,8 +1826,11 @@ It is often assumed that the holder of the certificate also weilds the private c
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-vlei-deployment-considerati" class="section-name selfRef">vLEI Deployment Considerations</a>
           </h4>
 <p id="section-4.1.1-1">SATP deployments could utilize other vLEI roles.
-For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 3 <a href="#tbl-satp-entity" class="auto internal xref">Table 3</a>.
+For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 4 <a href="#tbl-satp-entity" class="auto internal xref">Table 3</a>.
 Although SATP Stage 1 messages don't directly refer to ECR credentials, the credentials referenced could link to ECR credentials which in turn link to ECRA credentials etc...<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-2"><span class="cref" id="ids-note2">
+Note: Need to describe how this draft approaches both top-down and bottom-up protocol binding e.g., http and tls.
+<span class="crefSource">Ned Smith</span></span><a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1783,7 +1841,7 @@ Although SATP Stage 1 messages don't directly refer to ECR credentials, the cred
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-key-structures" class="section-name selfRef">Key Structures</a>
         </h3>
 <p id="section-4.2-1">Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">The SATP PublicKey messages <span class="bcp14">SHALL</span> be encoded using JSON Web Key (JWK) <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span>, COSE key <span>[<a href="#STD96" class="cite xref">STD96</a>]</span>, PKIX key in PEM or DER, or as Key Event Logs (KEL) <span>[<a href="#KERI-Spec" class="cite xref">KERI-Spec</a>]</span>.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">The SATP PublicKey messages <span class="bcp14">SHALL</span> be encoded using JSON Web Key (JWK) <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span>, COSE key <span>[<a href="#STD96" class="cite xref">STD96</a>]</span>, PKIX key in PEM or DER, or as key events <span>[<a href="#KERI-Spec" class="cite xref">KERI-Spec</a>]</span>.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">Other key formats <span class="bcp14">SHOULD</span> be allowed but are out of scope for RFCthis.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1898,7 +1956,7 @@ pkix-key = {
 </div>
 </section>
 </div>
-<div id="vlei-media-types">
+<div id="sec-media-types">
 <section id="section-4.4">
         <h3 id="name-vlei-media-types">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-vlei-media-types" class="section-name selfRef">vLEI Media Types</a>
@@ -2688,7 +2746,7 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+json;profile=urn:vlei:lar</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+json;profile=urn:vlei:oora</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA13</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
@@ -2700,7 +2758,7 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+json;profile=urn:vlei:vra</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+json;profile=urn:vlei:ecra</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA15</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
@@ -2724,7 +2782,7 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+cbor;profile=urn:vlei:lar</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+cbor;profile=urn:vlei:oora</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA23</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
@@ -2736,7 +2794,7 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+cbor;profile=urn:vlei:vra</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+cbor;profile=urn:vlei:ecra</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA25</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
@@ -2760,19 +2818,19 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:lar</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:oora</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA33</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:qvr</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:qvi</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA34</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:vra</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr+msgpk;profile=urn:vlei:ecra</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA35</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
@@ -2796,19 +2854,19 @@ Environments (CoRE) Parameters" Registry <span>[<a href="#IANA.core-parameters" 
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:lar</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:oora</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA43</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:qvr</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:qvi</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA44</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:vra</td>
+              <td class="text-left" rowspan="1" colspan="1">application/cesr;profile=urn:vlei:ecra</td>
               <td class="text-left" rowspan="1" colspan="1">-</td>
               <td class="text-left" rowspan="1" colspan="1">TBA45</td>
               <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
