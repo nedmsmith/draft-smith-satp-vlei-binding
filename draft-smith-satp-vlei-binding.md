@@ -242,42 +242,61 @@ SATP core message binding anticipates use of a message wrapper that uses media t
 
 {::boilerplate bcp14-tagged}
 
-# Identities {#sec-ids}
+## Terminology
+
+* Legal Entity : any organization or structure that is legally or financially responsible for its actions and can enter into financial transactions, explicitly excluding natural persons except where they act as sole proprietors recognized as legal entities {{-iso17442}}.
+
+* Natural person : a living human being ([LLI](https://www.law.cornell.edu/wex/natural_person)).
+
+# vLEI Identities and Credentials {#sec-ids}
 
 The SATP core protocol {{-satp-core}} defines a set of entities that participate in an asset transfer.
 These entities are represented in differennt ways including identifiers, credentials and public keys.
 SATP entities are presumed to have been issued cryptographically relevant identities prior to the SATP Transfer Initiation Stage (Stage 1) and subsequent exchanges.
-An entity (see Section 3 {{-rfc4949}} bound to a cryptographic key is also known as a principal {{-cacds}}.
+An entity (see Section 3 {{-rfc4949}} that weilds a cryptographic key pair can be described as a *principal* {{-cacds}}.
+SATP Gateways and Networks as well as the key management infrastructure that authorizes these keys are all principals.
 
-A legal entity identifier (LEI) is defined by {{-iso17442}} section 1 (scope) that contains legal entity identifiers.
-An LEI is essentially a globally unique value issued by a well-known issuer.
-A verifiable LEI (vLEI) {{-iso-vlei}} is an Authentic Chained Data Container (ACDC) {{-acdc}} credential containing Autonomic Identifiers ([AID](https://trustoverip.github.io/kerisuite-glossary#term:autonomic-identifier)) that has three attributes:
+## vLEI Credential Attributes
+A legal entity identifier (LEI) is essentially a globally unique value issued by a well-known entity trusted to manage the LEI namespace correctly.
+A verifiable LEI (vLEI) {{-iso-vlei}} is an Authentic Chained Data Container (ACDC) {{-acdc}} credential that contains three attributes:
 
-* Legal Entity Identifier
-* Person Identifier
-* Organizational Role Identifier
+* Legal Entity Identifier (LEI)
+* Person Identifier - human friendly name
+* Organizational Role Identifier - defined by a namespace controller such as GLEIF {{-gleif-fwk}}.
 
-vLEI credentials are issued to *natural person* (see {{-gleif-part2}} and {{-iso-vlei}}).
-cryptographic keys, to form vLEI principals.
-AIDs link to Key Event Logs (KEL) that are form of key attestation.
-KELs change periodically as key event receipts are added to the log, thus key state could have security implications.
-The state of the vLEI credential may change between SATP stages or whenever a key is used.
-The state of an ACDC is locked to keystate at issuance.
-A cryptographic hash of an ACDC credential and its initial key state can be referenced using a Self-Addressing Identifier (SAID) {{-cesr}}.
+A vLEI ACDC attributes also contain an Autonomic Identifier ([AID](https://trustoverip.github.io/kerisuite-glossary#term:autonomic-identifier)) that identifies the principal to which the other vLEI attributes are bound.
+In PKIX terminology, this AID identifies the *subject*.
+A vLEI ACDC also contains an issuer AID that identifies the issuing principal.
+vLEI credentials are issued to non-natural person legal entities (see {{-gleif-part2}} and {{-iso-vlei}}).
+Nevertheless, these credentials contain `personLegalName` and `engagementContextRole` attributes that are typically associated with natural persons.
 
-When applying vLEI to SATP, ACID properties suggest that the state of the exchanged asset, the protocol state, and the key state play a role during asset exchange.
-Ideally, SATP principals (including key state) are unchanging during complete asset exchange (or full rollback).
-However, if key-state can't be locked as part of a SATP ACID exchange, key state verification at each SATP stage may be needed.
+## KERI Key Management
+AIDs reference Key Event Log (KEL) events that can be verified by outside entities; as such is a form of key attestation.
+An ACDC issuer is anchored to a key inception event which is a digest of the current and pre-rotated keys and other key management context.
+The digest becomes the issuer's autonomic identifier (AID).
+An ACDC credential can be identified by hashing its contents.
+The resulting digest is called a Self-Addressing Identifier (SAID) {{-keri}}.
+
+Periodically, key events are appended to the KEL resulting in a different key state.
+However, the key inception event (the first event) remains unchanged.
+Anchoring AIDs to inception events means the identifier is relatively long lived as even key rotation events are anticipated at inception.
+Key rotation events that exceed the number of pre-rotated keys results in a new key inception event that conseqently invalidates its previous AID.
+
+When applying vLEI to SATP, ACID properties suggest that the state of the exchanged asset, the protocol state, and the key state play a role in determining the overall state of the asset exchange.
+Ideally, SATP principals (including key state) is locked down as part of reliable asset exchange where the complete state can be rolled back to a known-good state.
+However, if key state can't be locked as part of a SATP asset exchange, key state verification at each SATP stage may be needed to verify the subsequent key state changes occuring during SATP stages does not present a security relevant condition.
+
+## SATP Credentialing Assumptions
 
 SATP signing keys (e.g., senderGatewaySignaturePublicKey) that are based on ACDC credentials implicitly support key attestation as part of key verification.
 SATP device keys (e.g., senderGatewayDeviceIdentityPubKey) used for device authentication or device attestation can furthur strengthen trustworthiness claims of SATP endpoints.
 Some SATP keys do not use vLEI credentals, but could still be based on ACDC credentials.
-Still other credential types (e.g., X.509 {{-pkix}}) could be used for non-natural person entities.
-Nevertheless, use of a Key Event Recipt Infrastructure (KERI) {{-keri}} key means these keys can benefit from KEL-based key attestation.
+Still other credential types (e.g., PKIX {{-pkix}}) could be leveraged, but complicates key and trust management.
 
-{{&SELF}} assumes SATP identifiers and public keys are artifacts of a credential issued to a common entity.
-Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from the one belongin to the GatewaySignaturePublicKey.
-Consequently, there MAY be additional credentials issued to SATP principals  that require additional verifier processing.
+{{&SELF}} assumes SATP stage 1 messages that contain identifiers and public keys are artifacts of credentials that have been issued to SATP defined entities.
+In addition, SATP entities are authorized by vLEI hierarchy that supplies a legal context for asset exchange
+Nevertheless, the GatewayDeviceIdentityPublicKey could be associated with a different credential from that belonging to the GatewaySignaturePublicKey.
+Consequently, there MAY be additional credentials issued to SATP principals that require additional verifier processing that ensures the asset transfer legal context is in force despite bifurcated credential formats and infrastructure.
 
 ## SATP Identity Binding {#sec-id-bind}
 
@@ -318,10 +337,6 @@ The entity identifier within an ACDD is an autonomic identifer (AID), which is s
 |===
 {: #tbl-ent-msg-cred title="Mapping of SATP Entities and Messages to Credential Type" align=left}
 
-<cref anchor="ids-note2" source="Ned Smith">
-Note2: Need to describe how this draft approaches protocol binding where focus is on top-down, but not ignoring buttom up eg tls.
-</cref>
-
 ## vLEI Roles
 
 The vLEI ecosystem defines roles-specific credentials.
@@ -344,7 +359,7 @@ It oversees the lifecycle of subordinate namespaces (e.g., LEID, OORA, and ECRA)
 The LEID role manages the LEID namespace.
 The OORA role manages the OORA namespace and lifecycle of its subordinate OOR role.
 The ECRA role manages the ECR namespace and lifecycle of its subordinate ECR role.
-The LEID, OOR, and ECR are *non-natural persons* roles (see {{-iso17442}}).
+The LEID, OOR, and ECR are *non-natural person* roles (see {{-iso17442}}).
 Non-vLEI credentials are used to identify and authenticate such entities.
 
 ### vLEI Schemas
@@ -372,12 +387,12 @@ These messages are realized using a LEECRvLEIC because they identify the gateway
 The SATP core protocol {{-satp-core}} defines several extensible protocol fields that contain identity and other values not defined by SATP core.
 To facilitate interoperability these fields SHOULD contain a media type {{-media-type}} or content format {{-content-format}} wrapper.
 This specation requests IANA assignment of media type and content format identifiers for vLEIs which are serialized as Composable Event Streaming Representation (CESR) {{-cesr}} objects in JSON and other formats.
-See {{sec-iana}}.
+See {{sec-media-types}}.
 
 <cref anchor="ids-note3" source="Ned Smith">
-Note3: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
+Note: SATP describes Gateway secure channel establishment public key-pair but this isn't represented in the list of message publickey message types.
 Gateway Credential type isn't used in any of the stages afaik.
-There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, X.509).
+There should be an IANA registry for the allowed credential types (vLEI, SAML, OAuth, PKIX).
 </cref>
 
 ## SATP vLEI Mapping {#sec-satp-vlei-mapping}
@@ -392,14 +407,14 @@ The table is ordered according to an authority hierarchy with the root authority
 Authority is therefore cumulative from row to row.
 The type of credential used to represent authority is in column 3.
 
-| # | SATP Entity | vLEI Type & Authority Chain | Credential | Notes |
+| # | SATP Entity | vLEI Type & Authority Chain | Credential Type | Notes |
 |===
 | 1 | Root vLEI Issuer *-implied-* | GLEIF | vLEI | Root namespace authority (e.g., GLEIF) |
 | 2 | Qualified vLEI Issuer *-implied-* | GLEIF>>QVI | vLEI | Inter organizational namespace authority |
 | 3 | Organizational vLEI Issuer *-implied-* | QVI>>LEID | vLEI | Organizational level namespace authority |
-| 4 | Originator, Beneficiary, Gateway Owner | LEID>>OOR, LEID>>ECR | vLEI | Person-in-role credential |
-| 5 | Gateway / Network Operations Manager / Admin *-implied-* | ECR>>ACDC | ACDC, other | Operational credentials (not defined by vLEI) |
-| 6 | Sender/Receiver Gateway, Sender/Recipient Network | ACDC>>AID | ACDC, other | Device or system identity |
+| 4 | Originator, Beneficiary, Gateway Owner | LEID>>OORA, LEID>>ECRA, LEID>>OORA>>OOR, LEID>>ECRA>>ECR | vLEI | Person-in-role credential |
+| 5 | Gateway / Network Operations Manager / Admin *-implied-* | ECR>>ACDC>>KEL, ECR>>KEL, ECR(as other issuer)>>other | ACDC, KEL, other | Operational credentials (not defined by vLEI) |
+| 6 | Sender/Receiver Gateway, Sender/Recipient Network | n/a | KEL, other | Device or system identity |
 |===
 {: #tbl-satp-entity title="Mapping SATP Entity to vLEI Role" align=left}
 
@@ -412,30 +427,35 @@ The GLEIF AID is public knowledge.
 Typically, second tier authorities are inter-organizational issuing credentials to multiple organizational entities.
 * Orgainzational entities use an LEID credential to manage intra-organizational namespaces.
 * SATP stage-1 messages imply the existence of oganization level entities such as Originator, Beneficiary, and Gateway Owners.
-vLEI defines two forms of person-in-role credentials for level 3 SATP entities.
+vLEI defines two forms of person-in-role credentials that map to these SATP entities.
 OOR for organizational officers and ECR for oganizational departments or functions.
 SATP use cases likely depend on ECR credentials.
-* There are likely to be intra-organizational entities that manage and adminster networks and servers.
+A legal entity may delegate credential issuance by naming an alternate legal entity using OOR Authority (OORA) or ECR Authority (ECRA) delegation credentials.
+* SATP architecture assumes the existence of intra-organizational entities that manage and adminster networks and servers.
 vLEI doesn't define such roles and SATP stage-1 messages don't explicitly mention the existence of such entities.
 However, the people responsible for administering and managing the systems that implement SATP message exchange have credentials that tie into the organizational accountability framework envisaged by vLEI.
-These credentials can be ACDC or other (e.g., X.509).
+These credentials can be KERI based (e.g., KEL, ACDC) or other (e.g., PKIX).
 * SATP stage-1 messages describe various services and networks that have been credentialed with device or system identities.
-These credentials can be ACDC or other.
-ACDC credentials contain a holder AID that links the identity of the holder entity to the key weilded by the holder.
-An X.509 device certificate associates the subject name to a public key.
-It is often assumed that the holder of the certificate also weilds the private corresponding to the public key in the certificate.
+These credentials can be KERI based or other.
+KERI based credentials reference the key holders AID that is the identity of the gateway or network principal that weilds the corresponding private key.
+An PKIX device certificate associates a *subject name* to the public key of the gateway or network principal that weilds the corresponding private key.
+A SATP gateway or network can be a principal that has multiple key management subsystems (e.g., KERI and PKIX).
 
 ### vLEI Deployment Considerations
 
 SATP deployments could utilize other vLEI roles.
-For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 3 {{tbl-satp-entity}}.
+For example, an ECR role might be defined for a SATP Gateway Operations Manager or Network Administrator. See row 4 {{tbl-satp-entity}}.
 Although SATP Stage 1 messages don't directly refer to ECR credentials, the credentials referenced could link to ECR credentials which in turn link to ECRA credentials etc...
+
+<cref anchor="ids-note2" source="Ned Smith">
+Note: Need to describe how this draft approaches both top-down and bottom-up protocol binding e.g., http and tls.
+</cref>
 
 ## Key Structures
 
 Keys embedded in hardware or firmware may not easily be converted to an interoperablel format, hence support for multiple key formats ensures the SATP protocols can be implemented by a wide variety of systems.
 
-The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK) {{-jwk}}, COSE key {{-cose-key}}, PKIX key in PEM or DER, or as Key Event Logs (KEL) {{-keri}}.
+The SATP PublicKey messages SHALL be encoded using JSON Web Key (JWK) {{-jwk}}, COSE key {{-cose-key}}, PKIX key in PEM or DER, or as key events {{-keri}}.
 
 Other key formats SHOULD be allowed but are out of scope for {{&SELF}}.
 
@@ -469,7 +489,7 @@ Other stage 1 messages are public key values that use a key wrapper that disambi
 {::include cddl/wrapped-key.cddl}
 ~~~
 
-## vLEI Media Types
+## vLEI Media Types {#sec-media-types}
 
 vLEI credentials are expressed as Authentic Chained Data Containers (ACDC) {{-acdc}}.
 Section {{sec-iana}} request IANA assignment of media types {{-media-type}} and content format identifiers {{-content-format}}.
@@ -884,27 +904,27 @@ Environments (CoRE) Parameters" Registry {{!IANA.core-parameters}}:
 | application/cesr+json;profile=urn:vlei:leid | - | TBA10 | {{&SELF}} |
 | application/cesr+json;profile=urn:vlei:ecr | - | TBA11 | {{&SELF}} |
 | application/cesr+json;profile=urn:vlei:oor | - | TBA12 | {{&SELF}} |
-| application/cesr+json;profile=urn:vlei:lar | - | TBA13 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:oora | - | TBA13 | {{&SELF}} |
 | application/cesr+json;profile=urn:vlei:qvi | - | TBA14 | {{&SELF}} |
-| application/cesr+json;profile=urn:vlei:vra | - | TBA15 | {{&SELF}} |
+| application/cesr+json;profile=urn:vlei:ecra | - | TBA15 | {{&SELF}} |
 | application/cesr+cbor;profile=urn:vlei:leid | - | TBA20 | {{&SELF}} |
 | application/cesr+cbor;profile=urn:vlei:ecr | - | TBA21 | {{&SELF}} |
 | application/cesr+cbor;profile=urn:vlei:oor | - | TBA22 | {{&SELF}} |
-| application/cesr+cbor;profile=urn:vlei:lar | - | TBA23 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:oora | - | TBA23 | {{&SELF}} |
 | application/cesr+cbor;profile=urn:vlei:qvi | - | TBA24 | {{&SELF}} |
-| application/cesr+cbor;profile=urn:vlei:vra | - | TBA25 | {{&SELF}} |
+| application/cesr+cbor;profile=urn:vlei:ecra | - | TBA25 | {{&SELF}} |
 | application/cesr+msgpk;profile=urn:vlei:leid | - | TBA30 | {{&SELF}} |
 | application/cesr+msgpk;profile=urn:vlei:ecr | - | TBA31 | {{&SELF}} |
 | application/cesr+msgpk;profile=urn:vlei:oor | - | TBA32 | {{&SELF}} |
-| application/cesr+msgpk;profile=urn:vlei:lar | - | TBA33 | {{&SELF}} |
-| application/cesr+msgpk;profile=urn:vlei:qvr | - | TBA34 | {{&SELF}} |
-| application/cesr+msgpk;profile=urn:vlei:vra | - | TBA35 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:oora | - | TBA33 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:qvi | - | TBA34 | {{&SELF}} |
+| application/cesr+msgpk;profile=urn:vlei:ecra | - | TBA35 | {{&SELF}} |
 | application/cesr;profile=urn:vlei:leid | - | TBA40 | {{&SELF}} |
 | application/cesr;profile=urn:vlei:ecr | - | TBA41 | {{&SELF}} |
 | application/cesr;profile=urn:vlei:oor | - | TBA42 | {{&SELF}} |
-| application/cesr;profile=urn:vlei:lar | - | TBA43 | {{&SELF}} |
-| application/cesr;profile=urn:vlei:qvr | - | TBA44 | {{&SELF}} |
-| application/cesr;profile=urn:vlei:vra | - | TBA45 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:oora | - | TBA43 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:qvi | - | TBA44 | {{&SELF}} |
+| application/cesr;profile=urn:vlei:ecra | - | TBA45 | {{&SELF}} |
 {: align="left" title="New Content-Formats"}
 
 --- back
