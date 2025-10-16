@@ -1674,7 +1674,11 @@ Appendix B.  Examples in JSON
 
 Acknowledgments
 
-   TODO acknowledge.
+   Nicholas Racz for review, comments, and ecosystem alignment
+   contributions.
+
+   Samuel Smith for review, comments, and KERI ACDC CESR and vLEI
+   insights.
 
 Author's Address
 
