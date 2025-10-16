@@ -980,4 +980,6 @@ The following SATP wrapper examples show synthetic key data:
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Nicholas Racz for review, comments, and ecosystem alignment contributions.
+
+Samuel Smith for review, comments, and KERI ACDC CESR and vLEI insights.
