@@ -4,9 +4,9 @@ abbrev: "SATP-vLEI"
 category: std
 
 docname: draft-smith-satp-vlei-binding-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+submissiontype:  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
-date:
+date: 2025-10-16
 consensus: true
 v: 3
 area: "Applications and Real-Time"
@@ -33,7 +33,7 @@ author:
 normative:
   REQ-LEVEL: RFC2119
   I-D.ietf-satp-core: satp-core
-  RFC7159: json
+  RFC8259: json
   RFC7517: jwk
   RFC2585: pkix-key
   RFC4648: base64uri
