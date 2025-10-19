@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-16T00:56:48.188810+00:00",
+  "timestamp": "2025-10-19T01:02:50.051698+00:00",
   "repo": "nedmsmith/draft-smith-satp-vlei-binding",
   "labels": [
     {
@@ -579,6 +579,62 @@
       "mergedBy": "nedmsmith",
       "mergeCommit": {
         "oid": "3243c6b5b4fc15ac92c2f5e7702d24e8ad8db8c5"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOPancDc6uL8ne",
+      "title": "Editing and cleanup",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/19",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Misc section renumbering, wordsmithing and cleanup.",
+      "createdAt": "2025-10-16T23:02:12Z",
+      "updatedAt": "2025-10-16T23:02:50Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "3243c6b5b4fc15ac92c2f5e7702d24e8ad8db8c5",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "01-misc",
+      "headRefOid": "99dc7eadef87ef94299a92a20f1b25ca2af78632",
+      "closedAt": "2025-10-16T23:02:49Z",
+      "mergedAt": "2025-10-16T23:02:49Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "095e8b8de7d5ee1a6c3229b5a32faec51fc38012"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOPancDc6uMEVq",
+      "title": "Add acknowledgements",
+      "url": "https://github.com/nedmsmith/draft-smith-satp-vlei-binding/pull/20",
+      "state": "MERGED",
+      "author": "nedmsmith",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Acknowledged contributors",
+      "createdAt": "2025-10-16T23:17:53Z",
+      "updatedAt": "2025-10-16T23:18:51Z",
+      "baseRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "baseRefName": "main",
+      "baseRefOid": "095e8b8de7d5ee1a6c3229b5a32faec51fc38012",
+      "headRepository": "nedmsmith/draft-smith-satp-vlei-binding",
+      "headRefName": "ack-01",
+      "headRefOid": "b8b5eac7b0873c4e8edb6e27e4ec189cff84956d",
+      "closedAt": "2025-10-16T23:18:35Z",
+      "mergedAt": "2025-10-16T23:18:35Z",
+      "mergedBy": "nedmsmith",
+      "mergeCommit": {
+        "oid": "eb142f770c2c72ddbc760bfefed08614f82ba929"
       },
       "comments": [],
       "reviews": []
